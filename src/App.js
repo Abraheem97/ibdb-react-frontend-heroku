@@ -13,7 +13,6 @@ import ConfirmEmail from "./components/confirmEmail";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { get_users } from "./Services/userService";
 
 class App extends Component {
   state = { isLoggedIn: false, user: {}, alerts: {} };

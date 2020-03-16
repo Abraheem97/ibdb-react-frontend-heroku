@@ -2,10 +2,12 @@ import React, { Component } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
+import SearchBox from "./searchBox";
 
 class Books extends Component {
   state = {
-    books: []
+    books: [],
+    searchQuery: ""
   };
 
   imageStyles = {
@@ -27,6 +29,21 @@ class Books extends Component {
       });
   }
 
+  handleSearch = query => {
+    this.setState({ searchQuery: query });
+  };
+
+  getSearch = () => {
+    const { books, searchQuery } = this.state;
+
+    let filtered = books;
+    if (searchQuery)
+      filtered = books.filter(b =>
+        b.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    return filtered;
+  };
+
   openBook = () => {};
 
   render() {
@@ -39,8 +56,12 @@ class Books extends Component {
             all genres and authors and give those books a review very easily.
           </p>
         </div>
+        <SearchBox
+          value={this.state.searchQuery}
+          onChange={this.handleSearch}
+        />
         <div className="row align-items-start">
-          {this.state.books.map(book => (
+          {this.getSearch().map(book => (
             <div key={book.id} className="col-sm-6 col-md-4 p-3">
               <div style={this.textCenter}>
                 <h5>

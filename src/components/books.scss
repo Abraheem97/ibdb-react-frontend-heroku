@@ -1,0 +1,59 @@
+ol.commentlist {
+  list-style: none;
+  margin: 0 0 1em;
+  padding: 0;
+  text-indent: 0;
+  padding-top: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+li {
+  list-style-type: none;
+  .main-navigation ul li {
+    border-right: 1px solid #000;
+  }
+
+  .main-navigation ul li:last-of-type {
+    border-right: none;
+  }
+
+  .main-navigation ul ul li {
+    border-right: none;
+  }
+}
+
+body {
+  background: rgb(230, 227, 227);
+}
+
+.review_title {
+  margin: 0 0 20px 0;
+}
+.reviews {
+  padding: 15px 0;
+  border-bottom: 1px solid #eaeaea;
+  .star-rating {
+    padding-bottom: 8px;
+  }
+}
+
+.jumbotron {
+  border-radius: 6px;
+  padding: 10px 0px 0px 0px;
+}
+.image-upload > input {
+  display: none;
+}
+.image-upload > label {
+  cursor: pointer;
+}
+
+.bookcover {
+  display: block;
+  max-width: 230px;
+  max-height: 395px;
+
+  padding-left: 50px;
+}

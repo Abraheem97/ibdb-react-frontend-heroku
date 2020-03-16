@@ -1,0 +1,37 @@
+<div className="row">
+          <div className="col-sm-6 col-md-4">
+            <div className="thumbnail thumb-box">
+              <div className="caption">
+                <h3>{this.state.book.title}</h3>
+                <div>
+                  <img
+                    style={this.imageStyles}
+                    src={`http://localhost:3001/assets/${this.state.book.image_file_name}`}
+                  />
+                </div>
+                <p>By {this.state.book.author_name}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-7 col-md-offset-1" style={this.textCenter}>
+            <h1>Reviews</h1>
+            {this.state.reviews.map(review => (
+              <Review
+                key={review.id}
+                rating={review.rating}
+                comment={review.comment}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div style={this.textCenter}>
+              <h1> Comments</h1>
+            </div>
+            {this.state.comments.map(comment => (
+              <Comment key={comment.id} comment={comment} />
+            ))}
+          </div>
+        </div>

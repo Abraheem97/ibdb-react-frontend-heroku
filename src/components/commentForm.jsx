@@ -21,16 +21,18 @@ class CommentForm extends Component {
       data: {
         comment: {
           book_id: this.props.book_id,
-
           user_id: Cookies.get("user_id"),
           body: this.state.body
         }
-      }
-    }).then(this.props.handleSubmit());
+      },
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+    }).then(res => {
+      this.props.handleSubmit(res.data);
+      this.setState({ body: "" });
+    });
   };
 
   render() {
-    console.log("commentform", this.props.book_id);
     return (
       <div id="commentForm">
         <form

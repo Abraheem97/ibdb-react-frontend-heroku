@@ -44,13 +44,11 @@ class Books extends Component {
     return filtered;
   };
 
-  openBook = () => {};
-
   render() {
     return (
       <React.Fragment>
         <div className="jumbotron">
-          <h1> Your Favourite Books Reviewed! </h1>
+          <h1> Your Favourite Books Reviewed!</h1>
           <p>
             IBDB is international books review site, here you can find books of
             all genres and authors and give those books a review very easily.

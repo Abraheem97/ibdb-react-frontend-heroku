@@ -32,10 +32,9 @@ class Book extends Component {
     textAlign: "center"
   };
 
-  handleCommentSubmit = () => {
-    getComments(parseInt(this.props.match.params.id)).then(resp => {
-      this.setState({ comments: resp });
-    });
+  handleCommentSubmit = comment => {
+    const comments = [comment, ...this.state.comments];
+    this.setState({ comments });
   };
   componentDidMount() {
     this.setState({ id: this.props.match.params.id });
@@ -52,6 +51,8 @@ class Book extends Component {
     });
   }
 
+  openBook = () => {};
+  openBook = () => {};
   render() {
     let parentComments = this.state.comments.filter(
       comment => comment.parent_id === null
@@ -100,10 +101,9 @@ class Book extends Component {
               />
             </div>
             {parentComments.map(comment => (
-              <div className="jumbotron">
+              <div key={comment.id} className="jumbotron">
                 <Comment
                   comments={this.state.comments}
-                  key={comment.id}
                   comment={comment}
                   replies={this.state.comments.filter(
                     reply => reply.parent_id === comment.id

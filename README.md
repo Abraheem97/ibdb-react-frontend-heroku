@@ -9,4 +9,10 @@ To run this project, please follow the following steps:
   3.  Move into your rails api project directory, run bundle command before. run the rails api server on port 3001 (rails server -p 3001)
 
    4. Now move into your react app directory and run the reacct app on port 3000 (npm start -p 3000)
+   
+   Note: make sure to sign up before using the app, you will get a confirmation email on signing up
+
+or just use this id
+email: superadmin@ibdb.com
+password: password
 

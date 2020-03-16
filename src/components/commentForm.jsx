@@ -20,16 +20,25 @@ class CommentForm extends Component {
 
       data: {
         comment: {
-          book_id: this.props.book_id,
           user_id: Cookies.get("user_id"),
           body: this.state.body
         }
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
-    }).then(res => {
-      this.props.handleSubmit(res.data);
-      this.setState({ body: "" });
-    });
+    })
+      .then(res => {
+        this.props.handleSubmit(res.data);
+        this.setState({ body: "", errors: {} });
+      })
+      .catch(errors => {
+        if (errors) {
+          let Myerrors = { ...this.state.errors };
+
+          Myerrors.wrong = "Please sign in to make a comment";
+
+          this.setState({ errors: Myerrors });
+        }
+      });
   };
 
   render() {
@@ -49,6 +58,9 @@ class CommentForm extends Component {
               className="form-control"
             />
           </div>
+          {this.state.errors.wrong && (
+            <div className="alert alert-primary">{this.state.errors.wrong}</div>
+          )}
           <button ref="btn" className="btn btn-primary">
             Comment
           </button>

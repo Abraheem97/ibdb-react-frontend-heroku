@@ -36,6 +36,11 @@ class Book extends Component {
     const comments = [comment, ...this.state.comments];
     this.setState({ comments });
   };
+
+  handleReplySubmit = reply => {
+    const comments = [reply, ...this.state.comments];
+    this.setState({ comments });
+  };
   componentDidMount() {
     this.setState({ id: this.props.match.params.id });
     getBook(parseInt(this.props.match.params.id)).then(resp => {
@@ -103,6 +108,8 @@ class Book extends Component {
             {parentComments.map(comment => (
               <div key={comment.id} className="jumbotron">
                 <Comment
+                  handleResponse={this.handleReplySubmit}
+                  book_id={this.state.id}
                   comments={this.state.comments}
                   comment={comment}
                   replies={this.state.comments.filter(

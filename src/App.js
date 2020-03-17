@@ -13,9 +13,10 @@ import ConfirmEmail from "./components/confirmEmail";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { get_username } from "./Services/userService";
 
 class App extends Component {
-  state = { isLoggedIn: false, user: {}, alerts: {} };
+  state = { isLoggedIn: false, user: {}, alerts: {}, users: [] };
 
   handleSignIn = user => {
     this.setState({ user, isLoggedIn: true, alerts: {} });

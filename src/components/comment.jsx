@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import TimeAgo from "react-timeago";
 import Modal from "react-bootstrap/Modal";
+import { get_username } from "../Services/userService";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
@@ -66,9 +67,15 @@ function MyModal(params) {
 
 class Comment extends Component {
   state = {
-    replyBody: ""
+    replyBody: "",
+    user: ""
   };
 
+  componentDidMount() {
+    get_username(this.props.comment.user_id).then(resp => {
+      this.setState({ user: resp.email.substring(0, resp.email.indexOf("@")) });
+    });
+  }
   handleResponse = res => {
     this.props.handleResponse(res.data);
   };
@@ -83,7 +90,7 @@ class Comment extends Component {
             alt="avatar"
             style={{ height: 59, width: 59 }}
           />
-          {comment.user_id} says
+          {this.state.user} says
         </h3>
         {comment.body}
         <p>

@@ -13,12 +13,13 @@ import ConfirmEmail from "./components/confirmEmail";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { get_username } from "./Services/userService";
 
 class App extends Component {
-  state = { isLoggedIn: false, user: {}, alerts: {} };
+  state = { isLoggedIn: false, user: {}, alerts: {}, users: [] };
 
   handleSignIn = user => {
-    this.setState({ user, isLoggedIn: true });
+    this.setState({ user, isLoggedIn: true, alerts: {} });
     Cookies.set("isLoggedIn", true);
     Cookies.set("user_email", user.email);
     Cookies.set("user_id", user.id);
@@ -43,7 +44,9 @@ class App extends Component {
         alerts.sign_out = "You have successfully signed out!";
         this.setState({ user: {}, isLoggedIn: false, alerts: alerts });
       })
-      .catch(errors => {});
+      .catch(errors => {
+        console.log(errors);
+      });
     // $.ajax({
     //   method: "POST",
     //   url: "http://localhost:3001/v1/sessions",
@@ -84,7 +87,7 @@ class App extends Component {
 
         <div className="container">
           {this.state.alerts.sign_out && (
-            <div className="alert alert-success">
+            <div className="alert alert-warning alert-dismissible fade show">
               {this.state.alerts.sign_out}
             </div>
           )}

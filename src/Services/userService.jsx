@@ -7,5 +7,11 @@ export function current_user() {
 }
 
 export function get_users() {
-  return axios.get("http://localhost:3001/v1/users.json");
+  return axios.get("http://localhost:3001/v1/users.json").then(res => res.data);
+}
+
+export function get_username(id) {
+  return axios
+    .get(`http://localhost:3001/v1/${id}/user.json`)
+    .then(res => res.data);
 }

@@ -54,12 +54,12 @@ class SignIn extends Component {
       })
       .catch(errors => {
         if (errors) {
+          console.log(errors);
           let Myerrors = { ...this.state.errors };
-          if (errors.message === "Request failed with status code 401")
-            Myerrors.wrong = "Invalid username or password entered";
-          else
+          if (errors.message === "Request failed with status code 403")
             Myerrors.wrong =
               "Please confirm your registered email to access your account.";
+          else Myerrors.wrong = "Invalid username or password";
           this.setState({ errors: Myerrors });
         }
       });

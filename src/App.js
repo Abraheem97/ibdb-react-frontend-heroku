@@ -14,6 +14,7 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { get_username } from "./Services/userService";
+import Reviews from "./components/reviews";
 
 class App extends Component {
   state = { isLoggedIn: false, user: {}, alerts: {}, users: [] };
@@ -41,7 +42,7 @@ class App extends Component {
     })
       .then(res => {
         let alerts = { ...this.state.alerts };
-        alerts.sign_out = "You have successfully signed out!";
+        alerts.sign_out = "You are successfully signed out!";
         this.setState({ user: {}, isLoggedIn: false, alerts: alerts });
       })
       .catch(errors => {
@@ -91,8 +92,10 @@ class App extends Component {
               {this.state.alerts.sign_out}
             </div>
           )}
+
           <Switch>
             <Route path="/books/:id/author" component={Author} />
+            <Route path="/books/:id/reviews" component={Reviews} />
             <Route path="/books/:id" component={Book} />
             <Route
               path="/login"
@@ -108,10 +111,17 @@ class App extends Component {
               )}
             />
             <Route path="/signed_up" component={ConfirmEmail} />
-            <Route path="/books" component={Books} />
+            <Route
+              path="/books"
+              render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
+            />
             <Route path="/users/confirmation" component={Books} />
             <Route path="/not-found" component={NotFound} />
-            <Route path="/" exact component={Books} />
+            <Route
+              path="/"
+              exact
+              render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
+            />
             <Redirect to="/not-found" />
           </Switch>
         </div>

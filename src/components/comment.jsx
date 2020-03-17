@@ -41,7 +41,7 @@ function MyModal(params) {
 
   return (
     <div>
-      <Button variant="primary" size="sm" onClick={handleShow}>
+      <Button variant="outline-primary" size="sm" onClick={handleShow}>
         Reply
       </Button>
 
@@ -88,7 +88,7 @@ class Comment extends Component {
           <img
             src="http://localhost:3001/assets/missing.png"
             alt="avatar"
-            style={{ height: 59, width: 59 }}
+            style={{ height: 59, width: 59, margin: 10 }}
           />
           {this.state.user} says
         </h3>

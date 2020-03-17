@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import SearchBox from "./searchBox";
+import { Button } from "react-bootstrap";
 
 class Books extends Component {
   state = {
@@ -47,13 +48,27 @@ class Books extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="jumbotron">
-          <h1> Your Favourite Books Reviewed!</h1>
-          <p>
-            IBDB is international books review site, here you can find books of
-            all genres and authors and give those books a review very easily.
-          </p>
-        </div>
+        {!this.props.isLoggedIn && (
+          <div className="jumbotron" style={{ paddingBottom: 20 }}>
+            <h1> Your Favourite Books Reviewed!</h1>
+            <p>
+              IBDB is international books review site, here you can find books
+              of all genres and authors and give those books a review very
+              easily.
+            </p>
+            <p style={{ paddingTop: 10 }}>
+              <Link to="/signup">
+                <Button>Sign up to write a review</Button>
+              </Link>
+            </p>
+
+            <p>
+              <Link to="/login">
+                <Button>Sign in</Button>
+              </Link>
+            </p>
+          </div>
+        )}
         <SearchBox
           value={this.state.searchQuery}
           onChange={this.handleSearch}

@@ -96,6 +96,7 @@ class SignUp extends Component {
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
+              autoComplete="off"
               autoFocus
               value={account.email}
               onChange={this.handleInput}

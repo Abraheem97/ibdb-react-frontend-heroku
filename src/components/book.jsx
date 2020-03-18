@@ -195,29 +195,42 @@ function ReviewModal(params) {
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Tell us about the book</Modal.Title>
+          <Modal.Title style={{ paddingLeft: 118 }}>
+            Tell us about the book
+          </Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleSubmit}>
-          <StarRatings
-            rating={Rating}
-            starRatedColor="gold"
-            changeRating={changeRating}
-            numberOfStars={5}
-            name="rating"
-            starDimension="35px"
-            starSpacing="5px"
-            starEmptyColor="lightblue"
-            starHoverColor="gold"
-          />
-          <Form.Group controlId="body">
-            <Form.Control autoFocus type="text" name="Reply" required />
-          </Form.Group>
-          <Form.Group>
-            <Button variant="primary" type="submit">
-              Add review
-            </Button>
-          </Form.Group>
-        </Form>
+        <Modal.Body style={{ textAlign: "center" }}>
+          <div>
+            <StarRatings
+              rating={Rating}
+              starRatedColor="gold"
+              changeRating={changeRating}
+              numberOfStars={5}
+              name="rating"
+              starDimension="35px"
+              starSpacing="5px"
+              starEmptyColor="lightblue"
+              starHoverColor="gold"
+            />
+          </div>
+          <br></br>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="body">
+              <textarea
+                autoFocus
+                required
+                class="form-control rounded-0"
+                name="Reply"
+                rows="7"
+              ></textarea>
+            </Form.Group>
+            <Form.Group>
+              <Button variant="primary" type="submit">
+                Add review
+              </Button>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
       </Modal>
     </div>
   );

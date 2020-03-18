@@ -89,6 +89,7 @@ class SignIn extends Component {
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
+              autoComplete="off"
               autoFocus
               value={account.username}
               onChange={this.handleInput}

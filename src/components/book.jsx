@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
 import { getBook } from "../Services/bookService";
-
 import { getComments } from "../Services/bookService";
-
 import { getReviews } from "../Services/bookService";
-
 import Comment from "./comment";
 import Review from "./review";
 import CommentForm from "./commentForm";
-import Cookies from "js-cookie";
 
 class Book extends Component {
   state = {
@@ -52,6 +47,7 @@ class Book extends Component {
     });
 
     getReviews(parseInt(this.props.match.params.id)).then(resp => {
+      console.log(resp);
       this.setState({ reviews: resp });
     });
   }
@@ -86,13 +82,17 @@ class Book extends Component {
 
           <div className="col-md-7 col-md-offset-1" style={this.textCenter}>
             <h1>Reviews</h1>
-            {this.state.reviews.map(review => (
+            {this.state.reviews.slice(0, 2).map(review => (
               <Review
+                user_id={review.user_id}
                 key={review.id}
                 rating={review.rating}
                 comment={review.comment}
               />
             ))}
+            {this.state.reviews.length > 2 && (
+              <Link to={`/books/${this.state.id}/reviews`}>Show more</Link>
+            )}
           </div>
         </div>
         <div className="row">

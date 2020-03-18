@@ -23,7 +23,7 @@ class Books extends Component {
   };
 
   componentDidMount() {
-    fetch("http://localhost:3001/books.json")
+    fetch("https://ibdb-rails-backend.herokuapp.com/books.json")
       .then(res => res.json())
       .then(data => {
         this.setState({ books: data });
@@ -86,7 +86,7 @@ class Books extends Component {
                       onClick={this.openBook}
                       className="mimg"
                       style={this.imageStyles}
-                      src={`http://localhost:3001/assets/${book.image_file_name}`}
+                      src={`https://ibdb-rails-backend.herokuapp.com/assets/${book.image_file_name}`}
                       alt="bookcover.jpg"
                     />
                   </Link>

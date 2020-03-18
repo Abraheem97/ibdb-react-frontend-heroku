@@ -16,7 +16,7 @@ class Comment extends Component {
   handleDelete = () => {
     axios({
       method: "delete",
-      url: `http://localhost:3001/books/${this.props.comment.book_id}/comments/${this.props.comment.id}`,
+      url: `https://ibdb-rails-backend.herokuapp.com/books/${this.props.comment.book_id}/comments/${this.props.comment.id}`,
 
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     }).then(res => this.props.handleCommentDelete(res.data));
@@ -41,7 +41,7 @@ class Comment extends Component {
       <React.Fragment>
         <h3>
           <img
-            src="http://localhost:3001/assets/missing.png"
+            src="https://ibdb-rails-backend.herokuapp.com/assets/missing.png"
             alt="avatar"
             style={{ height: 59, width: 59, margin: 10 }}
           />
@@ -112,7 +112,7 @@ function MyModal(params) {
 
     axios({
       method: "post",
-      url: `http://localhost:3001/books/${params.book_id}/comments`,
+      url: `https://ibdb-rails-backend.herokuapp.com/books/${params.book_id}/comments`,
 
       data: {
         comment: {

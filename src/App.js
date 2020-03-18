@@ -34,7 +34,7 @@ class App extends Component {
   handleSignOut = () => {
     axios({
       method: "delete",
-      url: `http://localhost:3001/v1/sessions/${this.state.user.id}`,
+      url: `https://ibdb-rails-backend.herokuapp.com/v1/sessions/${this.state.user.id}`,
       data: {
         id: this.state.user.id
       }

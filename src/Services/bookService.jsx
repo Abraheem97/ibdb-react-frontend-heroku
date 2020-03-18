@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export function getBook(id) {
   return fetch("http://localhost:3001/books.json")
     .then(response => response.json())
@@ -16,8 +18,14 @@ export function getReviews(id) {
     .then(response => response);
 }
 
+// export function getAuthor(id) {
+//   return fetch(`http://localhost:3001/books/${id}/author.json`)
+//     .then(response => response.json())
+//     .then(response => response);
+// }
+
 export function getAuthor(id) {
-  return fetch(`http://localhost:3001/books/${id}/author.json`)
-    .then(response => response.json())
-    .then(response => response);
+  return axios
+    .get(`http://localhost:3001/books/${id}/author.json`)
+    .then(res => res.data);
 }

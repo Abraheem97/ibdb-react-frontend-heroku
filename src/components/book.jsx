@@ -46,20 +46,23 @@ class Book extends Component {
     this.setState({ comments });
   };
 
+  handleCommentDelete = comment => {
+    const comments = this.state.comments.filter(m => m.id !== comment.id);
+
+    this.setState({ comments: comments });
+  };
   handleReviewSubmit = review => {
     const reviews = [review, ...this.state.reviews];
     this.setState({ reviews, currentUserHasReviewedBook: true });
   };
   componentDidMount() {
-    {
-      Boolean(Cookies.get("isLoggedIn")) &&
-        hasReviewedBook(
-          Cookies.get("user_id"),
-          this.props.match.params.id
-        ).then(res => {
+    Boolean(Cookies.get("isLoggedIn")) &&
+      hasReviewedBook(Cookies.get("user_id"), this.props.match.params.id).then(
+        res => {
           this.setState({ currentUserHasReviewedBook: res.data.hasReviewed });
-        });
-    }
+        }
+      );
+
     this.setState({ id: this.props.match.params.id });
     getBook(parseInt(this.props.match.params.id)).then(resp => {
       this.setState({ book: resp });
@@ -111,6 +114,9 @@ class Book extends Component {
 
           <div className="col-md-7 col-md-offset-1" style={this.textCenter}>
             <h1>Reviews</h1>
+            {this.state.reviews.length === 0 && (
+              <h4 style={{ margin: 20 }}>No reviews? Add one!</h4>
+            )}
             {this.state.reviews.slice(0, 2).map(review => (
               <Review
                 user_id={review.user_id}
@@ -145,6 +151,7 @@ class Book extends Component {
               <div key={comment.id} className="jumbotron">
                 <Comment
                   handleResponse={this.handleReplySubmit}
+                  handleCommentDelete={this.handleCommentDelete}
                   book_id={this.state.id}
                   comments={this.state.comments}
                   comment={comment}

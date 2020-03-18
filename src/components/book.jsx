@@ -45,6 +45,11 @@ class Book extends Component {
     const comments = [reply, ...this.state.comments];
     this.setState({ comments });
   };
+
+  handleReviewSubmit = review => {
+    const reviews = [review, ...this.state.reviews];
+    this.setState({ reviews, currentUserHasReviewedBook: true });
+  };
   componentDidMount() {
     {
       Boolean(Cookies.get("isLoggedIn")) &&
@@ -95,7 +100,10 @@ class Book extends Component {
                 </Link>
                 {!this.state.currentUserHasReviewedBook &&
                   Boolean(Cookies.get("isLoggedIn")) && (
-                    <ReviewModal book_id={this.state.id} />
+                    <ReviewModal
+                      handleResponse={this.handleReviewSubmit}
+                      book_id={this.state.id}
+                    />
                   )}
               </div>
             </div>
@@ -119,12 +127,19 @@ class Book extends Component {
         <div className="row">
           <div className="col">
             <div style={this.textCenter}>
-              <h1> Comments</h1>
+              <h1 style={{ marginBottom: 0 }}> Comments</h1>
               <br></br>
-              <CommentForm
-                handleSubmit={this.handleCommentSubmit}
-                book_id={this.state.id}
-              />
+              {Boolean(Cookies.get("isLoggedIn")) && (
+                <CommentForm
+                  handleSubmit={this.handleCommentSubmit}
+                  book_id={this.state.id}
+                />
+              )}
+              {!Boolean(Cookies.get("isLoggedIn")) && (
+                <h4 style={{ marginBottom: 20, marginTop: 0 }}>
+                  You need to <Link to="/login">login</Link> to comment
+                </h4>
+              )}
             </div>
             {parentComments.map(comment => (
               <div key={comment.id} className="jumbotron">
@@ -179,7 +194,7 @@ function ReviewModal(params) {
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     })
-      .then(res => params.handleResponse(res))
+      .then(res => params.handleResponse(res.data))
       .catch(errors => {
         if (errors) {
           console.log(errors);
@@ -219,7 +234,7 @@ function ReviewModal(params) {
               <textarea
                 autoFocus
                 required
-                class="form-control rounded-0"
+                className="form-control rounded-0"
                 name="Reply"
                 rows="7"
               ></textarea>

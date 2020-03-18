@@ -21,11 +21,11 @@ class Review extends Component {
           starRatedColor="gold"
           numberOfStars={5}
           name="rating"
-          starDimension="35px"
+          starDimension="27px"
           starSpacing="5px"
         />
-        <p>{comment}</p>
-        Submitted by {this.state.user}
+        <p style={{ marginTop: 15 }}>{comment}</p>
+        <p> Submitted by {this.state.user}</p>
       </div>
     );
   }

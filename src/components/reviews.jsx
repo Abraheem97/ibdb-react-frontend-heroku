@@ -11,7 +11,8 @@ class Reviews extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="col" style={{ textAlign: "center" }}>
+        <h1 style={{ marginBottom: 50 }}>All Reviews</h1>
         {this.state.reviews.map(review => (
           <Review
             user_id={review.user_id}

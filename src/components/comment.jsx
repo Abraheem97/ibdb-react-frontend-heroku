@@ -6,6 +6,91 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Jumbotron } from "react-bootstrap";
+
+class Comment extends Component {
+  state = {
+    replyBody: "",
+    user: ""
+  };
+  handleDelete = () => {
+    axios({
+      method: "delete",
+      url: `http://localhost:3001/books/${this.props.comment.book_id}/comments/${this.props.comment.id}`,
+
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+    }).then(res => this.props.handleCommentDelete(res.data));
+  };
+
+  componentDidMount() {
+    get_username(this.props.comment.user_id).then(resp => {
+      this.setState({ user: resp.email.substring(0, resp.email.indexOf("@")) });
+    });
+  }
+  handleResponse = res => {
+    this.props.handleResponse(res.data);
+  };
+
+  handleCommentDelete = res => {
+    this.props.handleCommentDelete(res.data);
+  };
+  render() {
+    let comment = this.props.comment;
+
+    return (
+      <React.Fragment>
+        <h3>
+          <img
+            src="http://localhost:3001/assets/missing.png"
+            alt="avatar"
+            style={{ height: 59, width: 59, margin: 10 }}
+          />
+          {this.state.user} says
+        </h3>
+        {comment.body}
+        <p>
+          <TimeAgo date={comment.created_at} />
+        </p>
+        {Cookies.get("isLoggedIn") && (
+          <MyModal
+            parent_id={comment.id}
+            parent_body={comment.body}
+            book_id={this.props.book_id}
+            handleResponse={this.handleResponse}
+          />
+        )}
+
+        {Cookies.get("user_id") == this.props.comment.user_id && (
+          <Button
+            variant="outline-danger"
+            size="sm"
+            onClick={this.handleDelete}
+            style={{ marginLeft: 5 }}
+          >
+            Delete
+          </Button>
+        )}
+        {this.props.replies &&
+          this.props.replies.map(comment => (
+            <div key={comment.id} style={{ paddingLeft: 40, paddingTop: 20 }}>
+              <Comment
+                handleResponse={this.props.handleResponse}
+                handleCommentDelete={this.props.handleCommentDelete}
+                book_id={this.props.book_id}
+                comments={this.props.comments}
+                comment={comment}
+                replies={this.props.comments.filter(
+                  reply => reply.parent_id === comment.id
+                )}
+              />
+            </div>
+          ))}
+      </React.Fragment>
+    );
+  }
+}
+
+export default Comment;
 
 function MyModal(params) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -13,6 +98,13 @@ function MyModal(params) {
     setModalIsOpen(false);
   };
   const handleShow = () => setModalIsOpen(true);
+
+  // const comment_username = () => {
+  //   return get_username(Cookies.get("user_id")).then(res => {
+  //     const username = res.email.substring(0, res.email.indexOf("@"));
+  //     return username;
+  //   });
+  // };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -40,85 +132,40 @@ function MyModal(params) {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Button variant="outline-primary" size="sm" onClick={handleShow}>
         Reply
       </Button>
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Replying to</Modal.Title>
+          <Modal.Title style={{ paddingLeft: 175 }}>Replying to</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{params.parent_body}</Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="body">
-            <Form.Control autoFocus type="text" name="Reply" required />
-          </Form.Group>
-          <Form.Group>
-            <Button variant="primary" type="submit">
-              Reply
-            </Button>
-          </Form.Group>
-        </Form>
+        <Modal.Body style={{ textAlign: "center" }}>
+          <div
+            className="jumbotron"
+            style={{ borderRadius: 6, padding: 2, marginBottom: 20 }}
+          >
+            <p style={{ marginTop: 10 }}> {params.parent_body}</p>
+          </div>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="body">
+              <textarea
+                autoFocus
+                required
+                className="form-control rounded-0"
+                name="Reply"
+                rows="5"
+              ></textarea>
+            </Form.Group>
+            <Form.Group>
+              <Button variant="primary" type="submit">
+                Reply
+              </Button>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
       </Modal>
-    </div>
+    </React.Fragment>
   );
 }
-
-class Comment extends Component {
-  state = {
-    replyBody: "",
-    user: ""
-  };
-
-  componentDidMount() {
-    get_username(this.props.comment.user_id).then(resp => {
-      this.setState({ user: resp.email.substring(0, resp.email.indexOf("@")) });
-    });
-  }
-  handleResponse = res => {
-    this.props.handleResponse(res.data);
-  };
-  render() {
-    let comment = this.props.comment;
-
-    return (
-      <React.Fragment>
-        <h3>
-          <img
-            src="http://localhost:3001/assets/missing.png"
-            alt="avatar"
-            style={{ height: 59, width: 59, margin: 10 }}
-          />
-          {this.state.user} says
-        </h3>
-        {comment.body}
-        <p>
-          <TimeAgo date={comment.created_at} />
-        </p>
-        <MyModal
-          parent_id={comment.id}
-          parent_body={comment.body}
-          book_id={this.props.book_id}
-          handleResponse={this.handleResponse}
-        />
-        {this.props.replies &&
-          this.props.replies.map(comment => (
-            <div key={comment.id} style={{ paddingLeft: 40, paddingTop: 20 }}>
-              <Comment
-                handleResponse={this.props.handleResponse}
-                book_id={this.props.book_id}
-                comments={this.props.comments}
-                comment={comment}
-                replies={this.props.comments.filter(
-                  reply => reply.parent_id === comment.id
-                )}
-              />
-            </div>
-          ))}
-      </React.Fragment>
-    );
-  }
-}
-
-export default Comment;

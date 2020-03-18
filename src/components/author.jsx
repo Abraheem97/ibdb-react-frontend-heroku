@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { getAuthor } from "../Services/bookService";
+import { Link } from "react-router-dom";
+
+import { getAuthorBooks } from "../Services/authorService";
 
 class Author extends Component {
-  state = { author: {} };
+  state = { author: {}, books: [] };
   imageStyles = {
     width: 250,
     height: 300,
@@ -17,9 +20,12 @@ class Author extends Component {
 
   componentDidMount() {
     getAuthor(parseInt(this.props.match.params.id)).then(resp => {
+      getAuthorBooks(resp.id).then(res => this.setState({ books: res }));
       this.setState({ author: resp });
+      console.log(this.state.author.id);
     });
   }
+
   render() {
     const { author } = this.state;
     return (
@@ -39,6 +45,29 @@ class Author extends Component {
             <h1 style={this.textCenter}>Description </h1>
             <div className="jumbotron">{author.description}</div>
           </div>
+        </div>
+        <h4 style={this.textCenter}>All Books from this author</h4>
+        <div className="row align-items-start">
+          {this.state.books.map(book => (
+            <div key={book.id} className="col-sm-6 col-md-4 p-3">
+              <div style={this.textCenter}>
+                <h5>
+                  <Link to={`/books/${book.id}`}>{book.title}</Link>
+                </h5>
+                <div className="caption">
+                  <Link to={`/books/${book.id}`}>
+                    <img
+                      onClick={this.openBook}
+                      className="mimg"
+                      style={this.imageStyles}
+                      src={`http://localhost:3001/assets/${book.image_file_name}`}
+                      alt="bookcover.jpg"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </React.Fragment>
     );

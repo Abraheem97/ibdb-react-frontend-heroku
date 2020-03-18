@@ -15,6 +15,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { get_username } from "./Services/userService";
 import Reviews from "./components/reviews";
+import { hasReviewedBook } from "./Services/userService";
 
 class App extends Component {
   state = { isLoggedIn: false, user: {}, alerts: {}, users: [] };

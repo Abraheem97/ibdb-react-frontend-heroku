@@ -15,3 +15,9 @@ export function get_username(id) {
     .get(`http://localhost:3001/v1/${id}/user.json`)
     .then(res => res.data);
 }
+
+export function hasReviewedBook(user_id, book_id) {
+  return axios
+    .get(`http://localhost:3001/v1/${user_id}/${book_id}/bookreviewed.json`)
+    .then(res => res);
+}

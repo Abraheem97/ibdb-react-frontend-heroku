@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import { getBook } from "../Services/bookService";
 import { getComments } from "../Services/bookService";
@@ -6,13 +6,21 @@ import { getReviews } from "../Services/bookService";
 import Comment from "./comment";
 import Review from "./review";
 import CommentForm from "./commentForm";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
+import Cookies from "js-cookie";
+import StarRatings from "react-star-ratings";
+import { hasReviewedBook } from "../Services/userService";
 
 class Book extends Component {
   state = {
     book: {},
     id: {},
     comments: [],
-    reviews: []
+    reviews: [],
+    currentUserHasReviewedBook: {}
   };
 
   imageStyles = {
@@ -20,7 +28,8 @@ class Book extends Component {
     height: 300,
     alignItems: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
+    margin: 5
   };
 
   textCenter = {
@@ -37,6 +46,15 @@ class Book extends Component {
     this.setState({ comments });
   };
   componentDidMount() {
+    {
+      Boolean(Cookies.get("isLoggedIn")) &&
+        hasReviewedBook(
+          Cookies.get("user_id"),
+          this.props.match.params.id
+        ).then(res => {
+          this.setState({ currentUserHasReviewedBook: res.data.hasReviewed });
+        });
+    }
     this.setState({ id: this.props.match.params.id });
     getBook(parseInt(this.props.match.params.id)).then(resp => {
       this.setState({ book: resp });
@@ -47,7 +65,6 @@ class Book extends Component {
     });
 
     getReviews(parseInt(this.props.match.params.id)).then(resp => {
-      console.log(resp);
       this.setState({ reviews: resp });
     });
   }
@@ -76,6 +93,10 @@ class Book extends Component {
                 <Link to={`/books/${this.state.book.id}/author`}>
                   By {this.state.book.author_name}
                 </Link>
+                {!this.state.currentUserHasReviewedBook &&
+                  Boolean(Cookies.get("isLoggedIn")) && (
+                    <ReviewModal book_id={this.state.id} />
+                  )}
               </div>
             </div>
           </div>
@@ -126,3 +147,78 @@ class Book extends Component {
 }
 
 export default Book;
+
+function ReviewModal(params) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [Rating, setRating] = useState(1);
+
+  const handleClose = () => {
+    setModalIsOpen(false);
+  };
+
+  const changeRating = newRating => {
+    setRating(newRating);
+  };
+  const handleShow = () => setModalIsOpen(true);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    handleClose();
+
+    axios({
+      method: "post",
+      url: `http://localhost:3001/books/${params.book_id}/reviews`,
+
+      data: {
+        review: {
+          user_id: Cookies.get("user_id"),
+          comment: e.target.Reply.value,
+          rating: Rating
+        }
+      },
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+    })
+      .then(res => params.handleResponse(res))
+      .catch(errors => {
+        if (errors) {
+          console.log(errors);
+        }
+      });
+  };
+
+  return (
+    <div>
+      <Button size="sm" onClick={handleShow} style={{ margin: 5 }}>
+        Add a review
+      </Button>
+
+      <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Tell us about the book</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={handleSubmit}>
+          <StarRatings
+            rating={Rating}
+            starRatedColor="gold"
+            changeRating={changeRating}
+            numberOfStars={5}
+            name="rating"
+            starDimension="35px"
+            starSpacing="5px"
+            starEmptyColor="lightblue"
+            starHoverColor="gold"
+          />
+          <Form.Group controlId="body">
+            <Form.Control autoFocus type="text" name="Reply" required />
+          </Form.Group>
+          <Form.Group>
+            <Button variant="primary" type="submit">
+              Add review
+            </Button>
+          </Form.Group>
+        </Form>
+      </Modal>
+    </div>
+  );
+}

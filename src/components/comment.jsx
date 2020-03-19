@@ -41,7 +41,7 @@ class Comment extends Component {
       <React.Fragment>
         <h3>
           <img
-            src={`${process.env.REACT_APP_API_URL}/assets/missing.png`}
+            src="https://styleguide.europeana.eu/images/fpo_avatar.png"
             alt="avatar"
             style={{ height: 59, width: 59, margin: 10 }}
           />

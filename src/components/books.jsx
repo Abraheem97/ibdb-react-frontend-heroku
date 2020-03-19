@@ -8,7 +8,8 @@ import { Button } from "react-bootstrap";
 class Books extends Component {
   state = {
     books: [],
-    searchQuery: ""
+    searchQuery: "",
+    imageUrl: "https://picsum.photos/250/300"
   };
 
   imageStyles = {
@@ -86,7 +87,8 @@ class Books extends Component {
                       onClick={this.openBook}
                       className="mimg"
                       style={this.imageStyles}
-                      src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
+                      src="https://damonza.com/wp-content/uploads/portfolio/nonfiction/Set%20For%20Life%202.jpg"
+                      // src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
                       alt="bookcover.jpg"
                     />
                   </Link>

@@ -20,7 +20,8 @@ class Book extends Component {
     id: {},
     comments: [],
     reviews: [],
-    currentUserHasReviewedBook: {}
+    currentUserHasReviewedBook: {},
+    imageUrl: "https://picsum.photos/250/300"
   };
 
   imageStyles = {
@@ -94,7 +95,8 @@ class Book extends Component {
                 <div>
                   <img
                     style={this.imageStyles}
-                    src={`${process.env.REACT_APP_API_URL}/assets/${this.state.book.image_file_name}`}
+                    src="https://damonza.com/wp-content/uploads/portfolio/nonfiction/Set%20For%20Life%202.jpg"
+                    // src={`${process.env.REACT_APP_API_URL}/assets/${this.state.book.image_file_name}`}
                     alt="bookcover.jpg"
                   />
                 </div>

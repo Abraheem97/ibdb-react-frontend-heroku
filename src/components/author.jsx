@@ -36,7 +36,7 @@ class Author extends Component {
               <h4>{author.name}</h4>
               <img
                 style={this.imageStyles}
-                src={`${process.env.REACT_APP_API_URL}/assets/${author.image_file_name}`}
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR1h2eGaVPEi-Q43WW5U2Hik2u4siY0hY-CnZBNg9dHZU1fFBEq"
                 alt="Author_Headshot"
               />
             </div>
@@ -60,7 +60,8 @@ class Author extends Component {
                       onClick={this.openBook}
                       className="mimg"
                       style={this.imageStyles}
-                      src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
+                      src="https://damonza.com/wp-content/uploads/portfolio/nonfiction/Set%20For%20Life%202.jpg"
+                      // src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
                       alt="bookcover.jpg"
                     />
                   </Link>

@@ -38,12 +38,10 @@ class Books extends Component {
   getSearch = () => {
     const { books, searchQuery } = this.state;
 
-    let filtered = books;
-    if (searchQuery)
-      filtered = books.filter(b =>
-        b.title.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-    return filtered;
+    let filteredBooks = books.filter(book => {
+      return book.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
+    });
+    return filteredBooks;
   };
 
   render() {

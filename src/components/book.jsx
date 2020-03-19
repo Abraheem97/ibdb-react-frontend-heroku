@@ -94,7 +94,7 @@ class Book extends Component {
                 <div>
                   <img
                     style={this.imageStyles}
-                    src={`https://ibdb-rails-backend.herokuapp.com/assets/${this.state.book.image_file_name}`}
+                    src={`${process.env.REACT_APP_API_URL}/assets/${this.state.book.image_file_name}`}
                     alt="bookcover.jpg"
                   />
                 </div>
@@ -190,7 +190,7 @@ function ReviewModal(params) {
 
     axios({
       method: "post",
-      url: `https://ibdb-rails-backend.herokuapp.com/books/${params.book_id}/reviews`,
+      url: `${process.env.REACT_APP_API_URL}/books/${params.book_id}/reviews`,
 
       data: {
         review: {

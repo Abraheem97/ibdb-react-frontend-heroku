@@ -16,7 +16,7 @@ class CommentForm extends Component {
 
     axios({
       method: "post",
-      url: `https://ibdb-rails-backend.herokuapp.com/books/${this.props.book_id}/comments`,
+      url: `${process.env.REACT_APP_API_URL}/books/${this.props.book_id}/comments`,
 
       data: {
         comment: {

@@ -36,7 +36,7 @@ class Author extends Component {
               <h4>{author.name}</h4>
               <img
                 style={this.imageStyles}
-                src={`https://ibdb-rails-backend.herokuapp.com/assets/${author.image_file_name}`}
+                src={`${process.env.REACT_APP_API_URL}/assets/${author.image_file_name}`}
                 alt="Author_Headshot"
               />
             </div>
@@ -60,7 +60,7 @@ class Author extends Component {
                       onClick={this.openBook}
                       className="mimg"
                       style={this.imageStyles}
-                      src={`https://ibdb-rails-backend.herokuapp.com/assets/${book.image_file_name}`}
+                      src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
                       alt="bookcover.jpg"
                     />
                   </Link>

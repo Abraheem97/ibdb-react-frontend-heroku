@@ -64,7 +64,7 @@ class SignUp extends Component {
     this.refs.btn.setAttribute("disabled", "disabled");
     axios({
       method: "post",
-      url: "https://ibdb-rails-backend.herokuapp.com/users.json",
+      url: `${process.env.REACT_APP_API_URL}/users.json`,
       data: {
         user: {
           email: this.state.account.email,

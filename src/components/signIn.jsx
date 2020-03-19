@@ -42,7 +42,7 @@ class SignIn extends Component {
 
     axios({
       method: "post",
-      url: "https://ibdb-rails-backend.herokuapp.com/v1/sessions",
+      url: `${process.env.REACT_APP_API_URL}/v1/sessions`,
       data: {
         email: this.state.account.username,
         password: this.state.account.password

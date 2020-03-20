@@ -34,6 +34,18 @@ class Comment extends Component {
   handleCommentDelete = res => {
     this.props.handleCommentDelete(res.data);
   };
+
+  canDeleteComment() {
+    let canDelete = false;
+    if (
+      Cookies.get("user_id") == this.props.comment.user_id ||
+      Cookies.get("user_id") == 1
+    )
+      canDelete = true;
+    else canDelete = false;
+
+    return canDelete;
+  }
   render() {
     let comment = this.props.comment;
 
@@ -60,7 +72,7 @@ class Comment extends Component {
           />
         )}
 
-        {Cookies.get("user_id") == this.props.comment.user_id && (
+        {this.canDeleteComment() && (
           <Button
             variant="outline-danger"
             size="sm"

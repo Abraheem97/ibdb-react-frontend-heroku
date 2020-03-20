@@ -23,6 +23,17 @@ class Review extends Component {
       this.setState({ user: resp.email.substring(0, resp.email.indexOf("@")) });
     });
   }
+  canDeleteReview() {
+    let canDelete = false;
+    if (
+      Cookies.get("user_id") == this.props.review.user_id ||
+      Cookies.get("user_id") == 1
+    )
+      canDelete = true;
+    else canDelete = false;
+
+    return canDelete;
+  }
 
   handleDelete = () => {
     axios({
@@ -39,7 +50,7 @@ class Review extends Component {
         className="jumbotron"
         style={{ borderRadius: 6, padding: 2, marginBottom: 20 }}
       >
-        {Cookies.get("user_id") == this.props.review.user_id && (
+        {this.canDeleteReview() && (
           <Button
             variant="outline-danger"
             size="sm"

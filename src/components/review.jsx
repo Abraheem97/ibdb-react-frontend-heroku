@@ -27,7 +27,7 @@ class Review extends Component {
     let canDelete = false;
     if (
       Cookies.get("user_id") == this.props.review.user_id ||
-      Cookies.get("user_id") == 1
+      Cookies.get("user_role") != "4"
     )
       canDelete = true;
     else canDelete = false;

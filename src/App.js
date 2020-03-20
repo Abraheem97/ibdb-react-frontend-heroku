@@ -15,10 +15,23 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Reviews from "./components/reviews";
 
+// USER ROLES
+
+// USER - 1 superadmin
+// USER - 2 admin_role
+// USER - 3 moderator_role
+// USER - 4 USER
+
 class App extends Component {
   state = { isLoggedIn: false, user: {}, alerts: {}, users: [] };
 
   handleSignIn = user => {
+    if (!user.superadmin && !user.admin_role && !user.moderator_role)
+      Cookies.set("user_role", "4");
+    if (user.moderator_role) Cookies.set("user_role", "3");
+    if (user.admin_role) Cookies.set("user_role", "2");
+    if (user.superadmin) Cookies.set("user_role", "1");
+
     this.setState({ user, isLoggedIn: true, alerts: {} });
     Cookies.set("isLoggedIn", true);
     Cookies.set("user_email", user.email);

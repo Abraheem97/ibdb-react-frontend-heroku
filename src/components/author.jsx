@@ -22,7 +22,6 @@ class Author extends Component {
     getAuthor(parseInt(this.props.match.params.id)).then(resp => {
       getAuthorBooks(resp.id).then(res => this.setState({ books: res }));
       this.setState({ author: resp });
-      console.log(this.state.author.id);
     });
   }
 

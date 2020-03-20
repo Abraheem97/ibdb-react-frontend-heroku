@@ -56,6 +56,10 @@ class Book extends Component {
     const reviews = [review, ...this.state.reviews];
     this.setState({ reviews, currentUserHasReviewedBook: true });
   };
+  handleReviewDelete = review => {
+    const reviews = this.state.reviews.filter(m => m.id !== review.id);
+    this.setState({ reviews: reviews, currentUserHasReviewedBook: false });
+  };
   componentDidMount() {
     Boolean(Cookies.get("isLoggedIn")) &&
       hasReviewedBook(Cookies.get("user_id"), this.props.match.params.id).then(
@@ -121,10 +125,9 @@ class Book extends Component {
             )}
             {this.state.reviews.slice(0, 2).map(review => (
               <Review
-                user_id={review.user_id}
                 key={review.id}
-                rating={review.rating}
-                comment={review.comment}
+                handleReviewDelete={this.handleReviewDelete}
+                review={review}
               />
             ))}
             {this.state.reviews.length > 2 && (

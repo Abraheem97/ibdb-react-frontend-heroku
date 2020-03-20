@@ -9,16 +9,20 @@ class Reviews extends Component {
       this.setState({ reviews: resp });
     });
   }
+  handleReviewDelete = review => {
+    const reviews = this.state.reviews.filter(m => m.id !== review.id);
+
+    this.setState({ reviews });
+  };
   render() {
     return (
       <div className="col" style={{ textAlign: "center" }}>
         <h1 style={{ marginBottom: 50 }}>All Reviews</h1>
         {this.state.reviews.map(review => (
           <Review
-            user_id={review.user_id}
             key={review.id}
-            rating={review.rating}
-            comment={review.comment}
+            handleReviewDelete={this.handleReviewDelete}
+            review={review}
           />
         ))}
       </div>

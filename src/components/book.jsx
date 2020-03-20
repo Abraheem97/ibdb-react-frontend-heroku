@@ -82,6 +82,14 @@ class Book extends Component {
     });
   }
 
+  handleBookDelete = () => {
+    axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_API_URL}/books/${this.state.id}`,
+
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+    }).then(this.props.history.push("/"));
+  };
   openBook = () => {};
   openBook = () => {};
   render() {
@@ -115,6 +123,16 @@ class Book extends Component {
                     />
                   )}
               </div>
+              {Cookies.get("user_role") == 1 && (
+                <Button
+                  variant="danger"
+                  onClick={this.handleBookDelete}
+                  size="sm"
+                  style={{ marginLeft: 5, marginTop: 4 }}
+                >
+                  Delete
+                </Button>
+              )}
             </div>
           </div>
 

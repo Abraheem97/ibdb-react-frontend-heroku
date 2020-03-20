@@ -14,6 +14,7 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Reviews from "./components/reviews";
+import AddBook from "./components/addBook";
 
 // USER ROLES
 
@@ -123,6 +124,7 @@ class App extends Component {
               )}
             />
             <Route path="/signed_up" component={ConfirmEmail} />
+            <Route path="/add_book" component={AddBook} />
             <Route
               path="/books"
               render={() => <Books isLoggedIn={this.state.isLoggedIn} />}

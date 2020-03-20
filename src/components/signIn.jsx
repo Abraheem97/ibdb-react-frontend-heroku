@@ -76,7 +76,6 @@ class SignIn extends Component {
     // }).done(function(data) {});
   };
 
-  componentDidMount() {}
   render() {
     const { account } = this.state;
     return (

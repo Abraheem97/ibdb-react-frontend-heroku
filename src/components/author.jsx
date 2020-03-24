@@ -35,7 +35,7 @@ class Author extends Component {
               <h4>{author.name}</h4>
               <img
                 style={this.imageStyles}
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR1h2eGaVPEi-Q43WW5U2Hik2u4siY0hY-CnZBNg9dHZU1fFBEq"
+                src={author.image_url}
                 alt="Author_Headshot"
               />
             </div>

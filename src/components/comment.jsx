@@ -11,7 +11,8 @@ import { Jumbotron } from "react-bootstrap";
 class Comment extends Component {
   state = {
     replyBody: "",
-    user: ""
+    user: "",
+    avatar: ""
   };
   handleDelete = () => {
     axios({
@@ -24,7 +25,11 @@ class Comment extends Component {
 
   componentDidMount() {
     get_username(this.props.comment.user_id).then(resp => {
-      this.setState({ user: resp.email.substring(0, resp.email.indexOf("@")) });
+      console.log(resp);
+      this.setState({
+        user: resp.email.substring(0, resp.email.indexOf("@")),
+        avatar: resp.image_url
+      });
     });
   }
   handleResponse = res => {
@@ -53,7 +58,7 @@ class Comment extends Component {
       <React.Fragment>
         <h3>
           <img
-            src="https://styleguide.europeana.eu/images/fpo_avatar.png"
+            src={this.state.avatar}
             alt="avatar"
             style={{ height: 59, width: 59, margin: 10 }}
           />

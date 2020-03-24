@@ -88,7 +88,7 @@ class Book extends Component {
       url: `${process.env.REACT_APP_API_URL}/books/${this.state.id}`,
 
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
-    }).then(this.props.history.push("/"));
+    }).then(this.props.history.push("/not-found"));
   };
   openBook = () => {};
   openBook = () => {};
@@ -107,7 +107,7 @@ class Book extends Component {
                 <div>
                   <img
                     style={this.imageStyles}
-                    src="https://damonza.com/wp-content/uploads/portfolio/nonfiction/Set%20For%20Life%202.jpg"
+                    src={this.state.book.image_url}
                     // src={`${process.env.REACT_APP_API_URL}/assets/${this.state.book.image_file_name}`}
                     alt="bookcover.jpg"
                   />

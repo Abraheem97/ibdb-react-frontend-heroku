@@ -6,7 +6,7 @@ import { getAuthorNames } from "../Services/authorService";
 
 class AddBook extends Component {
   state = {
-    book: { title: "", author_name: "" },
+    book: { title: "", author_name: "", selectedFile: null },
     errors: {},
     authors: []
   };
@@ -16,6 +16,10 @@ class AddBook extends Component {
       if (input.value.trim() === "") return "Title is required.";
     }
   };
+  componentWillMount() {
+    if (Cookies.get("user_role") == 4 || !Cookies.get("user_role"))
+      this.props.history.push("/not-found");
+  }
 
   handleInput = e => {
     const errors = { ...this.state.errors };
@@ -54,12 +58,31 @@ class AddBook extends Component {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
-  handleSubmit = e => {
+  fileSelectHandler = e => {
+    const book = { ...this.state.book };
+    book.selectedFile = e.target.files[0];
+    this.setState({ book });
+  };
+
+  handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state);
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
+
+    const data = new FormData();
+    data.append("file", this.state.book.selectedFile);
+    data.append("upload_preset", "st2nr1uo");
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+      {
+        method: "POST",
+        body: data
+      }
+    );
+
+    const file = await res.json();
 
     axios({
       method: "post",
@@ -67,7 +90,8 @@ class AddBook extends Component {
       data: {
         title: this.state.book.title,
         author_name: this.state.book.author_name,
-        user_id: Cookies.get("user_id")
+        user_id: Cookies.get("user_id"),
+        image_url: file.url
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     })
@@ -120,6 +144,18 @@ class AddBook extends Component {
                 {this.state.errors.author_name}
               </div>
             )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="image">
+              Add book cover <br></br>
+              <input
+                id="book_cover"
+                type="file"
+                name="image"
+                onChange={this.fileSelectHandler}
+              />
+            </label>
           </div>
           <button ref="btn" className="btn btn-primary">
             Submit book

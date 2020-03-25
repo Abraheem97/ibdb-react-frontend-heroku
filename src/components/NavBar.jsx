@@ -17,11 +17,13 @@ class NavBar extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                {this.props.signed_in && Cookies.get("user_role") == 3 && (
-                  <NavLink className="nav-item nav-link" to="/add_book">
-                    Add a book
-                  </NavLink>
-                )}
+                {this.props.signed_in &&
+                  Cookies.get("user_role") != 4 &&
+                  Cookies.get("user_role") && (
+                    <NavLink className="nav-item nav-link" to="/add_book">
+                      Add a book
+                    </NavLink>
+                  )}
               </Nav>
               <Nav className="ml-auto">
                 {!this.props.signed_in && (
@@ -35,10 +37,19 @@ class NavBar extends Component {
                     Sign up
                   </NavLink>
                 )}
-
+                {Cookies.get("user_role") == 1 && (
+                  <Navbar className="nav-link disabled">SUPER ADMIN</Navbar>
+                )}
+                {Cookies.get("user_role") == 2 && (
+                  <Navbar className="nav-link disabled">ADMIN</Navbar>
+                )}
+                {Cookies.get("user_role") == 3 && (
+                  <Navbar className="nav-link disabled">MODERATOR</Navbar>
+                )}
                 {this.props.signed_in && (
                   <Navbar>{this.props.user.email}</Navbar>
                 )}
+
                 {this.props.signed_in && (
                   <NavLink
                     className="nav-item nav-link"

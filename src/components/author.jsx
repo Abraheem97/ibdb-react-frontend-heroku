@@ -7,8 +7,8 @@ import { getAuthorBooks } from "../Services/authorService";
 class Author extends Component {
   state = { author: {}, books: [] };
   imageStyles = {
-    width: 250,
-    height: 300,
+    width: 300,
+    height: 340,
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center"
@@ -32,7 +32,8 @@ class Author extends Component {
         <div className="row">
           <div className="col-sm-7 col-md-4" style={this.textCenter}>
             <div className="caption">
-              <h4>{author.name}</h4>
+              <br></br>
+              <h3>{author.name}</h3>
               <img
                 style={this.imageStyles}
                 src={author.image_url}

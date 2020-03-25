@@ -90,54 +90,55 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="myClass">
         <NavBar
           user={this.state.user}
           handleSignOut={this.handleSignOut}
           signed_in={this.state.isLoggedIn}
         />
+        <div>
+          <br></br>
 
-        <br></br>
+          <div className="container">
+            {this.state.alerts.sign_out && (
+              <div className="alert alert-warning alert-dismissible fade show">
+                {this.state.alerts.sign_out}
+              </div>
+            )}
 
-        <div className="container">
-          {this.state.alerts.sign_out && (
-            <div className="alert alert-warning alert-dismissible fade show">
-              {this.state.alerts.sign_out}
-            </div>
-          )}
-
-          <Switch>
-            <Route path="/books/:id/author" component={Author} />
-            <Route path="/books/:id/reviews" component={Reviews} />
-            <Route path="/books/:id" component={Book} />
-            <Route
-              path="/login"
-              render={() => <SignIn handleSignIn={this.handleSignIn} />}
-            />
-            <Route
-              path="/signup"
-              render={() => (
-                <SignUp
-                  handleSignUp={this.handleSignUp}
-                  signed_in={this.state.isLoggedIn}
-                />
-              )}
-            />
-            <Route path="/signed_up" component={ConfirmEmail} />
-            <Route path="/add_book" component={AddBook} />
-            <Route
-              path="/books"
-              render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
-            />
-            <Route path="/users/confirmation" component={Books} />
-            <Route path="/not-found" component={NotFound} />
-            <Route
-              path="/"
-              exact
-              render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
-            />
-            <Redirect to="/not-found" />
-          </Switch>
+            <Switch>
+              <Route path="/books/:id/author" component={Author} />
+              <Route path="/books/:id/reviews" component={Reviews} />
+              <Route path="/books/:id" component={Book} />
+              <Route
+                path="/login"
+                render={() => <SignIn handleSignIn={this.handleSignIn} />}
+              />
+              <Route
+                path="/signup"
+                render={() => (
+                  <SignUp
+                    handleSignUp={this.handleSignUp}
+                    signed_in={this.state.isLoggedIn}
+                  />
+                )}
+              />
+              <Route path="/signed_up" component={ConfirmEmail} />
+              <Route path="/add_book" component={AddBook} />
+              <Route
+                path="/books"
+                render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
+              />
+              <Route path="/users/confirmation" component={Books} />
+              <Route path="/not-found" component={NotFound} />
+              <Route
+                path="/"
+                exact
+                render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
+              />
+              <Redirect to="/not-found" />
+            </Switch>
+          </div>
         </div>
       </div>
     );

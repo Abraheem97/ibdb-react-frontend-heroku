@@ -9,12 +9,12 @@ class NavBar extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar bg="light" expand="lg">
+        <Navbar>
           <div className="container">
             <NavLink to="/">
               <Navbar.Brand>IBDB</Navbar.Brand>
             </NavLink>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
                 {this.props.signed_in &&

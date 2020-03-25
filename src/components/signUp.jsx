@@ -4,7 +4,12 @@ import { withRouter } from "react-router-dom";
 
 class SignUp extends Component {
   state = {
-    account: { email: "", password: "", password_confirmation: "" },
+    account: {
+      email: "",
+      password: "",
+      password_confirmation: "",
+      selectedFile: null
+    },
     errors: {}
   };
 
@@ -36,6 +41,12 @@ class SignUp extends Component {
     this.setState({ account, errors });
   };
 
+  fileSelectHandler = e => {
+    const account = { ...this.state.account };
+    account.selectedFile = e.target.files[0];
+    this.setState({ account });
+  };
+
   validate = () => {
     const errors = {};
 
@@ -53,15 +64,30 @@ class SignUp extends Component {
       errors.password_confirmation = "Password confirmation required.";
     return Object.keys(errors).length === 0 ? null : errors;
   };
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     const errors = this.validate();
+    console.log(this.state.account.selectedFile);
 
     this.setState({ errors: errors || {} });
 
     if (errors) return;
 
     this.refs.btn.setAttribute("disabled", "disabled");
+
+    const data = new FormData();
+    data.append("file", this.state.account.selectedFile);
+    data.append("upload_preset", "st2nr1uo");
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+      {
+        method: "POST",
+        body: data
+      }
+    );
+
+    const file = await res.json();
+
     axios({
       method: "post",
       url: `${process.env.REACT_APP_API_URL}/users.json`,
@@ -69,7 +95,8 @@ class SignUp extends Component {
         user: {
           email: this.state.account.email,
           password: this.state.account.password,
-          password_confirmation: this.state.account.password_confirmation
+          password_confirmation: this.state.account.password_confirmation,
+          image_url: file.url
         }
       }
     }).then(res => {
@@ -142,6 +169,17 @@ class SignUp extends Component {
                 {this.state.errors.password_confirmation}
               </div>
             )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="image">
+              Upload avatar <br></br>
+              <input
+                id="user_avatar"
+                type="file"
+                name="image"
+                onChange={this.fileSelectHandler}
+              />
+            </label>
           </div>
           <button ref="btn" className="btn btn-primary">
             Sign Up

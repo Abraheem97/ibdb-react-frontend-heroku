@@ -8,15 +8,16 @@ import axios from "axios";
 class Review extends Component {
   state = { user: "" };
   buttonStyles = {
-    lineHeight: 1,
-    width: 25,
-    fontSize: 10,
+    lineHeight: 0,
+    width: 15,
+    fontSize: 5,
     fonFamily: "tahoma",
     marginTop: 5,
     marginBottom: 0,
     marginRight: 2,
     position: "absolute",
-    right: 20
+    right: 20,
+    paddingLeft: 0
   };
   componentDidMount() {
     get_username(this.props.review.user_id).then(resp => {
@@ -47,8 +48,13 @@ class Review extends Component {
   render() {
     return (
       <div
-        className="jumbotron"
-        style={{ borderRadius: 6, padding: 2, marginBottom: 20 }}
+        className="box container"
+        style={{
+          borderRadius: 6,
+          padding: 2,
+          marginBottom: 20,
+          boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)"
+        }}
       >
         {this.canDeleteReview() && (
           <Button
@@ -57,7 +63,7 @@ class Review extends Component {
             onClick={this.handleDelete}
             style={this.buttonStyles}
           >
-            X
+            x
           </Button>
         )}
         <StarRatings

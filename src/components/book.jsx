@@ -103,7 +103,7 @@ class Book extends Component {
           <div className="col-sm-6 col-md-4" style={this.textCenter}>
             <div className="thumbnail thumb-box">
               <div className="caption">
-                <h3>{this.state.book.title}</h3>
+                <h1>{this.state.book.title}</h1>
                 <div>
                   <img
                     style={this.imageStyles}
@@ -125,7 +125,7 @@ class Book extends Component {
               </div>
               {Cookies.get("user_role") == 1 && (
                 <Button
-                  variant="danger"
+                  variant="outline-danger"
                   onClick={this.handleBookDelete}
                   size="sm"
                   style={{ marginLeft: 5, marginTop: 4 }}
@@ -138,6 +138,7 @@ class Book extends Component {
 
           <div className="col-md-7 col-md-offset-1" style={this.textCenter}>
             <h1>Reviews</h1>
+            <br />
             {this.state.reviews.length === 0 && (
               <h4 style={{ margin: 20 }}>No reviews? Add one!</h4>
             )}
@@ -153,6 +154,7 @@ class Book extends Component {
             )}
           </div>
         </div>
+
         <div className="row">
           <div className="col">
             <div style={this.textCenter}>
@@ -165,13 +167,21 @@ class Book extends Component {
                 />
               )}
               {!Boolean(Cookies.get("isLoggedIn")) && (
-                <h4 style={{ marginBottom: 20, marginTop: 0 }}>
+                <p style={{ marginBottom: 20, marginTop: 0 }}>
                   You need to <Link to="/login">login</Link> to comment
-                </h4>
+                </p>
               )}
             </div>
             {parentComments.map(comment => (
-              <div key={comment.id} className="jumbotron">
+              <div
+                key={comment.id}
+                className="box container"
+                style={{
+                  borderRadius: 30,
+                  border: "solid 1px",
+                  padding: 50
+                }}
+              >
                 <Comment
                   handleResponse={this.handleReplySubmit}
                   handleCommentDelete={this.handleCommentDelete}
@@ -186,6 +196,14 @@ class Book extends Component {
             ))}
           </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </React.Fragment>
     );
   }
@@ -234,12 +252,12 @@ function ReviewModal(params) {
 
   return (
     <div>
-      <Button size="sm" onClick={handleShow} style={{ margin: 5 }}>
+      <button size="sm" onClick={handleShow} style={{ margin: 5 }}>
         Add a review
-      </Button>
+      </button>
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title style={{ paddingLeft: 118 }}>
             Tell us about the book
           </Modal.Title>
@@ -270,7 +288,7 @@ function ReviewModal(params) {
               ></textarea>
             </Form.Group>
             <Form.Group>
-              <Button variant="primary" type="submit">
+              <Button variant="outline" type="submit">
                 Add review
               </Button>
             </Form.Group>

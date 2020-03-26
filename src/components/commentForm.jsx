@@ -50,20 +50,20 @@ class CommentForm extends Component {
         >
           <div className="form-group">
             <input
+              required
               autoFocus
               value={this.state.body}
               onChange={this.handleInput}
               id="body"
               type="text"
               className="form-control"
+              style={{ background: "#e7e7e7" }}
             />
           </div>
           {this.state.errors.wrong && (
             <div className="alert alert-primary">{this.state.errors.wrong}</div>
           )}
-          <button ref="btn" className="btn btn-primary">
-            Comment
-          </button>
+          <button ref="btn">Comment</button>
         </form>
       </div>
     );

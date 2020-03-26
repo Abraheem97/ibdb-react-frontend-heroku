@@ -119,6 +119,7 @@ class SignUp extends Component {
     return (
       <div>
         <h1>Sign Up</h1>
+        <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -131,6 +132,9 @@ class SignUp extends Component {
               id="email"
               type="text"
               className="form-control"
+              style={{
+                background: "rgb(235, 235, 235) none repeat scroll 0% 0%"
+              }}
             />
             {this.state.errors.email && (
               <div className="alert alert-danger">
@@ -147,6 +151,9 @@ class SignUp extends Component {
               id="password"
               type="password"
               className="form-control"
+              style={{
+                background: "#e8e8e8"
+              }}
             />
             {this.state.errors.password && (
               <div className="alert alert-danger">
@@ -163,6 +170,9 @@ class SignUp extends Component {
               id="password_confirmation"
               type="password"
               className="form-control"
+              style={{
+                background: "rgb(226, 226, 226) none repeat scroll 0% 0%"
+              }}
             />
             {this.state.errors.password_confirmation && (
               <div className="alert alert-danger">
@@ -181,10 +191,20 @@ class SignUp extends Component {
               />
             </label>
           </div>
-          <button ref="btn" className="btn btn-primary">
+          <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
             Sign Up
           </button>{" "}
         </form>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       </div>
     );
   }

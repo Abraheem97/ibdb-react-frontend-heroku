@@ -84,6 +84,7 @@ class SignIn extends Component {
           <div className="alert alert-danger">{this.state.errors.wrong}</div>
         )}
         <h1>Login</h1>
+        <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -96,6 +97,9 @@ class SignIn extends Component {
               id="username"
               type="text"
               className="form-control"
+              style={{
+                background: "rgb(235, 235, 235) none repeat scroll 0% 0%"
+              }}
             />
             {this.state.errors.username && (
               <div className="alert alert-danger">
@@ -112,6 +116,9 @@ class SignIn extends Component {
               id="password"
               type="password"
               className="form-control"
+              style={{
+                background: "rgb(230, 230, 230) none repeat scroll 0% 0%"
+              }}
             />
             {this.state.errors.password && (
               <div className="alert alert-danger">
@@ -119,10 +126,25 @@ class SignIn extends Component {
               </div>
             )}
           </div>
-          <button ref="btn" className="btn btn-primary">
+          <br />
+          <button style={{ display: "block", margin: "0 auto" }} ref="btn">
+            {" "}
             Login
-          </button>{" "}
+          </button>
         </form>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       </div>
     );
   }

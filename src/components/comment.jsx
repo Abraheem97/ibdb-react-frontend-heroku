@@ -53,17 +53,18 @@ class Comment extends Component {
   }
   render() {
     let comment = this.props.comment;
+    let replies = this.props.replies.slice(0, 2);
 
     return (
       <React.Fragment>
-        <h3>
+        <h1>
           <img
             src={this.state.avatar}
             alt="avatar"
             style={{ height: 59, width: 59, margin: 10 }}
           />
           {this.state.user} says
-        </h3>
+        </h1>
         {comment.body}
         <p>
           <TimeAgo date={comment.created_at} />
@@ -79,8 +80,8 @@ class Comment extends Component {
 
         {this.canDeleteComment() && (
           <Button
-            variant="outline-danger"
             size="sm"
+            variant="outline-danger"
             onClick={this.handleDelete}
             style={{ marginLeft: 5 }}
           >
@@ -89,7 +90,7 @@ class Comment extends Component {
         )}
         {this.props.replies &&
           this.props.replies.map(comment => (
-            <div key={comment.id} style={{ paddingLeft: 40, paddingTop: 20 }}>
+            <div key={comment.id} style={{ paddingLeft: 20, paddingTop: 20 }}>
               <Comment
                 handleResponse={this.props.handleResponse}
                 handleCommentDelete={this.props.handleCommentDelete}
@@ -150,13 +151,13 @@ function MyModal(params) {
 
   return (
     <React.Fragment>
-      <Button variant="outline-primary" size="sm" onClick={handleShow}>
+      <Button variant="outline" size="sm" onClick={handleShow}>
         Reply
       </Button>
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title style={{ paddingLeft: 175 }}>Replying to</Modal.Title>
+        <Modal.Header>
+          <Modal.Title>Replying to</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: "center" }}>
           <div
@@ -176,9 +177,9 @@ function MyModal(params) {
               ></textarea>
             </Form.Group>
             <Form.Group>
-              <Button variant="primary" type="submit">
+              <button class="btn sm" type="submit">
                 Reply
-              </Button>
+              </button>
             </Form.Group>
           </Form>
         </Modal.Body>

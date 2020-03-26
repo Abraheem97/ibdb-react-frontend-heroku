@@ -14,6 +14,14 @@ class Author extends Component {
     textAlign: "center"
   };
 
+  booksImageStyles = {
+    width: 250,
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer"
+  };
+
   textCenter = {
     textAlign: "center"
   };
@@ -30,26 +38,36 @@ class Author extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          <div className="col-sm-7 col-md-4" style={this.textCenter}>
-            <div className="caption">
-              <br></br>
-              <h3>{author.name}</h3>
-              <img
-                style={this.imageStyles}
-                src={author.image_url}
-                alt="Author_Headshot"
-              />
+          <div className="col">
+            <div style={this.textCenter}>
+              <div className="caption">
+                <br></br>
+                <h3>{author.name}</h3>
+                <img
+                  style={this.booksImageStyles}
+                  src={author.image_url}
+                  alt="Author_Headshot"
+                />
+              </div>
             </div>
           </div>
-          <div className="col-md-7 col-md-offset-1">
-            <h1 style={this.textCenter}>Description </h1>
-            <div className="jumbotron">{author.description}</div>
+          <div style={{ padding: 40 }} className="col-md-7 col-md-offset-1">
+            <h2 style={this.textCenter}>Description </h2>
+            <div className="box">{author.description}</div>
           </div>
         </div>
-        <h4 style={this.textCenter}>All Books from this author</h4>
+
+        <h4 style={{ textAlign: "center", padding: 50 }}>
+          All Books from this author
+        </h4>
+
         <div className="row align-items-start">
           {this.state.books.map(book => (
-            <div key={book.id} className="col-sm-6 col-md-4 p-3">
+            <div
+              key={book.id}
+              style={{ marginBottom: 40 }}
+              className="col-sm-6 col-md-4"
+            >
               <div style={this.textCenter}>
                 <h5>
                   <Link to={`/books/${book.id}`}>{book.title}</Link>
@@ -59,7 +77,7 @@ class Author extends Component {
                     <img
                       onClick={this.openBook}
                       className="mimg"
-                      style={this.imageStyles}
+                      style={this.booksImageStyles}
                       src={book.image_url}
                       // src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
                       alt="bookcover.jpg"
@@ -70,6 +88,8 @@ class Author extends Component {
             </div>
           ))}
         </div>
+        <br />
+        <br />
       </React.Fragment>
     );
   }

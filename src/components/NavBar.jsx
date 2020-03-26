@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, NavbarBrand } from "react-bootstrap";
 import Cookies from "js-cookie";
 
 class NavBar extends Component {
@@ -9,7 +9,95 @@ class NavBar extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar>
+        <div id="wrapper">
+          <header id="header">
+            <div class="inner">
+              <NavLink to="/" className="logo">
+                <span className="symbol">
+                  <img
+                    src="https://res.cloudinary.com/dbqes9wsk/image/upload/v1585221080/defaults/logo_tkaxhj.svg"
+                    alt=""
+                  />
+                </span>
+                <span className="title">IBDB</span> | The place for books
+              </NavLink>
+              <nav class="navbar navbar-expand-md">
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapsibleNavbar"
+                  aria-controls="collapsibleNavbar"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                  style={{
+                    height: 20,
+                    paddingBottom: 10,
+                    fontSize: 10,
+                    width: 60
+                  }}
+                >
+                  menu
+                </button>
+
+                <div
+                  className="collapse navbar-collapse"
+                  id="collapsibleNavbar"
+                >
+                  <ul className="navbar-nav">
+                    <li>
+                      {Cookies.get("user_role") == 1 && (
+                        <NavbarBrand className="nav-link disabled">
+                          SUPER ADMIN
+                        </NavbarBrand>
+                      )}
+                      {Cookies.get("user_role") == 2 && (
+                        <NavbarBrand className="nav-link disabled">
+                          ADMIN
+                        </NavbarBrand>
+                      )}
+                      {Cookies.get("user_role") == 3 && (
+                        <NavbarBrand className="nav-link disabled">
+                          MODERATOR
+                        </NavbarBrand>
+                      )}
+                    </li>
+                    <li>
+                      {!this.props.signed_in && (
+                        <NavLink className="nav-item nav-link" to="/login">
+                          Sign In
+                        </NavLink>
+                      )}
+                      {this.props.signed_in && (
+                        <NavLink className="nav-item nav-link" to="/">
+                          {this.props.user.email}
+                        </NavLink>
+                      )}
+                    </li>
+                    <li>
+                      {!this.props.signed_in && (
+                        <NavLink className="nav-item nav-link" to="/signup">
+                          Sign up
+                        </NavLink>
+                      )}
+                      {this.props.signed_in && (
+                        <NavLink
+                          className="nav-item nav-link"
+                          to="/"
+                          onClick={this.props.handleSignOut}
+                        >
+                          Sign out
+                        </NavLink>
+                      )}
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </header>
+        </div>
+
+        {/* <Navbar>
           <div className="container">
             <NavLink to="/">
               <Navbar.Brand>IBDB</Navbar.Brand>
@@ -62,7 +150,7 @@ class NavBar extends Component {
               </Nav>
             </Navbar.Collapse>
           </div>
-        </Navbar>
+        </Navbar> */}
       </React.Fragment>
     );
   }

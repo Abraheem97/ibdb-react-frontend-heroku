@@ -4,11 +4,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import SearchBox from "./searchBox";
 import { Button } from "react-bootstrap";
+import $ from "jquery";
 
 class Books extends Component {
   state = {
     books: [],
-    searchQuery: ""
+    searchQuery: "",
+    suggesstions: []
   };
 
   imageStyles = {
@@ -40,6 +42,7 @@ class Books extends Component {
     let filteredBooks = books.filter(book => {
       return book.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
     });
+
     return filteredBooks;
   };
 
@@ -47,7 +50,13 @@ class Books extends Component {
     return (
       <React.Fragment>
         {!this.props.isLoggedIn && (
-          <div className="jumbotron" style={{ paddingBottom: 20 }}>
+          <div
+            className="box container"
+            style={{
+              paddingBottom: 20,
+              boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)"
+            }}
+          >
             <h1> Your Favourite Books Reviewed!</h1>
             <p>
               IBDB is international books review site, here you can find books
@@ -56,28 +65,45 @@ class Books extends Component {
             </p>
             <p style={{ paddingTop: 10 }}>
               <Link to="/signup">
-                <Button>Sign up to write a review</Button>
+                <button>Sign up</button>
               </Link>
             </p>
 
             <p>
               <Link to="/login">
-                <Button>Sign in</Button>
+                <button>Sign in</button>
               </Link>
             </p>
           </div>
         )}
-        <SearchBox
-          value={this.state.searchQuery}
-          onChange={this.handleSearch}
-        />
+        {this.props.isLoggedIn && (
+          <SearchBox
+            value={this.state.searchQuery}
+            onChange={this.handleSearch}
+            color="#ececec"
+            books={this.getSearch()}
+          />
+        )}
+        {!this.props.isLoggedIn && (
+          <SearchBox
+            value={this.state.searchQuery}
+            onChange={this.handleSearch}
+            color="rgb(227, 227, 227) none repeat scroll 0% 0%"
+            books={this.getSearch()}
+          />
+        )}
         <div className="row align-items-start">
           {this.getSearch().map(book => (
-            <div key={book.id} className="col-sm-6 col-md-4 p-3">
+            <div key={book.id} className="col-sm-6 col-md-4">
               <div style={this.textCenter}>
-                <h5>
-                  <Link to={`/books/${book.id}`}>{book.title}</Link>
-                </h5>
+                <p>
+                  <Link
+                    to={`/books/${book.id}`}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    {book.title}
+                  </Link>
+                </p>
                 <div className="caption">
                   <Link to={`/books/${book.id}`}>
                     <img
@@ -96,6 +122,14 @@ class Books extends Component {
             </div>
           ))}
         </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </React.Fragment>
     );
   }

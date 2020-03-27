@@ -64,7 +64,7 @@ class App extends Component {
         alerts.sign_out = "You are successfully signed out!";
 
         this.setState({ user: {}, isLoggedIn: false, alerts: alerts });
-        setInterval(this.handleAlertTimeout, 3000);
+        setInterval(this.handleAlertTimeout, 5000);
       })
       .catch(errors => {
         console.log(errors);

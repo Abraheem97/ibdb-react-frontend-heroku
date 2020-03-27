@@ -132,9 +132,7 @@ class SignUp extends Component {
               id="email"
               type="text"
               className="form-control"
-              style={{
-                background: "rgb(235, 235, 235) none repeat scroll 0% 0%"
-              }}
+              style={{ background: "none" }}
             />
             {this.state.errors.email && (
               <div className="alert alert-danger">
@@ -151,9 +149,7 @@ class SignUp extends Component {
               id="password"
               type="password"
               className="form-control"
-              style={{
-                background: "#e8e8e8"
-              }}
+              style={{ background: "none" }}
             />
             {this.state.errors.password && (
               <div className="alert alert-danger">
@@ -170,9 +166,7 @@ class SignUp extends Component {
               id="password_confirmation"
               type="password"
               className="form-control"
-              style={{
-                background: "rgb(226, 226, 226) none repeat scroll 0% 0%"
-              }}
+              style={{ background: "none" }}
             />
             {this.state.errors.password_confirmation && (
               <div className="alert alert-danger">
@@ -188,6 +182,7 @@ class SignUp extends Component {
                 type="file"
                 name="image"
                 onChange={this.fileSelectHandler}
+                style={{ background: "none" }}
               />
             </label>
           </div>

@@ -97,9 +97,7 @@ class SignIn extends Component {
               id="username"
               type="text"
               className="form-control"
-              style={{
-                background: "rgb(235, 235, 235) none repeat scroll 0% 0%"
-              }}
+              style={{ background: "none" }}
             />
             {this.state.errors.username && (
               <div className="alert alert-danger">
@@ -116,9 +114,7 @@ class SignIn extends Component {
               id="password"
               type="password"
               className="form-control"
-              style={{
-                background: "rgb(230, 230, 230) none repeat scroll 0% 0%"
-              }}
+              style={{ background: "none" }}
             />
             {this.state.errors.password && (
               <div className="alert alert-danger">

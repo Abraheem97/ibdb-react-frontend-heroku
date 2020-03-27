@@ -18,6 +18,9 @@ class Comment extends Component {
     axios({
       method: "delete",
       url: `${process.env.REACT_APP_API_URL}/books/${this.props.comment.book_id}/comments/${this.props.comment.id}`,
+      data: {
+        user_id: Cookies.get("user_id")
+      },
 
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     }).then(res => this.props.handleCommentDelete(res.data));
@@ -174,6 +177,7 @@ function MyModal(params) {
                 className="form-control rounded-0"
                 name="Reply"
                 rows="5"
+                style={{ background: "none" }}
               ></textarea>
             </Form.Group>
             <Form.Group>

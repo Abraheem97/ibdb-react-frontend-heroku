@@ -285,6 +285,7 @@ function ReviewModal(params) {
                 className="form-control rounded-0"
                 name="Reply"
                 rows="7"
+                style={{ background: "none" }}
               ></textarea>
             </Form.Group>
             <Form.Group>

@@ -40,6 +40,9 @@ class Review extends Component {
     axios({
       method: "delete",
       url: `${process.env.REACT_APP_API_URL}/books/${this.props.review.book_id}/reviews/${this.props.review.id}`,
+      data: {
+        user_id: Cookies.get("user_id")
+      },
 
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     }).then(res => this.props.handleReviewDelete(res.data));

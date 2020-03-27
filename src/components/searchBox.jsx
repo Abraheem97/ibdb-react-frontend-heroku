@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchBox = ({ value, onChange, color, books }) => {
+const SearchBox = ({ value, onChange, books }) => {
   return (
     <React.Fragment>
       <input
@@ -11,7 +11,7 @@ const SearchBox = ({ value, onChange, color, books }) => {
         placeholder="Search Books..."
         value={value}
         onChange={e => onChange(e.currentTarget.value)}
-        style={{ background: color }}
+        style={{ background: "none" }}
         id="selector"
       />
       {/* <ul>

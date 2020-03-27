@@ -63,6 +63,16 @@ class NavBar extends Component {
                       )}
                     </li>
                     <li>
+                      {this.props.signed_in &&
+                        Cookies.get("user_role") != 4 &&
+                        Cookies.get("user_role") && (
+                          <NavLink className="nav-item nav-link" to="/add_book">
+                            Add a book
+                          </NavLink>
+                        )}
+                    </li>
+
+                    <li>
                       {!this.props.signed_in && (
                         <NavLink className="nav-item nav-link" to="/login">
                           Sign In

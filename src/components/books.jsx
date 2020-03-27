@@ -76,22 +76,13 @@ class Books extends Component {
             </p>
           </div>
         )}
-        {this.props.isLoggedIn && (
-          <SearchBox
-            value={this.state.searchQuery}
-            onChange={this.handleSearch}
-            color="#ececec"
-            books={this.getSearch()}
-          />
-        )}
-        {!this.props.isLoggedIn && (
-          <SearchBox
-            value={this.state.searchQuery}
-            onChange={this.handleSearch}
-            color="rgb(227, 227, 227) none repeat scroll 0% 0%"
-            books={this.getSearch()}
-          />
-        )}
+
+        <SearchBox
+          value={this.state.searchQuery}
+          onChange={this.handleSearch}
+          books={this.getSearch()}
+        />
+
         <div className="row align-items-start">
           {this.getSearch().map(book => (
             <div key={book.id} className="col-sm-6 col-md-4">

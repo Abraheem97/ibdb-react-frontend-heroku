@@ -121,6 +121,7 @@ class AddBook extends Component {
               id="title"
               type="text"
               className="form-control"
+              style={{ background: "none" }}
             />
             {this.state.errors.title && (
               <div className="alert alert-danger">

@@ -56,15 +56,18 @@ class CommentForm extends Component {
               onChange={this.handleInput}
               id="body"
               type="text"
-              className="form-control"
-              style={{ background: "#e7e7e7" }}
+              className="form-control form-control-lg"
+              style={{ background: "none" }}
             />
           </div>
           {this.state.errors.wrong && (
             <div className="alert alert-primary">{this.state.errors.wrong}</div>
           )}
+          <br />
+
           <button ref="btn">Comment</button>
         </form>
+        <br />
       </div>
     );
   }

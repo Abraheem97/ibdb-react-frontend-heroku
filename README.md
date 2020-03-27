@@ -15,3 +15,5 @@ email: superadmin@ibdb.com
 password: password
 
 yes
+as
+saas

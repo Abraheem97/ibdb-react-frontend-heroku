@@ -277,7 +277,12 @@ function ReviewModal(params) {
                 className="form-control rounded-0"
                 name="Reply"
                 rows="7"
-                style={{ background: "none" }}
+                maxlength="25"
+                style={{
+                  background: "none",
+                  resize: "none",
+                  overflow: "hidden"
+                }}
               ></textarea>
             </Form.Group>
             <Form.Group>

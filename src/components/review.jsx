@@ -77,7 +77,7 @@ class Review extends Component {
           starDimension="27px"
           starSpacing="5px"
         />
-        <p style={{ marginTop: 15 }}>{this.props.review.comment}</p>
+        <pre style={{ marginTop: 15 }}>{this.props.review.comment}</pre>
         <p> Submitted by {this.state.user}</p>
       </div>
     );

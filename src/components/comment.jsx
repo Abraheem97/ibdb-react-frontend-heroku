@@ -185,7 +185,7 @@ function MyModal(params) {
                 className="form-control rounded-0"
                 name="Reply"
                 rows="5"
-                style={{ background: "none" }}
+                style={{ background: "none", resize: "none" }}
               ></textarea>
             </Form.Group>
             <Form.Group>

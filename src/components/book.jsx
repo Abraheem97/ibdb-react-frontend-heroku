@@ -147,10 +147,11 @@ class Book extends Component {
                 key={review.id}
                 handleReviewDelete={this.handleReviewDelete}
                 review={review}
+                details={false}
               />
             ))}
-            {this.state.reviews.length > 2 && (
-              <Link to={`/books/${this.state.id}/reviews`}>Show more</Link>
+            {this.state.reviews.length > 0 && (
+              <Link to={`/books/${this.state.id}/reviews`}>Show all</Link>
             )}
           </div>
         </div>
@@ -277,7 +278,7 @@ function ReviewModal(params) {
                 className="form-control rounded-0"
                 name="Reply"
                 rows="7"
-                maxlength="25"
+                maxlength="100"
                 style={{
                   background: "none",
                   resize: "none",

@@ -23,6 +23,7 @@ class Reviews extends Component {
             key={review.id}
             handleReviewDelete={this.handleReviewDelete}
             review={review}
+            details={true}
           />
         ))}
       </div>

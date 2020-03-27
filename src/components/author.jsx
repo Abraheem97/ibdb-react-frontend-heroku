@@ -69,9 +69,14 @@ class Author extends Component {
               className="col-sm-6 col-md-4"
             >
               <div style={this.textCenter}>
-                <h5>
-                  <Link to={`/books/${book.id}`}>{book.title}</Link>
-                </h5>
+                <p>
+                  <Link
+                    style={{ color: "black", textDecoration: "none" }}
+                    to={`/books/${book.id}`}
+                  >
+                    {book.title}
+                  </Link>
+                </p>
                 <div className="caption">
                   <Link to={`/books/${book.id}`}>
                     <img

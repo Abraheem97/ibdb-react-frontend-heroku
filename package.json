@@ -20,7 +20,8 @@
     "react-scripts": "3.4.0",
     "react-select": "^3.0.8",
     "react-star-ratings": "^2.3.0",
-    "react-timeago": "^4.4.0"
+    "react-timeago": "^4.4.0",
+    "react-user-avatar": "^1.10.0"
   },
   "scripts": {
     "start": "react-scripts start",

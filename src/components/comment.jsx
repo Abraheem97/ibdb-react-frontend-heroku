@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Jumbotron } from "react-bootstrap";
+import UserAvatar from "react-user-avatar";
 
 class Comment extends Component {
   state = {
@@ -26,9 +27,8 @@ class Comment extends Component {
     }).then(res => this.props.handleCommentDelete(res.data));
   };
 
-  componentDidMount() {
+  componentWillMount() {
     get_username(this.props.comment.user_id).then(resp => {
-      console.log(resp);
       this.setState({
         user: resp.email.substring(0, resp.email.indexOf("@")),
         avatar: resp.image_url
@@ -54,19 +54,28 @@ class Comment extends Component {
 
     return canDelete;
   }
+
+  getInitials = () => {
+    return this.state.user;
+  };
+
   render() {
     let comment = this.props.comment;
     let replies = this.props.replies.slice(0, 2);
+    console.log(this.state.user);
 
     return (
       <React.Fragment>
         <h1>
-          <img
-            src={this.state.avatar}
-            alt="avatar"
-            style={{ height: 59, width: 59, margin: 10 }}
-          />
-          {this.state.user} says
+          {this.state.user && (
+            <UserAvatar
+              size="80"
+              name={this.state.user.toUpperCase()}
+              src={this.state.avatar}
+              style={{ display: "inline-block" }}
+            />
+          )}
+          <h1>{this.state.user} says</h1>
         </h1>
         {comment.body}
         <p>
@@ -80,7 +89,6 @@ class Comment extends Component {
             handleResponse={this.handleResponse}
           />
         )}
-
         {this.canDeleteComment() && (
           <Button
             size="sm"

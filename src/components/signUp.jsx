@@ -190,16 +190,6 @@ class SignUp extends Component {
             Sign Up
           </button>{" "}
         </form>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
       </div>
     );
   }

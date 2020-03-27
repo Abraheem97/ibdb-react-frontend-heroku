@@ -196,14 +196,6 @@ class Book extends Component {
             ))}
           </div>
         </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </React.Fragment>
     );
   }

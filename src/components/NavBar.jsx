@@ -9,7 +9,7 @@ class NavBar extends Component {
   render() {
     return (
       <React.Fragment>
-        <div id="wrapper">
+        <div id="wrapper" style={{ textAlign: "center" }}>
           <header id="header">
             <div class="inner">
               <NavLink to="/" className="logo">

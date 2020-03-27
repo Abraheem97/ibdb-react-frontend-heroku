@@ -70,7 +70,7 @@ class Comment extends Component {
           {this.state.user && (
             <UserAvatar
               size="80"
-              name={this.state.user.toUpperCase()}
+              name={this.state.user.slice(0, 2).toUpperCase()}
               src={this.state.avatar}
               style={{ display: "inline-block" }}
             />

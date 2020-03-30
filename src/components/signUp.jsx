@@ -67,7 +67,6 @@ class SignUp extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     const errors = this.validate();
-    console.log(this.state.account.selectedFile);
 
     this.setState({ errors: errors || {} });
 

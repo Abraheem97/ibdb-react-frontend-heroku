@@ -207,9 +207,8 @@ function EditModal(params) {
                   resize: "none",
                   overflow: "hidden"
                 }}
-              >
-                {params.review.comment}
-              </textarea>
+                defaultValue={params.review.comment}
+              ></textarea>
             </Form.Group>
             <Form.Group>
               <Button variant="outline" type="submit">

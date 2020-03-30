@@ -73,7 +73,6 @@ class Comment extends Component {
   render() {
     let comment = this.props.comment;
     let replies = this.props.replies.slice(0, 2);
-    console.log(this.state.user);
 
     return (
       <React.Fragment>
@@ -119,9 +118,8 @@ class Comment extends Component {
         )}
         {this.props.replies &&
           this.props.replies.map((comment, index) => (
-            <div key={index} style={{ paddingLeft: 20, paddingTop: 20 }}>
+            <div key={comment.id} style={{ paddingLeft: 20, paddingTop: 20 }}>
               <Comment
-                key={index}
                 handleEditResponse={this.props.handleEditResponse}
                 handleResponse={this.props.handleResponse}
                 handleCommentDelete={this.props.handleCommentDelete}
@@ -278,9 +276,8 @@ function EditModal(params) {
                 name="Reply"
                 rows="5"
                 style={{ background: "none", resize: "none" }}
-              >
-                {params.comment.body}
-              </textarea>
+                defaultValue={params.comment.body}
+              ></textarea>
             </Form.Group>
             <Form.Group>
               <button class="btn sm" type="submit">

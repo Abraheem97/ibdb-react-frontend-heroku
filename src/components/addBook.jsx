@@ -95,7 +95,10 @@ class AddBook extends Component {
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     })
-      .then(res => {})
+      .then(res => {
+        this.props.history.push("/");
+        window.location.reload(false);
+      })
       .catch(errors => {});
   };
 
@@ -109,6 +112,7 @@ class AddBook extends Component {
     return (
       <div>
         <h1>Add Book</h1>
+        <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="title">Title</label>
@@ -151,6 +155,7 @@ class AddBook extends Component {
             <label htmlFor="image">
               Add book cover <br></br>
               <input
+                style={{ background: "none" }}
                 id="book_cover"
                 type="file"
                 name="image"
@@ -158,7 +163,7 @@ class AddBook extends Component {
               />
             </label>
           </div>
-          <button ref="btn" className="btn btn-primary">
+          <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
             Submit book
           </button>
         </form>

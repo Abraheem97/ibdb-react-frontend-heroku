@@ -188,7 +188,7 @@ class Book extends Component {
             </div>
             {parentComments.map((comment, index) => (
               <div
-                key={index}
+                key={comment.id}
                 className="box container"
                 style={{
                   borderRadius: 30,

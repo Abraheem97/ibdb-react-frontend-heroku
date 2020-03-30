@@ -206,6 +206,7 @@ class Book extends Component {
                   replies={this.state.comments.filter(
                     reply => reply.parent_id === comment.id
                   )}
+                  parentIndex={index}
                 />
               </div>
             ))}

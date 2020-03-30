@@ -72,7 +72,6 @@ class Comment extends Component {
 
   render() {
     let comment = this.props.comment;
-    let replies = this.props.replies.slice(0, 2);
 
     return (
       <React.Fragment>
@@ -116,10 +115,28 @@ class Comment extends Component {
             Delete
           </Button>
         )}
-        {this.props.replies &&
+        {this.props.parentIndex < 17 &&
           this.props.replies.map((comment, index) => (
-            <div key={comment.id} style={{ paddingLeft: 20, paddingTop: 20 }}>
+            <div key={comment.id} style={{ paddingLeft: 40, paddingTop: 20 }}>
               <Comment
+                parentIndex={this.props.parentIndex + 1}
+                handleEditResponse={this.props.handleEditResponse}
+                handleResponse={this.props.handleResponse}
+                handleCommentDelete={this.props.handleCommentDelete}
+                book_id={this.props.book_id}
+                comments={this.props.comments}
+                comment={comment}
+                replies={this.props.comments.filter(
+                  reply => reply.parent_id === comment.id
+                )}
+              />
+            </div>
+          ))}
+        {this.props.parentIndex >= 17 &&
+          this.props.replies.map((comment, index) => (
+            <div key={comment.id} style={{ paddingTop: 20 }}>
+              <Comment
+                parentIndex={this.props.parentIndex + 1}
                 handleEditResponse={this.props.handleEditResponse}
                 handleResponse={this.props.handleResponse}
                 handleCommentDelete={this.props.handleCommentDelete}

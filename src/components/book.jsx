@@ -37,6 +37,12 @@ class Book extends Component {
     textAlign: "center"
   };
 
+  handleEditReview = review => {
+    let reviews = this.state.reviews.filter(m => m.id !== review.data.id);
+    reviews = [review.data, ...reviews];
+    this.setState({ reviews });
+  };
+
   handleCommentSubmit = comment => {
     const comments = [comment, ...this.state.comments];
     this.setState({ comments });
@@ -51,6 +57,12 @@ class Book extends Component {
     const comments = this.state.comments.filter(m => m.id !== comment.id);
 
     this.setState({ comments: comments });
+  };
+
+  handleEditCommentResponse = comment => {
+    let comments = this.state.comments.filter(m => m.id !== comment.id);
+    comments = [comment, ...comments];
+    this.setState({ comments });
   };
   handleReviewSubmit = review => {
     const reviews = [review, ...this.state.reviews];
@@ -144,6 +156,7 @@ class Book extends Component {
             )}
             {this.state.reviews.slice(0, 2).map(review => (
               <Review
+                handleEditResponse={this.handleEditReview}
                 key={review.id}
                 handleReviewDelete={this.handleReviewDelete}
                 review={review}
@@ -173,9 +186,9 @@ class Book extends Component {
                 </p>
               )}
             </div>
-            {parentComments.map(comment => (
+            {parentComments.map((comment, index) => (
               <div
-                key={comment.id}
+                key={index}
                 className="box container"
                 style={{
                   borderRadius: 30,
@@ -184,6 +197,7 @@ class Book extends Component {
                 }}
               >
                 <Comment
+                  handleEditResponse={this.handleEditCommentResponse}
                   handleResponse={this.handleReplySubmit}
                   handleCommentDelete={this.handleCommentDelete}
                   book_id={this.state.id}

@@ -38,6 +38,9 @@ class Comment extends Component {
   handleResponse = res => {
     this.props.handleResponse(res.data);
   };
+  handleEditResponse = res => {
+    this.props.handleEditResponse(res.data);
+  };
 
   handleCommentDelete = res => {
     this.props.handleCommentDelete(res.data);
@@ -50,6 +53,14 @@ class Comment extends Component {
       (Cookies.get("user_role") && Cookies.get("user_role") != "4")
     )
       canDelete = true;
+    else canDelete = false;
+
+    return canDelete;
+  }
+
+  canEditComment() {
+    let canDelete = false;
+    if (Cookies.get("user_id") == this.props.comment.user_id) canDelete = true;
     else canDelete = false;
 
     return canDelete;
@@ -89,6 +100,13 @@ class Comment extends Component {
             handleResponse={this.handleResponse}
           />
         )}
+        {this.canEditComment() && (
+          <EditModal
+            comment={comment}
+            handleResponse={this.handleEditResponse}
+            book_id={this.props.book_id}
+          />
+        )}
         {this.canDeleteComment() && (
           <Button
             size="sm"
@@ -100,9 +118,11 @@ class Comment extends Component {
           </Button>
         )}
         {this.props.replies &&
-          this.props.replies.map(comment => (
-            <div key={comment.id} style={{ paddingLeft: 20, paddingTop: 20 }}>
+          this.props.replies.map((comment, index) => (
+            <div key={index} style={{ paddingLeft: 20, paddingTop: 20 }}>
               <Comment
+                key={index}
+                handleEditResponse={this.props.handleEditResponse}
                 handleResponse={this.props.handleResponse}
                 handleCommentDelete={this.props.handleCommentDelete}
                 book_id={this.props.book_id}
@@ -191,6 +211,80 @@ function MyModal(params) {
             <Form.Group>
               <button class="btn sm" type="submit">
                 Reply
+              </button>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </React.Fragment>
+  );
+}
+
+function EditModal(params) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const handleClose = () => {
+    setModalIsOpen(false);
+  };
+  const handleShow = () => setModalIsOpen(true);
+
+  // const comment_username = () => {
+  //   return get_username(Cookies.get("user_id")).then(res => {
+  //     const username = res.email.substring(0, res.email.indexOf("@"));
+  //     return username;
+  //   });
+  // };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    handleClose();
+
+    axios({
+      method: "patch",
+      url: `${process.env.REACT_APP_API_URL}/books/${params.book_id}/comments/${params.comment.id}`,
+
+      data: {
+        comment: {
+          user_id: Cookies.get("user_id"),
+          body: e.target.Reply.value
+        }
+      },
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+    })
+      .then(res => params.handleResponse(res))
+      .catch(errors => {
+        if (errors) {
+          console.log(errors);
+        }
+      });
+  };
+
+  return (
+    <React.Fragment>
+      <Button variant="outline" size="sm" onClick={handleShow}>
+        Edit
+      </Button>
+
+      <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
+        <Modal.Header>
+          <Modal.Title>Edit comment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ textAlign: "center" }}>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="body">
+              <textarea
+                autoFocus
+                required
+                className="form-control rounded-0"
+                name="Reply"
+                rows="5"
+                style={{ background: "none", resize: "none" }}
+              >
+                {params.comment.body}
+              </textarea>
+            </Form.Group>
+            <Form.Group>
+              <button class="btn sm" type="submit">
+                Comment
               </button>
             </Form.Group>
           </Form>

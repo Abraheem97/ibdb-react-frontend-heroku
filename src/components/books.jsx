@@ -85,7 +85,11 @@ class Books extends Component {
 
         <div className="row align-items-start">
           {this.getSearch().map(book => (
-            <div key={book.id} className="col-sm-6 col-md-4">
+            <div
+              key={book.id}
+              className="col-sm-6 col-md-4"
+              style={{ paddingBottom: 20 }}
+            >
               <div style={this.textCenter}>
                 <p>
                   <Link

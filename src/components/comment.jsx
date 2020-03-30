@@ -110,7 +110,7 @@ class Comment extends Component {
             size="sm"
             variant="outline-danger"
             onClick={this.handleDelete}
-            style={{ marginLeft: 5 }}
+            style={{ marginLeft: 3 }}
           >
             Delete
           </Button>
@@ -275,7 +275,12 @@ function EditModal(params) {
 
   return (
     <React.Fragment>
-      <Button variant="outline" size="sm" onClick={handleShow}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleShow}
+        style={{ marginLeft: 2 }}
+      >
         Edit
       </Button>
 

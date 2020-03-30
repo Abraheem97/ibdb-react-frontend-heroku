@@ -86,7 +86,7 @@ class Review extends Component {
           starSpacing="5px"
           starEmptyColor="white"
         />
-        {this.canEditReview && (
+        {this.canEditReview() && (
           <EditModal
             review={this.props.review}
             handleResponse={this.props.handleEditResponse}

@@ -60,6 +60,8 @@ class SignUp extends Component {
       errors.email = "Incorrect format of Email eg: user@example.com";
     if (this.state.account.password.trim() === "")
       errors.password = "Password required.";
+    if (this.state.account.password.length < 6)
+      errors.password = "Minimum length 6 characters.";
     if (this.state.account.password.trim() === "")
       errors.password_confirmation = "Password confirmation required.";
     if (

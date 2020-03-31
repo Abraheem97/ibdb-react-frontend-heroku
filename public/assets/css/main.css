@@ -241,6 +241,9 @@ body {
   body {
     min-width: 320px;
   }
+  div {
+    min-width: min-content;
+  }
 }
 
 html {
@@ -350,14 +353,14 @@ h1 a {
 
 @media screen and (max-width: 736px) {
   h1 {
-    font-size: 2em;
+    font-size: 1em;
     margin: 0 0 1em 0;
   }
 }
 
 @media screen and (max-width: 360px) {
   h1 {
-    font-size: 1.75em;
+    font-size: 1em;
   }
 }
 

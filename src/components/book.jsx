@@ -191,7 +191,6 @@ class Book extends Component {
                 key={comment.id}
                 className="box"
                 style={{
-                  minWidth: "max-content",
                   borderRadius: 30,
                   border: "solid 1px",
                   padding: 50

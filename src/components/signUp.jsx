@@ -62,6 +62,10 @@ class SignUp extends Component {
       errors.password = "Password required.";
     if (this.state.account.password.trim() === "")
       errors.password_confirmation = "Password confirmation required.";
+    if (
+      this.state.account.password !== this.state.account.password_confirmation
+    )
+      errors.password_confirmation = "Password doesn't match";
     return Object.keys(errors).length === 0 ? null : errors;
   };
   handleSubmit = async e => {

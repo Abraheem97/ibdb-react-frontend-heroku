@@ -189,8 +189,9 @@ class Book extends Component {
             {parentComments.map((comment, index) => (
               <div
                 key={comment.id}
-                className="box container"
+                className="dont-break-out"
                 style={{
+                  minWidth: "max-content",
                   borderRadius: 30,
                   border: "solid 1px",
                   padding: 50

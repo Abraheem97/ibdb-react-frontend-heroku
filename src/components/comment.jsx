@@ -117,7 +117,11 @@ class Comment extends Component {
         )}
         {this.props.parentIndex < 17 &&
           this.props.replies.map((comment, index) => (
-            <div key={comment.id} style={{ paddingLeft: 40, paddingTop: 20 }}>
+            <div
+              className="dont-break-out"
+              key={comment.id}
+              style={{ paddingLeft: 40, paddingTop: 20 }}
+            >
               <Comment
                 parentIndex={this.props.parentIndex + 1}
                 handleEditResponse={this.props.handleEditResponse}

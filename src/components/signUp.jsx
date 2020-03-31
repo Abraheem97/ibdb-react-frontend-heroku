@@ -49,6 +49,7 @@ class SignUp extends Component {
 
   validate = () => {
     const errors = {};
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
 
     const emailValid = this.state.account.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
@@ -68,10 +69,16 @@ class SignUp extends Component {
       this.state.account.password !== this.state.account.password_confirmation
     )
       errors.password_confirmation = "Password doesn't match";
+    if (this.state.account.selectedFile.size > 579591)
+      errors.avatar = "Image size should be less then 500kb";
+    if (!validImageTypes.includes(this.state.account.selectedFile.type))
+      errors.avatar =
+        "Unknown image format, please pick gif, jpeg or png images";
     return Object.keys(errors).length === 0 ? null : errors;
   };
   handleSubmit = async e => {
     e.preventDefault();
+
     const errors = this.validate();
 
     this.setState({ errors: errors || {} });
@@ -188,8 +195,14 @@ class SignUp extends Component {
                 name="image"
                 onChange={this.fileSelectHandler}
                 style={{ background: "none" }}
+                accept="image/*"
               />
             </label>
+            {this.state.errors.avatar && (
+              <div className="alert alert-danger">
+                {this.state.errors.avatar}
+              </div>
+            )}
           </div>
           <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
             Sign Up

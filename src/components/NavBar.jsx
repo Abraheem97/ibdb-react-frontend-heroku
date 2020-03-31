@@ -9,7 +9,7 @@ class NavBar extends Component {
   style = {
     display: "block",
     position: "relative",
-    height: "5.5em",
+    height: "6.5em",
     lineHeight: "3em",
     padding: "0 1.5em",
 
@@ -31,7 +31,7 @@ class NavBar extends Component {
     return (
       <React.Fragment>
         <Navbar expand="lg" style={this.style}>
-          <div className="container" style={{ paddingTop: 5 }}>
+          <div className="container" style={{ paddingTop: 10 }}>
             <NavLink to="/">
               <Navbar.Brand style={{ color: "darkgray" }}>IBDB</Navbar.Brand>
             </NavLink>

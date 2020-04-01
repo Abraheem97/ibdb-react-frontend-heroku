@@ -106,7 +106,11 @@ class NavBar extends Component {
                 {this.props.signed_in && (
                   <NavLink
                     to="user/editProfile"
-                    style={{ color: "aliceblue", padding: 7 }}
+                    style={{
+                      color: "aliceblue",
+                      padding: 7,
+                      textDecoration: "none"
+                    }}
                   >
                     {this.props.user.email}
                   </NavLink>

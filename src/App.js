@@ -98,7 +98,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div class="myClass">
+      <div className="myClass">
         <NavBar
           user={this.state.user}
           handleSignOut={this.handleSignOut}

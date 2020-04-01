@@ -17,7 +17,7 @@ class AddBook extends Component {
     }
   };
   componentWillMount() {
-    if (Cookies.get("user_role") == 4 || !Cookies.get("user_role"))
+    if (Cookies.get("user_role") === 4 || !Cookies.get("user_role"))
       this.props.history.push("/not-found");
   }
 
@@ -107,7 +107,7 @@ class AddBook extends Component {
   }
 
   render() {
-    const { title, author_name } = this.state.book;
+    const { title } = this.state.book;
 
     return (
       <div>

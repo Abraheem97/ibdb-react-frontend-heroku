@@ -29,8 +29,8 @@ class Review extends Component {
   canDeleteReview() {
     let canDelete = false;
     if (
-      Cookies.get("user_id") == this.props.review.user_id ||
-      (Cookies.get("user_role") && Cookies.get("user_role") != "4")
+      Cookies.get("user_id") === this.props.review.user_id ||
+      (Cookies.get("user_role") && Cookies.get("user_role") !== "4")
     )
       canDelete = true;
     else canDelete = false;
@@ -39,7 +39,7 @@ class Review extends Component {
   }
   canEditReview() {
     let canDelete = false;
-    if (Cookies.get("user_id") == this.props.review.user_id) canDelete = true;
+    if (Cookies.get("user_id") === this.props.review.user_id) canDelete = true;
     else canDelete = false;
 
     return canDelete;

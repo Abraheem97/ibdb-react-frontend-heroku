@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { Nav, Navbar, NavbarBrand } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import Cookies from "js-cookie";
 
 class NavBar extends Component {
@@ -46,7 +46,7 @@ class NavBar extends Component {
             >
               <Nav className="mr-auto">
                 {this.props.signed_in &&
-                  Cookies.get("user_role") != 4 &&
+                  Cookies.get("user_role") !== 4 &&
                   Cookies.get("user_role") && (
                     <NavLink
                       style={{ color: "aliceblue", paddingLeft: 5 }}
@@ -77,7 +77,7 @@ class NavBar extends Component {
                     Sign up
                   </NavLink>
                 )}
-                {Cookies.get("user_role") == 1 && (
+                {Cookies.get("user_role") === 1 && (
                   <Navbar
                     style={{ color: "black" }}
                     className="nav-link disabled"
@@ -85,7 +85,7 @@ class NavBar extends Component {
                     SUPER ADMIN
                   </Navbar>
                 )}
-                {Cookies.get("user_role") == 2 && (
+                {Cookies.get("user_role") === 2 && (
                   <Navbar
                     style={{ color: "black" }}
                     className="nav-link disabled"
@@ -93,7 +93,7 @@ class NavBar extends Component {
                     ADMIN
                   </Navbar>
                 )}
-                {Cookies.get("user_role") == 3 && (
+                {Cookies.get("user_role") === 3 && (
                   <Navbar
                     style={{ color: "black", paddingLeft: 5 }}
                     className="nav-link disabled"
@@ -123,7 +123,7 @@ class NavBar extends Component {
         </Navbar>
         <div id="wrapper" style={{ textAlign: "center" }}>
           <header id="header">
-            <div class="inner">
+            <div className="inner">
               <NavLink to="/" className="logo">
                 <span className="symbol">
                   <img

@@ -135,7 +135,7 @@ class Book extends Component {
                     />
                   )}
               </div>
-              {Cookies.get("user_role") == 1 && (
+              {Cookies.get("user_role") === 1 && (
                 <Button
                   variant="outline-danger"
                   onClick={this.handleBookDelete}

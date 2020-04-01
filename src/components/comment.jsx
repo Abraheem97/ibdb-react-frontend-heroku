@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Jumbotron } from "react-bootstrap";
 import UserAvatar from "react-user-avatar";
 
 class Comment extends Component {
@@ -27,7 +26,7 @@ class Comment extends Component {
     }).then(res => this.props.handleCommentDelete(res.data));
   };
 
-  componentWillMount() {
+  componentDidMount() {
     get_username(this.props.comment.user_id).then(resp => {
       this.setState({
         user: resp.email.substring(0, resp.email.indexOf("@")),
@@ -49,8 +48,8 @@ class Comment extends Component {
   canDeleteComment() {
     let canDelete = false;
     if (
-      Cookies.get("user_id") == this.props.comment.user_id ||
-      (Cookies.get("user_role") && Cookies.get("user_role") != "4")
+      Cookies.get("user_id") === this.props.comment.user_id ||
+      (Cookies.get("user_role") && Cookies.get("user_role") !== "4")
     )
       canDelete = true;
     else canDelete = false;
@@ -60,7 +59,7 @@ class Comment extends Component {
 
   canEditComment() {
     let canDelete = false;
-    if (Cookies.get("user_id") == this.props.comment.user_id) canDelete = true;
+    if (Cookies.get("user_id") === this.props.comment.user_id) canDelete = true;
     else canDelete = false;
 
     return canDelete;
@@ -84,7 +83,8 @@ class Comment extends Component {
               style={{ display: "inline-block" }}
             />
           )}
-          <h1>{this.state.user} says</h1>
+          <br />
+          {this.state.user} says
         </h1>
         {comment.body}
         <p>

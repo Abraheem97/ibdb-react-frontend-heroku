@@ -15,6 +15,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Reviews from "./components/reviews";
 import AddBook from "./components/addBook";
+import UserProfile from "./components/userProfile";
 
 // USER ROLES
 
@@ -84,6 +85,7 @@ class App extends Component {
       var neededAttributes = {};
       Cookies.remove(cookieName, neededAttributes);
     });
+    this.props.history.push("/login");
   };
 
   componentDidMount() {
@@ -137,6 +139,14 @@ class App extends Component {
                 path="/books"
                 render={() => <Books isLoggedIn={this.state.isLoggedIn} />}
               />
+
+              <Route
+                path="/user/editProfile"
+                render={() => (
+                  <UserProfile handleSignOut={this.handleSignOut} />
+                )}
+              />
+
               <Route path="/users/confirmation" component={Books} />
               <Route path="/not-found" component={NotFound} />
               <Route

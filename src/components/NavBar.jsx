@@ -33,7 +33,9 @@ class NavBar extends Component {
         <Navbar expand="lg" style={this.style}>
           <div className="container" style={{ paddingTop: 10 }}>
             <NavLink style={{ outline: "none" }} to="/">
-              <Navbar.Brand style={{ color: "darkgray" }}>IBDB</Navbar.Brand>
+              <Navbar.Brand style={{ color: "darkgray", fontSize: "xx-large" }}>
+                IBDB
+              </Navbar.Brand>
             </NavLink>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse
@@ -102,9 +104,12 @@ class NavBar extends Component {
                   </Navbar>
                 )}
                 {this.props.signed_in && (
-                  <Navbar style={{ color: "aliceblue", paddingLeft: 5 }}>
+                  <NavLink
+                    to="user/editProfile"
+                    style={{ color: "aliceblue", padding: 7 }}
+                  >
                     {this.props.user.email}
-                  </Navbar>
+                  </NavLink>
                 )}
 
                 {this.props.signed_in && (

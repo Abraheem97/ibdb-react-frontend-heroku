@@ -122,7 +122,12 @@ class App extends Component {
               <Route path="/books/:id" component={Book} />
               <Route
                 path="/login"
-                render={() => <SignIn handleSignIn={this.handleSignIn} />}
+                render={() => (
+                  <SignIn
+                    handleSignIn={this.handleSignIn}
+                    handleSignOut={this.handleSignOut}
+                  />
+                )}
               />
               <Route
                 path="/signup"

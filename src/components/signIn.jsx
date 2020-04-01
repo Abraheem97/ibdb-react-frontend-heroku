@@ -13,6 +13,10 @@ class SignIn extends Component {
     }
   };
 
+  componentDidMount() {
+    this.props.handleSignOut();
+  }
+
   handleInput = e => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(e.currentTarget);

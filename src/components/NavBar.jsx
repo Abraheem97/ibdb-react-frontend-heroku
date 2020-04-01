@@ -77,7 +77,7 @@ class NavBar extends Component {
                     Sign up
                   </NavLink>
                 )}
-                {Cookies.get("user_role") === 1 && (
+                {Cookies.get("user_role") == 1 && (
                   <Navbar
                     style={{ color: "black" }}
                     className="nav-link disabled"
@@ -85,7 +85,7 @@ class NavBar extends Component {
                     SUPER ADMIN
                   </Navbar>
                 )}
-                {Cookies.get("user_role") === 2 && (
+                {Cookies.get("user_role") == 2 && (
                   <Navbar
                     style={{ color: "black" }}
                     className="nav-link disabled"
@@ -93,7 +93,7 @@ class NavBar extends Component {
                     ADMIN
                   </Navbar>
                 )}
-                {Cookies.get("user_role") === 3 && (
+                {Cookies.get("user_role") == 3 && (
                   <Navbar
                     style={{ color: "black", paddingLeft: 5 }}
                     className="nav-link disabled"

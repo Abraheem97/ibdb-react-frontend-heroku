@@ -169,7 +169,10 @@ class UserProfile extends Component {
       headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }
     })
       .then(res => {
-        if (this.state.account.password) {
+        if (
+          this.state.account.password ||
+          this.state.account.email != Cookies.get("user_email")
+        ) {
           this.props.handleSignOut();
         } else this.handleSuccessfulSubmit(res);
       })

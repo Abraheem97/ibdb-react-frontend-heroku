@@ -69,9 +69,15 @@ class SignUp extends Component {
       this.state.account.password !== this.state.account.password_confirmation
     )
       errors.password_confirmation = "Password doesn't match";
-    if (this.state.account.selectedFile.size > 579591)
+    if (
+      this.state.account.selectedFile &&
+      this.state.account.selectedFile.size > 579591
+    )
       errors.avatar = "Image size should be less then 500kb";
-    if (!validImageTypes.includes(this.state.account.selectedFile.type))
+    if (
+      this.state.account.selectedFile &&
+      !validImageTypes.includes(this.state.account.selectedFile.type)
+    )
       errors.avatar =
         "Unknown image format, please pick gif, jpeg or png images";
     return Object.keys(errors).length === 0 ? null : errors;
@@ -111,10 +117,22 @@ class SignUp extends Component {
           image_url: file.url
         }
       }
-    }).then(res => {
-      this.props.handleSignUp(res.data);
-    });
-    // $.ajax({
+    })
+      .then(res => {
+        console.log("res", res);
+        this.props.handleSignUp(res.data);
+      })
+      .catch(error => {
+        // console.log(error.response); // returns whole error object passed from the api call
+        console.log(error.response.data.errors.email[0]); // returns the error message
+        if (error.response.status === 422) {
+          const errors = { ...this.state.errors };
+          errors.email = "Email has already been taken";
+          this.refs.btn.removeAttribute("disabled");
+          this.setState({ errors });
+        }
+      });
+    // $.ajax({ Request failed with status code 422
     //   method: "POST",
     //   url: "http://localhost:3001/v1/sessions",
     //   data: {

@@ -32,7 +32,7 @@ class NavBar extends Component {
       <React.Fragment>
         <Navbar expand="lg" style={this.style}>
           <div className="container" style={{ paddingTop: 10 }}>
-            <NavLink to="/">
+            <NavLink style={{ outline: "none" }} to="/">
               <Navbar.Brand style={{ color: "darkgray" }}>IBDB</Navbar.Brand>
             </NavLink>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -46,7 +46,7 @@ class NavBar extends Component {
             >
               <Nav className="mr-auto">
                 {this.props.signed_in &&
-                  Cookies.get("user_role") !== 4 &&
+                  Cookies.get("user_role") != 4 &&
                   Cookies.get("user_role") && (
                     <NavLink
                       style={{ color: "aliceblue", paddingLeft: 5 }}

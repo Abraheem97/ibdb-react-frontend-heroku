@@ -5,6 +5,8 @@ import { withRouter } from "react-router-dom";
 class SignUp extends Component {
   state = {
     account: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       password_confirmation: "",
@@ -57,6 +59,10 @@ class SignUp extends Component {
 
     if (this.state.account.email.trim() === "")
       errors.email = "Email required.";
+    if (this.state.account.firstName.trim() === "")
+      errors.firstName = "First name required.";
+    if (this.state.account.lastName.trim() === "")
+      errors.lastName = "Last name required.";
     if (!emailValid)
       errors.email = "Incorrect format of Email eg: user@example.com";
     if (this.state.account.password.trim() === "")
@@ -111,6 +117,8 @@ class SignUp extends Component {
       url: `${process.env.REACT_APP_API_URL}/users.json`,
       data: {
         user: {
+          firstName: this.state.account.firstName,
+          lastName: this.state.account.lastName,
           email: this.state.account.email,
           password: this.state.account.password,
           password_confirmation: this.state.account.password_confirmation,
@@ -151,6 +159,50 @@ class SignUp extends Component {
         <h1>Sign Up</h1>
         <br />
         <form onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="email">First Name</label>
+                <input
+                  maxlength="30"
+                  autoComplete="off"
+                  value={account.firstName}
+                  onChange={this.handleInput}
+                  name="firstName"
+                  id="firstName"
+                  type="text"
+                  className="form-control"
+                  style={{ background: "none", width: "100%" }}
+                />
+                {this.state.errors.firstName && (
+                  <div className="alert alert-danger">
+                    {this.state.errors.firstName}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="email">Last Name</label>
+                <input
+                  maxlength="30"
+                  autoComplete="off"
+                  value={account.lastName}
+                  onChange={this.handleInput}
+                  name="lastName"
+                  id="lastName"
+                  type="text"
+                  className="form-control"
+                  style={{ background: "none", width: "100%" }}
+                />
+                {this.state.errors.firstName && (
+                  <div className="alert alert-danger">
+                    {this.state.errors.lastName}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -173,6 +225,7 @@ class SignUp extends Component {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
+              maxlength="20"
               value={account.password}
               name="password"
               onChange={this.handleInput}
@@ -190,6 +243,7 @@ class SignUp extends Component {
           <div className="form-group">
             <label htmlFor="password_confirmation">Password confirmation</label>
             <input
+              maxlength="20"
               value={account.password_confirmation}
               name="password_confirmation"
               onChange={this.handleInput}

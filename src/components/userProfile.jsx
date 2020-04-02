@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { get_userDetails } from "../Services/userService";
-
+import { withRouter } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 
 class UserProfile extends Component {
   state = {
     account: {
+      firstName: "",
+      lastName: "",
       email: "",
       current_password: "",
       password: "",
@@ -23,7 +25,7 @@ class UserProfile extends Component {
   };
 
   componentDidMount() {
-    if (this.props.signed_in) this.props.history.push("/");
+    if (!Cookies.get("isLoggedIn")) this.props.history.push("/");
 
     get_userDetails(
       Cookies.get("user_id"),
@@ -32,6 +34,9 @@ class UserProfile extends Component {
       console.log(resp);
       let account = { ...this.state.account };
       account.email = resp.data.email;
+      account.firstName = resp.data.firstName;
+      account.lastName = resp.data.lastName;
+
       account.unconfirmed_email = resp.data.unconfirmed_email;
       this.setState({ account, avatar: resp.data.image_url });
     });
@@ -50,6 +55,7 @@ class UserProfile extends Component {
     console.log(resp);
 
     this.setState({ account, alerts, avatar: resp.data.image_url });
+    Cookies.set("avatar_url", resp.data.image_url);
     this.refs.btn.removeAttribute("disabled");
 
     setInterval(this.handleAlertTimeout, 5000);
@@ -130,7 +136,8 @@ class UserProfile extends Component {
     if (
       this.state.account.email == Cookies.get("user_email") &&
       !this.state.account.password &&
-      this.state.account.selectedFile == null
+      this.state.account.selectedFile == null &&
+      !this.state.account.firstName
     )
       return;
     this.refs.btn.setAttribute("disabled", "disabled");
@@ -155,6 +162,8 @@ class UserProfile extends Component {
       )}`,
       data: {
         user: {
+          firstName: this.state.account.firstName,
+          lastName: this.state.account.lastName,
           current_password: this.state.account.current_password,
           email: this.state.account.email,
           password: this.state.account.password
@@ -210,6 +219,50 @@ class UserProfile extends Component {
 
         <br />
         <form onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="email">First Name</label>
+                <input
+                  maxlength="30"
+                  autoComplete="off"
+                  value={account.firstName}
+                  onChange={this.handleInput}
+                  name="firstName"
+                  id="firstName"
+                  type="text"
+                  className="form-control"
+                  style={{ background: "none", width: "100%" }}
+                />
+                {this.state.errors.firstName && (
+                  <div className="alert alert-danger">
+                    {this.state.errors.firstName}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="email">Last Name</label>
+                <input
+                  maxlength="30"
+                  autoComplete="off"
+                  value={account.lastName}
+                  onChange={this.handleInput}
+                  name="lastName"
+                  id="lastName"
+                  type="text"
+                  className="form-control"
+                  style={{ background: "none", width: "100%" }}
+                />
+                {this.state.errors.firstName && (
+                  <div className="alert alert-danger">
+                    {this.state.errors.firstName}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             {this.state.account.unconfirmed_email && (
@@ -226,6 +279,7 @@ class UserProfile extends Component {
               </p>
             )}
             <input
+              maxlength="40"
               autoComplete="off"
               autoFocus
               value={account.email}
@@ -352,4 +406,4 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+export default withRouter(UserProfile);

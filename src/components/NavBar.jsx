@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { Nav, Navbar } from "react-bootstrap";
 import Cookies from "js-cookie";
+import UserAvatar from "react-user-avatar";
 
 class NavBar extends Component {
   states = {};
@@ -9,7 +10,7 @@ class NavBar extends Component {
   style = {
     display: "block",
     position: "relative",
-    height: "6.5em",
+    height: "6.8em",
     lineHeight: "3em",
     padding: "0 1.5em",
 
@@ -28,12 +29,14 @@ class NavBar extends Component {
   };
 
   render() {
+    const userName = Cookies.get("firstName") + " " + Cookies.get("lastName");
+    console.log(userName);
     return (
       <React.Fragment>
         <Navbar expand="lg" style={this.style}>
           <div className="container" style={{ paddingTop: 10 }}>
-            <NavLink style={{ outline: "none" }} to="/">
-              <Navbar.Brand style={{ color: "darkgray", fontSize: "xx-large" }}>
+            <NavLink style={{ outline: "none", paddingBottom: 5 }} to="/">
+              <Navbar.Brand style={{ color: "darkgray", fontSize: "x-large" }}>
                 IBDB
               </Navbar.Brand>
             </NavLink>
@@ -51,7 +54,13 @@ class NavBar extends Component {
                   Cookies.get("user_role") != 4 &&
                   Cookies.get("user_role") && (
                     <NavLink
-                      style={{ color: "aliceblue", paddingLeft: 5 }}
+                      style={{
+                        color: "aliceblue",
+                        paddingLeft: 5,
+                        outline: "none",
+                        paddingTop: 7,
+                        paddingRight: 15
+                      }}
                       className="nav-item nav-link"
                       to="/add_book"
                     >
@@ -62,7 +71,13 @@ class NavBar extends Component {
               <Nav className="ml-auto">
                 {!this.props.signed_in && (
                   <NavLink
-                    style={{ color: "aliceblue", paddingLeft: 5 }}
+                    style={{
+                      color: "aliceblue",
+                      paddingLeft: 5,
+                      outline: "none",
+                      paddingTop: 15,
+                      paddingRight: 15
+                    }}
                     className="nav-item nav-link"
                     to="/login"
                   >
@@ -72,7 +87,13 @@ class NavBar extends Component {
 
                 {!this.props.signed_in && (
                   <NavLink
-                    style={{ color: "aliceblue", paddingLeft: 5 }}
+                    style={{
+                      color: "aliceblue",
+                      paddingLeft: 5,
+                      outline: "none",
+                      paddingTop: 15,
+                      paddingRight: 15
+                    }}
                     className="nav-item nav-link"
                     to="/signup"
                   >
@@ -81,7 +102,11 @@ class NavBar extends Component {
                 )}
                 {Cookies.get("user_role") == 1 && (
                   <Navbar
-                    style={{ color: "black" }}
+                    style={{
+                      color: "black",
+                      paddingTop: 7,
+                      paddingRight: 15
+                    }}
                     className="nav-link disabled"
                   >
                     SUPER ADMIN
@@ -89,7 +114,11 @@ class NavBar extends Component {
                 )}
                 {Cookies.get("user_role") == 2 && (
                   <Navbar
-                    style={{ color: "black" }}
+                    style={{
+                      color: "black",
+                      paddingTop: 7,
+                      paddingRight: 15
+                    }}
                     className="nav-link disabled"
                   >
                     ADMIN
@@ -97,33 +126,57 @@ class NavBar extends Component {
                 )}
                 {Cookies.get("user_role") == 3 && (
                   <Navbar
-                    style={{ color: "black", paddingLeft: 5 }}
+                    style={{
+                      color: "black",
+                      paddingTop: 7,
+                      paddingRight: 15
+                    }}
                     className="nav-link disabled"
                   >
                     MODERATOR
                   </Navbar>
                 )}
-                {this.props.signed_in && (
-                  <NavLink
-                    to="user/editProfile"
-                    style={{
-                      color: "aliceblue",
-                      padding: 7,
-                      textDecoration: "none"
-                    }}
-                  >
-                    {this.props.user.email}
-                  </NavLink>
-                )}
 
                 {this.props.signed_in && (
                   <NavLink
-                    style={{ color: "indianred", paddingLeft: 5 }}
+                    style={{
+                      color: "indianred",
+                      paddingLeft: 5,
+                      paddingTop: 10,
+                      paddingRight: 15,
+                      outline: "none"
+                    }}
                     className="nav-item nav-link"
                     to="/"
                     onClick={this.props.handleSignOut}
                   >
                     Sign out
+                  </NavLink>
+                )}
+                {this.props.signed_in && (
+                  <NavLink
+                    to="/user/editProfile"
+                    style={{
+                      color: "aliceblue",
+                      fontSize: 20,
+                      textDecoration: "none",
+                      paddingLeft: 10,
+                      paddingRight: 10,
+
+                      outline: "none"
+                    }}
+                  >
+                    {Cookies.get("avatar_url") && (
+                      <UserAvatar
+                        size="60"
+                        name={userName}
+                        src={Cookies.get("avatar_url")}
+                        color="#008bad"
+                      />
+                    )}
+                    {!Cookies.get("avatar_url") && (
+                      <UserAvatar size="60" name={userName} color="#005a70" />
+                    )}
                   </NavLink>
                 )}
               </Nav>
@@ -284,7 +337,7 @@ class NavBar extends Component {
               </Nav>
             </Navbar.Collapse>
           </div>
-        </Navbar> */}
+        </Navbar> rgb(26, 188, 156) */}
       </React.Fragment>
     );
   }

@@ -39,6 +39,9 @@ class App extends Component {
     Cookies.set("user_email", user.email);
     Cookies.set("user_id", user.id);
     Cookies.set("user_authentication_token", user.authentication_token);
+    if (user.image_url) Cookies.set("avatar_url", user.image_url);
+    Cookies.set("firstName", user.firstName);
+    Cookies.set("lastName", user.lastName);
     this.props.history.push("/");
   };
 

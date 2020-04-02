@@ -91,8 +91,9 @@ class SignIn extends Component {
         <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Email</label>
             <input
+              maxlength="40"
               autoComplete="off"
               autoFocus
               value={account.username}
@@ -112,6 +113,7 @@ class SignIn extends Component {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
+              maxlength="20"
               value={account.password}
               name="password"
               onChange={this.handleInput}

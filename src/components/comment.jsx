@@ -12,7 +12,8 @@ class Comment extends Component {
   state = {
     replyBody: "",
     user: "",
-    avatar: ""
+    avatar: "",
+    email: ""
   };
   handleDelete = () => {
     axios({
@@ -29,8 +30,9 @@ class Comment extends Component {
   componentDidMount() {
     get_username(this.props.comment.user_id).then(resp => {
       this.setState({
-        user: resp.email.substring(0, resp.email.indexOf("@")),
-        avatar: resp.image_url
+        user: resp,
+        avatar: resp.image_url,
+        email: resp.email.substring(0, resp.email.indexOf("@"))
       });
     });
   }
@@ -75,16 +77,23 @@ class Comment extends Component {
     return (
       <React.Fragment>
         <h1>
-          {this.state.user && (
+          {this.state.user && this.state.avatar && (
             <UserAvatar
               size="80"
-              name={this.state.user.slice(0, 2).toUpperCase()}
+              name={this.state.user.firstName + " " + this.state.user.lastName}
               src={this.state.avatar}
               style={{ display: "inline-block" }}
             />
           )}
+          {this.state.user && !this.state.avatar && (
+            <UserAvatar
+              size="80"
+              name={this.state.user.firstName + " " + this.state.user.lastName}
+              style={{ display: "inline-block" }}
+            />
+          )}
           <br />
-          {this.state.user} says
+          {this.state.email} says
         </h1>
         {comment.body}
         <p>

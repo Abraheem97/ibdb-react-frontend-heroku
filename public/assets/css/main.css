@@ -324,6 +324,12 @@ a {
 a:hover {
   color: #726c6c !important;
 }
+.image-upload > input {
+  display: none;
+}
+.form-group > label {
+  cursor: pointer;
+}
 
 strong,
 b {

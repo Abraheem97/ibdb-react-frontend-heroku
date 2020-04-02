@@ -15,6 +15,11 @@ class Comment extends Component {
     avatar: "",
     email: ""
   };
+
+  commentImageStyles = {
+    width: 120,
+    height: 150
+  };
   handleDelete = () => {
     axios({
       method: "delete",
@@ -95,6 +100,15 @@ class Comment extends Component {
           <br />
           {this.state.email} says
         </h1>
+        <div style={{ textAlign: "center" }}>
+          {comment.image_url && (
+            <img
+              src={comment.image_url}
+              style={this.commentImageStyles}
+              alt="image"
+            />
+          )}
+        </div>
         {comment.body}
         <p>
           <TimeAgo date={comment.created_at} />

@@ -186,29 +186,31 @@ class Book extends Component {
                 </p>
               )}
             </div>
-            {parentComments.map((comment, index) => (
-              <div
-                key={comment.id}
-                className="box"
-                style={{
-                  borderRadius: 30,
-                  border: "solid 1px"
-                }}
-              >
-                <Comment
-                  handleEditResponse={this.handleEditCommentResponse}
-                  handleResponse={this.handleReplySubmit}
-                  handleCommentDelete={this.handleCommentDelete}
-                  book_id={this.state.id}
-                  comments={this.state.comments}
-                  comment={comment}
-                  replies={this.state.comments.filter(
-                    reply => reply.parent_id === comment.id
-                  )}
-                  parentIndex={index}
-                />
-              </div>
-            ))}
+            <div class="commentPane">
+              {parentComments.map((comment, index) => (
+                <div
+                  key={comment.id}
+                  className="box"
+                  style={{
+                    borderRadius: 30,
+                    border: "solid 1px"
+                  }}
+                >
+                  <Comment
+                    handleEditResponse={this.handleEditCommentResponse}
+                    handleResponse={this.handleReplySubmit}
+                    handleCommentDelete={this.handleCommentDelete}
+                    book_id={this.state.id}
+                    comments={this.state.comments}
+                    comment={comment}
+                    replies={this.state.comments.filter(
+                      reply => reply.parent_id === comment.id
+                    )}
+                    parentIndex={index}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </React.Fragment>
@@ -252,7 +254,6 @@ function ReviewModal(params) {
       .then(res => params.handleResponse(res.data))
       .catch(errors => {
         if (errors) {
-          console.log(errors);
         }
       });
   };

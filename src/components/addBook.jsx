@@ -43,7 +43,6 @@ class AddBook extends Component {
       delete errors.author_name;
       book.author_name = e.currentTarget.value;
       this.setState({ book, errors });
-      console.log(this.state.book);
     }
   };
 
@@ -66,7 +65,7 @@ class AddBook extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log(this.state);
+
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;

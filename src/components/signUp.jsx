@@ -127,12 +127,11 @@ class SignUp extends Component {
       }
     })
       .then(res => {
-        console.log("res", res);
         this.props.handleSignUp(res.data);
       })
       .catch(error => {
         // console.log(error.response); // returns whole error object passed from the api call
-        console.log(error.response.data.errors.email[0]); // returns the error message
+        // console.log(error.response.data.errors.email[0]); // returns the error message
         if (error.response.status === 422) {
           const errors = { ...this.state.errors };
           errors.email = "Email has already been taken";
@@ -164,7 +163,8 @@ class SignUp extends Component {
               <div className="form-group">
                 <label htmlFor="email">First Name</label>
                 <input
-                  maxlength="30"
+                  autoFocus
+                  maxLength="30"
                   autoComplete="off"
                   value={account.firstName}
                   onChange={this.handleInput}
@@ -185,7 +185,7 @@ class SignUp extends Component {
               <div className="form-group">
                 <label htmlFor="email">Last Name</label>
                 <input
-                  maxlength="30"
+                  maxLength="30"
                   autoComplete="off"
                   value={account.lastName}
                   onChange={this.handleInput}
@@ -207,7 +207,6 @@ class SignUp extends Component {
             <label htmlFor="email">Email</label>
             <input
               autoComplete="off"
-              autoFocus
               value={account.email}
               onChange={this.handleInput}
               name="email"
@@ -225,7 +224,8 @@ class SignUp extends Component {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
-              maxlength="20"
+              autoComplete="off"
+              maxLength="20"
               value={account.password}
               name="password"
               onChange={this.handleInput}
@@ -243,7 +243,8 @@ class SignUp extends Component {
           <div className="form-group">
             <label htmlFor="password_confirmation">Password confirmation</label>
             <input
-              maxlength="20"
+              autoComplete="off"
+              maxLength="20"
               value={account.password_confirmation}
               name="password_confirmation"
               onChange={this.handleInput}

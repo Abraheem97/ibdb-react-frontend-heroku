@@ -70,9 +70,7 @@ class App extends Component {
         this.setState({ user: {}, isLoggedIn: false, alerts: alerts });
         setInterval(this.handleAlertTimeout, 5000);
       })
-      .catch(errors => {
-        console.log(errors);
-      });
+      .catch(errors => {});
     // $.ajax({
     //   method: "POST",
     //   url: "http://localhost:3001/v1/sessions",
@@ -114,7 +112,7 @@ class App extends Component {
 
           <div className="container">
             {this.state.alerts.sign_out && (
-              <div style={{ margin: 20 }} className="alert alert-dark">
+              <div className="alert alert-dark">
                 {this.state.alerts.sign_out}
               </div>
             )}

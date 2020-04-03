@@ -30,7 +30,7 @@ class NavBar extends Component {
 
   render() {
     const userName = Cookies.get("firstName") + " " + Cookies.get("lastName");
-    console.log(userName);
+
     return (
       <React.Fragment>
         <Navbar expand="lg" style={this.style}>
@@ -59,7 +59,8 @@ class NavBar extends Component {
                         paddingLeft: 5,
                         outline: "none",
                         paddingTop: 7,
-                        paddingRight: 15
+
+                        textAlign: "center"
                       }}
                       className="nav-item nav-link"
                       to="/add_book"
@@ -76,7 +77,8 @@ class NavBar extends Component {
                       paddingLeft: 5,
                       outline: "none",
                       paddingTop: 15,
-                      paddingRight: 15
+
+                      textAlign: "center"
                     }}
                     className="nav-item nav-link"
                     to="/login"
@@ -92,7 +94,8 @@ class NavBar extends Component {
                       paddingLeft: 5,
                       outline: "none",
                       paddingTop: 15,
-                      paddingRight: 15
+
+                      textAlign: "center"
                     }}
                     className="nav-item nav-link"
                     to="/signup"
@@ -105,7 +108,8 @@ class NavBar extends Component {
                     style={{
                       color: "black",
                       paddingTop: 7,
-                      paddingRight: 15
+
+                      textAlign: "center"
                     }}
                     className="nav-link disabled"
                   >
@@ -117,7 +121,8 @@ class NavBar extends Component {
                     style={{
                       color: "black",
                       paddingTop: 7,
-                      paddingRight: 15
+
+                      textAlign: "center"
                     }}
                     className="nav-link disabled"
                   >
@@ -143,8 +148,9 @@ class NavBar extends Component {
                       color: "indianred",
                       paddingLeft: 5,
                       paddingTop: 10,
-                      paddingRight: 15,
-                      outline: "none"
+
+                      outline: "none",
+                      textAlign: "center"
                     }}
                     className="nav-item nav-link"
                     to="/"
@@ -153,32 +159,31 @@ class NavBar extends Component {
                     Sign out
                   </NavLink>
                 )}
-                {this.props.signed_in && (
-                  <NavLink
-                    to="/user/editProfile"
-                    style={{
-                      color: "aliceblue",
-                      fontSize: 20,
-                      textDecoration: "none",
-                      paddingLeft: 10,
-                      paddingRight: 10,
-
-                      outline: "none"
-                    }}
-                  >
-                    {Cookies.get("avatar_url") && (
-                      <UserAvatar
-                        size="60"
-                        name={userName}
-                        src={Cookies.get("avatar_url")}
-                        color="#008bad"
-                      />
-                    )}
-                    {!Cookies.get("avatar_url") && (
-                      <UserAvatar size="60" name={userName} color="#005a70" />
-                    )}
-                  </NavLink>
-                )}
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  {this.props.signed_in && (
+                    <NavLink
+                      to="/user/editProfile"
+                      style={{
+                        color: "aliceblue",
+                        fontSize: 20,
+                        textDecoration: "none",
+                        outline: "none"
+                      }}
+                    >
+                      {Cookies.get("avatar_url") && (
+                        <UserAvatar
+                          size="60"
+                          name={userName}
+                          src={Cookies.get("avatar_url")}
+                          color="#008bad"
+                        />
+                      )}
+                      {!Cookies.get("avatar_url") && (
+                        <UserAvatar size="60" name={userName} color="#005a70" />
+                      )}
+                    </NavLink>
+                  )}
+                </div>
               </Nav>
             </Navbar.Collapse>
           </div>

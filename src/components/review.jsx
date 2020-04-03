@@ -156,7 +156,6 @@ function EditModal(params) {
       .then(res => params.handleResponse(res))
       .catch(errors => {
         if (errors) {
-          console.log(errors);
         }
       });
   };

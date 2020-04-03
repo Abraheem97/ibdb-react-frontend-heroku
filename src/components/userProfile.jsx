@@ -3,6 +3,7 @@ import { get_userDetails } from "../Services/userService";
 import { withRouter } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import UserAvatar from "react-user-avatar";
 
 class UserProfile extends Component {
   state = {
@@ -32,7 +33,6 @@ class UserProfile extends Component {
       Cookies.get("user_id"),
       Cookies.get("user_authentication_token")
     ).then(resp => {
-      console.log(resp);
       let account = { ...this.state.account };
       account.email = resp.data.email;
       account.firstName = resp.data.firstName;
@@ -219,9 +219,7 @@ class UserProfile extends Component {
     return (
       <div>
         {this.state.alerts && (
-          <div style={{ margin: 20 }} className="alert alert-dark">
-            {this.state.alerts}
-          </div>
+          <div className="alert alert-dark">{this.state.alerts}</div>
         )}
         <h1>Edit Profile</h1>
 
@@ -387,11 +385,24 @@ class UserProfile extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="image">
-              <img src={this.state.avatar} style={{ height: 59, width: 59 }} />{" "}
+              <UserAvatar
+                style={{
+                  margin: 0,
+                  paddingLeft: 10,
+                  display: "inline-block"
+                }}
+                src={this.state.avatar}
+                size="60"
+                name={
+                  this.state.account.firstName.toUpperCase() +
+                  " " +
+                  this.state.account.lastName.toUpperCase()
+                }
+                color="#005a70"
+              />
               {this.state.deleteAvatar && (
                 <p
                   style={{
-                    margin: 0,
                     paddingLeft: 10,
                     display: "inline-block"
                   }}
@@ -402,7 +413,7 @@ class UserProfile extends Component {
               <br />
               {this.state.avatar && (
                 <i
-                  style={{ padding: 20 }}
+                  style={{ paddingLeft: 33 }}
                   className="fas fa-trash-alt"
                   onClick={this.handleAvatarDelete}
                 />

@@ -58,7 +58,6 @@ class SignIn extends Component {
       })
       .catch(errors => {
         if (errors) {
-          console.log(errors);
           let Myerrors = { ...this.state.errors };
           if (errors.message === "Request failed with status code 403")
             Myerrors.wrong =
@@ -93,7 +92,7 @@ class SignIn extends Component {
           <div className="form-group">
             <label htmlFor="username">Email</label>
             <input
-              maxlength="40"
+              maxLength="40"
               autoComplete="off"
               autoFocus
               value={account.username}
@@ -113,7 +112,7 @@ class SignIn extends Component {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
-              maxlength="20"
+              maxLength="20"
               value={account.password}
               name="password"
               onChange={this.handleInput}

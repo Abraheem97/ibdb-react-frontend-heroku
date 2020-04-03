@@ -93,7 +93,11 @@ class Comment extends Component {
           {this.state.user && this.state.avatar && (
             <UserAvatar
               size="60"
-              name={this.state.user.firstName + " " + this.state.user.lastName}
+              name={
+                this.state.user.firstName.toUpperCase() +
+                " " +
+                this.state.user.lastName.toUpperCase()
+              }
               src={this.state.avatar}
               style={{ display: "inline-block" }}
             />
@@ -101,7 +105,11 @@ class Comment extends Component {
           {this.state.user && !this.state.avatar && (
             <UserAvatar
               size="60"
-              name={this.state.user.firstName + " " + this.state.user.lastName}
+              name={
+                this.state.user.firstName.toUpperCase() +
+                " " +
+                this.state.user.lastName.toUpperCase()
+              }
               style={{ display: "inline-block" }}
             />
           )}
@@ -317,7 +325,6 @@ function EditModal(params) {
       .then(res => params.handleResponse(res))
       .catch(errors => {
         if (errors) {
-          console.log(errors);
         }
       });
   };

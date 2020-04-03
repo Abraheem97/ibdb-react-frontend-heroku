@@ -192,8 +192,7 @@ class Book extends Component {
                 className="box"
                 style={{
                   borderRadius: 30,
-                  border: "solid 1px",
-                  padding: 50
+                  border: "solid 1px"
                 }}
               >
                 <Comment

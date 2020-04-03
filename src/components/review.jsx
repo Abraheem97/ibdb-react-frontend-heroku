@@ -10,10 +10,7 @@ import axios from "axios";
 class Review extends Component {
   state = { user: "" };
   buttonStyles = {
-    lineHeight: 0,
-    width: 15,
-    fontSize: 5,
-    fonFamily: "tahoma",
+    cursor: "pointer",
     marginTop: 5,
     marginBottom: 0,
     marginRight: 2,
@@ -29,7 +26,7 @@ class Review extends Component {
   canDeleteReview() {
     let canDelete = false;
     if (
-      Cookies.get("user_id") === this.props.review.user_id ||
+      Cookies.get("user_id") == this.props.review.user_id ||
       (Cookies.get("user_role") && Cookies.get("user_role") !== "4")
     )
       canDelete = true;
@@ -39,7 +36,7 @@ class Review extends Component {
   }
   canEditReview() {
     let canDelete = false;
-    if (Cookies.get("user_id") === this.props.review.user_id) canDelete = true;
+    if (Cookies.get("user_id") == this.props.review.user_id) canDelete = true;
     else canDelete = false;
 
     return canDelete;
@@ -68,14 +65,11 @@ class Review extends Component {
         }}
       >
         {this.canDeleteReview() && (
-          <Button
-            variant="outline-danger"
-            size="sm"
-            onClick={this.handleDelete}
+          <i
+            className="fas fa-trash-alt"
             style={this.buttonStyles}
-          >
-            x
-          </Button>
+            onClick={this.handleDelete}
+          ></i>
         )}
         <StarRatings
           rating={this.props.review.rating}
@@ -84,7 +78,7 @@ class Review extends Component {
           name="rating"
           starDimension="27px"
           starSpacing="5px"
-          starEmptyColor="white"
+          starEmptyColor="darkgrey"
         />
         {this.canEditReview() && (
           <EditModal
@@ -93,13 +87,20 @@ class Review extends Component {
           />
         )}
         {this.props.details && (
-          <pre style={{ marginTop: 15 }}>{this.props.review.comment}</pre>
+          <pre style={{ marginTop: 15, fontFamily: "Source Sans Pro" }}>
+            {this.props.review.comment}
+          </pre>
         )}
         {!this.props.details && (
-          <p style={{ marginTop: 15 }}>{this.props.review.comment}</p>
+          <p style={{ marginTop: 15, fontFamily: "Source Sans Pro" }}>
+            {this.props.review.comment}
+          </p>
         )}
 
-        <p> Submitted by {this.state.user}</p>
+        <p style={{ fontWeight: "bold", fontSize: 14 }}>
+          {" "}
+          Submitted by {this.state.user}
+        </p>
       </div>
     );
   }
@@ -127,13 +128,10 @@ function EditModal(params) {
   //   });
   // };
   const buttonStyles = {
-    lineHeight: 0,
-    width: 15,
-    fontSize: 5,
-    fonFamily: "tahoma",
+    cursor: "pointer",
     marginTop: 5,
     marginBottom: 0,
-    marginRight: 20,
+    marginRight: 25,
     position: "absolute",
     right: 20,
     paddingLeft: 0
@@ -165,12 +163,11 @@ function EditModal(params) {
 
   return (
     <React.Fragment>
-      <Button
-        variant="outline-primary"
-        size="sm"
+      <i
+        className="fas fa-pencil-alt"
         style={buttonStyles}
         onClick={handleShow}
-      ></Button>
+      />
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
         <Modal.Header>
@@ -188,7 +185,7 @@ function EditModal(params) {
               name="rating"
               starDimension="35px"
               starSpacing="5px"
-              starEmptyColor="lightblue"
+              starEmptyColor="darkgrey"
               starHoverColor="gold"
             />
           </div>

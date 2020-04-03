@@ -20,6 +20,11 @@ class Comment extends Component {
     width: 120,
     height: 150
   };
+
+  buttonStyles = {
+    cursor: "pointer",
+    marginLeft: 7
+  };
   handleDelete = () => {
     axios({
       method: "delete",
@@ -55,7 +60,7 @@ class Comment extends Component {
   canDeleteComment() {
     let canDelete = false;
     if (
-      Cookies.get("user_id") === this.props.comment.user_id ||
+      Cookies.get("user_id") == this.props.comment.user_id ||
       (Cookies.get("user_role") && Cookies.get("user_role") !== "4")
     )
       canDelete = true;
@@ -66,7 +71,7 @@ class Comment extends Component {
 
   canEditComment() {
     let canDelete = false;
-    if (Cookies.get("user_id") === this.props.comment.user_id) canDelete = true;
+    if (Cookies.get("user_id") == this.props.comment.user_id) canDelete = true;
     else canDelete = false;
 
     return canDelete;
@@ -78,13 +83,16 @@ class Comment extends Component {
 
   render() {
     let comment = this.props.comment;
-
+    let action = "";
+    if (comment.parent_id) {
+      action = "replies";
+    } else action = "says";
     return (
       <React.Fragment>
-        <h1>
+        <h1 style={{ fontSize: 25 }}>
           {this.state.user && this.state.avatar && (
             <UserAvatar
-              size="80"
+              size="60"
               name={this.state.user.firstName + " " + this.state.user.lastName}
               src={this.state.avatar}
               style={{ display: "inline-block" }}
@@ -92,13 +100,16 @@ class Comment extends Component {
           )}
           {this.state.user && !this.state.avatar && (
             <UserAvatar
-              size="80"
+              size="60"
               name={this.state.user.firstName + " " + this.state.user.lastName}
               style={{ display: "inline-block" }}
             />
           )}
-          <br />
-          {this.state.email} says
+          {"  "}
+          <h1 style={{ fontSize: 25 }}>
+            {" "}
+            {this.state.email} {action}{" "}
+          </h1>
         </h1>
         <div style={{ textAlign: "center" }}>
           {comment.image_url && (
@@ -109,36 +120,37 @@ class Comment extends Component {
             />
           )}
         </div>
-        {comment.body}
-        <p>
-          <TimeAgo date={comment.created_at} />
+
+        <p style={{ margin: 0, padding: 0, fontFamily: "sans-serif" }}>
+          {comment.body}
         </p>
-        {Cookies.get("isLoggedIn") && (
-          <MyModal
-            parent_id={comment.id}
-            parent_body={comment.body}
-            book_id={this.props.book_id}
-            handleResponse={this.handleResponse}
-          />
-        )}
-        {this.canEditComment() && (
-          <EditModal
-            comment={comment}
-            handleResponse={this.handleEditResponse}
-            book_id={this.props.book_id}
-          />
-        )}
-        {this.canDeleteComment() && (
-          <Button
-            size="sm"
-            variant="outline-danger"
-            onClick={this.handleDelete}
-            style={{ marginLeft: 3 }}
-          >
-            Delete
-          </Button>
-        )}
-        {this.props.parentIndex < 17 &&
+        <p>
+          <TimeAgo date={comment.created_at} style={{ marginRight: 10 }} />
+          {Cookies.get("isLoggedIn") && (
+            <MyModal
+              parent_id={comment.id}
+              parent_body={comment.body}
+              book_id={this.props.book_id}
+              handleResponse={this.handleResponse}
+            />
+          )}
+          {this.canEditComment() && (
+            <EditModal
+              comment={comment}
+              handleResponse={this.handleEditResponse}
+              book_id={this.props.book_id}
+            />
+          )}
+          {this.canDeleteComment() && (
+            <i
+              style={this.buttonStyles}
+              className="fas fa-trash-alt"
+              onClick={this.handleDelete}
+            />
+          )}
+        </p>
+
+        {this.props.parentIndex < 12 &&
           this.props.replies.map((comment, index) => (
             <div
               className="dont-break-out"
@@ -189,6 +201,9 @@ function MyModal(params) {
     setModalIsOpen(false);
   };
   const handleShow = () => setModalIsOpen(true);
+  const buttonStyles = {
+    cursor: "pointer"
+  };
 
   // const comment_username = () => {
   //   return get_username(Cookies.get("user_id")).then(res => {
@@ -224,9 +239,11 @@ function MyModal(params) {
 
   return (
     <React.Fragment>
-      <Button variant="outline" size="sm" onClick={handleShow}>
-        Reply
-      </Button>
+      <i
+        className="fas fa-reply-all"
+        onClick={handleShow}
+        style={buttonStyles}
+      />
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
         <Modal.Header>
@@ -264,6 +281,11 @@ function MyModal(params) {
 
 function EditModal(params) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const buttonStyles = {
+    cursor: "pointer",
+    padding: 10,
+    marginLeft: 7
+  };
   const handleClose = () => {
     setModalIsOpen(false);
   };
@@ -302,14 +324,11 @@ function EditModal(params) {
 
   return (
     <React.Fragment>
-      <Button
-        variant="outline"
-        size="sm"
+      <i
+        className="fas fa-pencil-alt"
         onClick={handleShow}
-        style={{ marginLeft: 2 }}
-      >
-        Edit
-      </Button>
+        style={buttonStyles}
+      />
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
         <Modal.Header>

@@ -171,7 +171,7 @@ class Comment extends Component {
               />
             </div>
           ))}
-        {this.props.parentIndex >= 17 &&
+        {this.props.parentIndex >= 12 &&
           this.props.replies.map((comment, index) => (
             <div key={comment.id} style={{ paddingTop: 20 }}>
               <Comment

@@ -11,7 +11,7 @@ import UserAvatar from "react-user-avatar";
 class Comment extends Component {
   state = {
     replyBody: "",
-    user: { firstName: "", lastName: "" },
+    user: { firstName: "A", lastName: "A" },
     avatar: "",
     email: ""
   };

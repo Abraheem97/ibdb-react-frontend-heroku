@@ -112,7 +112,7 @@ class Book extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          <div className="col-sm-6 col-md-4" style={this.textCenter}>
+          <div className="col" style={this.textCenter}>
             <div className="thumbnail thumb-box">
               <div className="caption">
                 <h1>{this.state.book.title}</h1>

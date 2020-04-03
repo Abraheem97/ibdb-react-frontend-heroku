@@ -170,10 +170,8 @@ function EditModal(params) {
       />
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
-        <Modal.Header>
-          <Modal.Title style={{ paddingLeft: 118 }}>
-            Tell us about the book
-          </Modal.Title>
+        <Modal.Header style={{ justifyContent: "center" }}>
+          <Modal.Title>Tell us about the book</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: "center" }}>
           <div>

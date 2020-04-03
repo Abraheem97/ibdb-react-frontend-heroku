@@ -135,7 +135,7 @@ class Book extends Component {
                     />
                   )}
               </div>
-              {Cookies.get("user_role") === 1 && (
+              {Cookies.get("user_role") == 1 && (
                 <Button
                   variant="outline-danger"
                   onClick={this.handleBookDelete}
@@ -264,10 +264,8 @@ function ReviewModal(params) {
       </button>
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
-        <Modal.Header>
-          <Modal.Title style={{ paddingLeft: 118 }}>
-            Tell us about the book
-          </Modal.Title>
+        <Modal.Header style={{ justifyContent: "center" }}>
+          <Modal.Title>Tell us about the book</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: "center" }}>
           <div>

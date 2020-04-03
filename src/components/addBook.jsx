@@ -135,7 +135,14 @@ class AddBook extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="author">Author name</label> <br></br>
-            <select name="author" onChange={this.handleAuthorInput}>
+            <select
+              name="author"
+              onChange={this.handleAuthorInput}
+              style={{
+                color: "rgba(0,0,0,0)",
+                textShadow: "0 0 0 #000"
+              }}
+            >
               <option Key=""></option>
               {this.state.authors.map(obj => (
                 <option key={obj} Key={obj}>

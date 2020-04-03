@@ -246,7 +246,7 @@ function MyModal(params) {
       />
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
-        <Modal.Header>
+        <Modal.Header style={{ justifyContent: "center" }}>
           <Modal.Title>Replying to</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: "center" }}>
@@ -331,7 +331,7 @@ function EditModal(params) {
       />
 
       <Modal show={modalIsOpen} onHide={handleClose} animation={false}>
-        <Modal.Header>
+        <Modal.Header style={{ justifyContent: "center" }}>
           <Modal.Title>Edit comment</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: "center" }}>

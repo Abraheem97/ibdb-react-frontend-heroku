@@ -18,7 +18,8 @@ class UserProfile extends Component {
     },
     errors: {},
     avatar: "",
-    alerts: ""
+    alerts: "",
+    deleteAvatar: false
   };
   handleAlertTimeout = () => {
     this.setState({ alerts: "" });
@@ -41,7 +42,9 @@ class UserProfile extends Component {
       this.setState({ account, avatar: resp.data.image_url });
     });
   }
-
+  handleAvatarDelete = () => {
+    this.setState({ deleteAvatar: !this.state.deleteAvatar });
+  };
   handleSuccessfulSubmit = resp => {
     let alerts = { ...this.state.alerts };
     alerts = "Profile has been successfully updated";
@@ -54,7 +57,12 @@ class UserProfile extends Component {
     account.unconfirmed_email = resp.data.unconfirmed_email;
     console.log(resp);
 
-    this.setState({ account, alerts, avatar: resp.data.image_url });
+    this.setState({
+      account,
+      alerts,
+      avatar: resp.data.image_url,
+      deleteAvatar: false
+    });
     Cookies.set("avatar_url", resp.data.image_url);
     this.refs.btn.removeAttribute("disabled");
 
@@ -172,7 +180,7 @@ class UserProfile extends Component {
           password_confirmation: this.state.account.password
             ? this.state.account.password
             : null,
-          image_url: file.url
+          image_url: this.state.deleteAvatar ? "" : file.url
         }
       },
       headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }
@@ -379,7 +387,26 @@ class UserProfile extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="image">
-              <img src={this.state.avatar} style={{ height: 59, width: 59 }} />
+              <img src={this.state.avatar} style={{ height: 59, width: 59 }} />{" "}
+              {this.state.deleteAvatar && (
+                <p
+                  style={{
+                    margin: 0,
+                    paddingLeft: 10,
+                    display: "inline-block"
+                  }}
+                >
+                  Avatar will be deleted on submit
+                </p>
+              )}
+              <br />
+              {this.state.avatar && (
+                <i
+                  style={{ padding: 20 }}
+                  className="fas fa-trash-alt"
+                  onClick={this.handleAvatarDelete}
+                />
+              )}
               <br />
               Upload avatar <br></br>
               <input

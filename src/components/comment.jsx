@@ -11,7 +11,7 @@ import UserAvatar from "react-user-avatar";
 class Comment extends Component {
   state = {
     replyBody: "",
-    user: "",
+    user: { firstName: "", lastName: "" },
     avatar: "",
     email: ""
   };
@@ -44,6 +44,7 @@ class Comment extends Component {
         avatar: resp.image_url,
         email: resp.email.substring(0, resp.email.indexOf("@"))
       });
+      console.log(this.state.user);
     });
   }
   handleResponse = res => {

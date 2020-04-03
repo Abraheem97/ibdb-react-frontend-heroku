@@ -56,7 +56,7 @@ class NavBar extends Component {
                     <NavLink
                       style={{
                         color: "aliceblue",
-                        paddingLeft: 5,
+
                         outline: "none",
                         paddingTop: 7,
 
@@ -74,7 +74,7 @@ class NavBar extends Component {
                   <NavLink
                     style={{
                       color: "aliceblue",
-                      paddingLeft: 5,
+
                       outline: "none",
                       paddingTop: 15,
 
@@ -91,7 +91,7 @@ class NavBar extends Component {
                   <NavLink
                     style={{
                       color: "aliceblue",
-                      paddingLeft: 5,
+
                       outline: "none",
                       paddingTop: 15,
 
@@ -107,7 +107,7 @@ class NavBar extends Component {
                   <Navbar
                     style={{
                       color: "black",
-                      paddingTop: 7,
+                      paddingTop: 6,
 
                       textAlign: "center"
                     }}
@@ -120,7 +120,7 @@ class NavBar extends Component {
                   <Navbar
                     style={{
                       color: "black",
-                      paddingTop: 7,
+                      paddingTop: 6,
 
                       textAlign: "center"
                     }}
@@ -133,7 +133,7 @@ class NavBar extends Component {
                   <Navbar
                     style={{
                       color: "black",
-                      paddingTop: 7,
+                      paddingTop: 6,
                       paddingRight: 15
                     }}
                     className="nav-link disabled"
@@ -146,7 +146,7 @@ class NavBar extends Component {
                   <NavLink
                     style={{
                       color: "indianred",
-                      paddingLeft: 5,
+                      paddingRight: 25,
                       paddingTop: 10,
 
                       outline: "none",

@@ -10,9 +10,8 @@ class NavBar extends Component {
   style = {
     display: "block",
     position: "relative",
-    height: "6.8em",
-    lineHeight: "3em",
-    padding: "0 1.5em",
+
+    lineHeight: "3.5em",
 
     border: 0,
     fontSize: "0.8em",
@@ -34,8 +33,8 @@ class NavBar extends Component {
     return (
       <React.Fragment>
         <Navbar expand="lg" style={this.style}>
-          <div className="container" style={{ paddingTop: 10 }}>
-            <NavLink style={{ outline: "none", paddingBottom: 5 }} to="/">
+          <div className="container" style={{}}>
+            <NavLink style={{ outline: "none" }} to="/">
               <Navbar.Brand style={{ color: "darkgray", fontSize: "x-large" }}>
                 IBDB
               </Navbar.Brand>
@@ -58,7 +57,6 @@ class NavBar extends Component {
                         color: "aliceblue",
 
                         outline: "none",
-                        paddingTop: 7,
 
                         textAlign: "center"
                       }}
@@ -76,7 +74,6 @@ class NavBar extends Component {
                       color: "aliceblue",
 
                       outline: "none",
-                      paddingTop: 15,
 
                       textAlign: "center"
                     }}
@@ -93,7 +90,6 @@ class NavBar extends Component {
                       color: "aliceblue",
 
                       outline: "none",
-                      paddingTop: 15,
 
                       textAlign: "center"
                     }}
@@ -107,9 +103,9 @@ class NavBar extends Component {
                   <Navbar
                     style={{
                       color: "black",
-                      paddingTop: 6,
 
-                      textAlign: "center"
+                      display: "flex",
+                      justifyContent: "center"
                     }}
                     className="nav-link disabled"
                   >
@@ -120,9 +116,9 @@ class NavBar extends Component {
                   <Navbar
                     style={{
                       color: "black",
-                      paddingTop: 6,
 
-                      textAlign: "center"
+                      display: "flex",
+                      justifyContent: "center"
                     }}
                     className="nav-link disabled"
                   >
@@ -133,8 +129,9 @@ class NavBar extends Component {
                   <Navbar
                     style={{
                       color: "black",
-                      paddingTop: 6,
-                      paddingRight: 15
+
+                      display: "flex",
+                      justifyContent: "center"
                     }}
                     className="nav-link disabled"
                   >
@@ -146,8 +143,6 @@ class NavBar extends Component {
                   <NavLink
                     style={{
                       color: "indianred",
-                      paddingRight: 25,
-                      paddingTop: 10,
 
                       outline: "none",
                       textAlign: "center"
@@ -159,7 +154,12 @@ class NavBar extends Component {
                     Sign out
                   </NavLink>
                 )}
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center"
+                  }}
+                >
                   {this.props.signed_in && (
                     <NavLink
                       to="/user/editProfile"

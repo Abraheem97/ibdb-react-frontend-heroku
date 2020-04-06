@@ -114,7 +114,7 @@ class Comment extends Component {
             />
           )}
           <br />
-          {"  "} {this.state.email} {action}{" "}
+          {"  "} {this.state.user.firstName} {action}{" "}
         </h1>
         <div style={{ textAlign: "center" }}>
           {comment.image_url && (

@@ -167,18 +167,21 @@ class UserProfile extends Component {
         return;
       this.refs.btn.setAttribute("disabled", "disabled");
 
-      const data = new FormData();
-      data.append("file", this.state.account.selectedFile);
-      data.append("upload_preset", "st2nr1uo");
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
-        {
-          method: "POST",
-          body: data
-        }
-      );
+      let file = null;
+      if (this.state.account.selectedFile) {
+        const data = new FormData();
+        data.append("file", this.state.account.selectedFile);
+        data.append("upload_preset", "st2nr1uo");
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+          {
+            method: "POST",
+            body: data
+          }
+        );
 
-      const file = await res.json();
+        file = await res.json();
+      }
 
       axios({
         method: "patch",
@@ -197,7 +200,7 @@ class UserProfile extends Component {
             password_confirmation: this.state.account.password
               ? this.state.account.password
               : null,
-            image_url: this.state.deleteAvatar ? "" : file.url
+            image_url: this.state.deleteAvatar ? "" : file ? file.url : ""
           }
         },
         headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }

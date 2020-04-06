@@ -169,6 +169,7 @@ class SignUp extends Component {
               <div className="form-group">
                 <label htmlFor="email">First Name</label>
                 <input
+                  required
                   autoFocus
                   maxLength="30"
                   autoComplete="off"
@@ -191,6 +192,7 @@ class SignUp extends Component {
               <div className="form-group">
                 <label htmlFor="email">Last Name</label>
                 <input
+                  required
                   maxLength="30"
                   autoComplete="off"
                   value={account.lastName}

@@ -102,17 +102,20 @@ class Comment extends Component {
               style={{ display: "inline-block" }}
             />
           )}
-          {this.state.user && !this.state.avatar && (
-            <UserAvatar
-              size="60"
-              name={
-                this.state.user.firstName.toUpperCase() +
-                " " +
-                this.state.user.lastName.toUpperCase()
-              }
-              style={{ display: "inline-block" }}
-            />
-          )}
+          {this.state.user &&
+            !this.state.avatar &&
+            this.state.user.firstName &&
+            this.state.user.lastName && (
+              <UserAvatar
+                size="60"
+                name={
+                  this.state.user.firstName.toUpperCase() +
+                  " " +
+                  this.state.user.lastName.toUpperCase()
+                }
+                style={{ display: "inline-block" }}
+              />
+            )}
           <br />
           {"  "} {this.state.user.firstName} {action}{" "}
         </h1>

@@ -271,6 +271,7 @@ class UserProfile extends Component {
               <div className="form-group">
                 <label htmlFor="email">First Name</label>
                 <input
+                  required
                   maxLength="30"
                   autoComplete="off"
                   value={account.firstName}
@@ -292,6 +293,7 @@ class UserProfile extends Component {
               <div className="form-group">
                 <label htmlFor="email">Last Name</label>
                 <input
+                  required
                   maxLength="30"
                   autoComplete="off"
                   value={account.lastName}

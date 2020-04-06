@@ -20,7 +20,8 @@ class UserProfile extends Component {
     errors: {},
     avatar: "",
     alerts: "",
-    deleteAvatar: false
+    deleteAvatar: false,
+    accountVerified: false
   };
   handleAlertTimeout = () => {
     this.setState({ alerts: "" });
@@ -133,6 +134,7 @@ class UserProfile extends Component {
         "Unknown image format, please pick gif, jpeg or png images";
     return Object.keys(errors).length === 0 ? null : errors;
   };
+
   handleSubmit = async e => {
     e.preventDefault();
 
@@ -141,67 +143,88 @@ class UserProfile extends Component {
     this.setState({ errors: errors || {} });
 
     if (errors) return;
-    if (
-      this.state.account.email == Cookies.get("user_email") &&
-      !this.state.account.password &&
-      this.state.account.selectedFile == null &&
-      !this.state.account.firstName
-    )
-      return;
-    this.refs.btn.setAttribute("disabled", "disabled");
-
-    const data = new FormData();
-    data.append("file", this.state.account.selectedFile);
-    data.append("upload_preset", "st2nr1uo");
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
-      {
-        method: "POST",
-        body: data
-      }
-    );
-
-    const file = await res.json();
-
-    axios({
-      method: "patch",
-      url: `${process.env.REACT_APP_API_URL}/v1/update_user/${Cookies.get(
-        "user_id"
-      )}`,
+    await axios({
+      method: "post",
+      url: `${process.env.REACT_APP_API_URL}/v1/verifyAccount`,
       data: {
-        user: {
-          firstName: this.state.account.firstName,
-          lastName: this.state.account.lastName,
-          current_password: this.state.account.current_password,
-          email: this.state.account.email,
-          password: this.state.account.password
-            ? this.state.account.password
-            : null,
-          password_confirmation: this.state.account.password
-            ? this.state.account.password
-            : null,
-          image_url: this.state.deleteAvatar ? "" : file.url
-        }
+        password: this.state.account.current_password,
+        id: Cookies.get("user_id")
       },
       headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }
     })
       .then(res => {
-        if (this.state.account.password) {
-          this.props.handleSignOut();
-        } else this.handleSuccessfulSubmit(res);
+        if (res.status == 200) this.setState({ accountVerified: true });
       })
-      .catch(error => {
-        if (error.response) {
-          if (error.response.status === 401) {
-            // console.log(error.response); // returns whole error object passed from the api call
-            // console.log(error.response.data.errors.email[0]); // returns the error message
-            const errors = { ...this.state.errors };
-            errors.current_password = "Invaliid Password";
-            this.refs.btn.removeAttribute("disabled");
-            this.setState({ errors });
-          }
+      .catch(error => console.log(error));
+
+    if (this.state.accountVerified == true) {
+      if (
+        this.state.account.email == Cookies.get("user_email") &&
+        !this.state.account.password &&
+        this.state.account.selectedFile == null &&
+        !this.state.account.firstName
+      )
+        return;
+      this.refs.btn.setAttribute("disabled", "disabled");
+
+      const data = new FormData();
+      data.append("file", this.state.account.selectedFile);
+      data.append("upload_preset", "st2nr1uo");
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+        {
+          method: "POST",
+          body: data
         }
-      });
+      );
+
+      const file = await res.json();
+
+      axios({
+        method: "patch",
+        url: `${process.env.REACT_APP_API_URL}/v1/update_user/${Cookies.get(
+          "user_id"
+        )}`,
+        data: {
+          user: {
+            firstName: this.state.account.firstName,
+            lastName: this.state.account.lastName,
+            current_password: this.state.account.current_password,
+            email: this.state.account.email,
+            password: this.state.account.password
+              ? this.state.account.password
+              : null,
+            password_confirmation: this.state.account.password
+              ? this.state.account.password
+              : null,
+            image_url: this.state.deleteAvatar ? "" : file.url
+          }
+        },
+        headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }
+      })
+        .then(res => {
+          if (this.state.account.password) {
+            this.props.handleSignOut();
+          } else this.handleSuccessfulSubmit(res);
+        })
+        .catch(error => {
+          // if (error.response) {
+          //   if (error.response.status === 401) {
+          //     // console.log(error.response); // returns whole error object passed from the api call
+          //     // console.log(error.response.data.errors.email[0]); // returns the error message
+          //     const errors = { ...this.state.errors };
+          //     errors.current_password = "Invaliid Password";
+          //     this.refs.btn.removeAttribute("disabled");
+          //     this.setState({ errors });
+          //   }
+          // }
+        });
+    } else {
+      const errors = { ...this.state.errors };
+      errors.current_password = "Invaliid Password";
+
+      this.setState({ errors });
+    }
     // $.ajax({ Request failed with status code 422
     //   method: "POST",
     //   url: "http://localhost:3001/v1/sessions",
@@ -287,7 +310,6 @@ class UserProfile extends Component {
             <input
               maxlength="40"
               autoComplete="off"
-              autoFocus
               value={account.email}
               onChange={this.handleInput}
               name="email"

@@ -37,19 +37,22 @@ class CommentForm extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
 
-    this.refs.btn.setAttribute("disabled", "disabled");
     const data = new FormData();
-    data.append("file", this.state.selectedFile);
-    data.append("upload_preset", "st2nr1uo");
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
-      {
-        method: "POST",
-        body: data
-      }
-    );
+    let file = null;
+    if (this.state.selectedFile) {
+      this.refs.btn.setAttribute("disabled", "disabled");
 
-    const file = await res.json();
+      data.append("file", this.state.selectedFile);
+      data.append("upload_preset", "st2nr1uo");
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+        {
+          method: "POST",
+          body: data
+        }
+      );
+      file = await res.json();
+    }
 
     axios({
       method: "post",
@@ -59,7 +62,7 @@ class CommentForm extends Component {
         comment: {
           user_id: Cookies.get("user_id"),
           body: this.state.body,
-          image_url: file.url
+          image_url: file ? file.url : ""
         }
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
@@ -90,7 +93,6 @@ class CommentForm extends Component {
           <div className="form-group">
             <input
               required
-              autoFocus
               value={this.state.body}
               onChange={this.handleInput}
               id="body"

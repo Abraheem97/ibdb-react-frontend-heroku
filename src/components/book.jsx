@@ -286,7 +286,6 @@ function ReviewModal(params) {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="body">
               <textarea
-                autoFocus
                 required
                 className="form-control rounded-0"
                 name="Reply"

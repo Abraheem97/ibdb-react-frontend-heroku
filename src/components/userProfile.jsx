@@ -67,6 +67,9 @@ class UserProfile extends Component {
       deleteAvatar: false,
       loading: false
     });
+    Cookies.set("firstName", resp.data.firstName);
+
+    Cookies.set("lastName", resp.data.firstName);
     Cookies.set("avatar_url", resp.data.image_url);
     this.refs.btn.removeAttribute("disabled");
 
@@ -207,7 +210,11 @@ class UserProfile extends Component {
             password_confirmation: this.state.account.password
               ? this.state.account.password
               : null,
-            image_url: this.state.deleteAvatar ? "" : file ? file.url : ""
+            image_url: this.state.deleteAvatar
+              ? ""
+              : file
+              ? file.url
+              : this.state.avatar
           }
         },
         headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }

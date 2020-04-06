@@ -130,7 +130,10 @@ class Comment extends Component {
           {comment.body}
         </p>
         <p>
-          <TimeAgo date={comment.created_at} style={{ marginRight: 10 }} />
+          <TimeAgo
+            date={comment.created_at}
+            style={{ marginRight: 10, fontSize: 12 }}
+          />
           {Cookies.get("isLoggedIn") && (
             <MyModal
               parent_id={comment.id}
@@ -150,7 +153,12 @@ class Comment extends Component {
             <i
               style={this.buttonStyles}
               className="fas fa-trash-alt"
-              onClick={this.handleDelete}
+              onClick={() => {
+                if (
+                  window.confirm("Are you sure you wish to delete this item?")
+                )
+                  this.handleDelete();
+              }}
             />
           )}
         </p>

@@ -3,12 +3,14 @@ import React, { Component } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { getAuthorNames } from "../Services/authorService";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class AddBook extends Component {
   state = {
     book: { title: "", author_name: "", selectedFile: null },
     errors: {},
-    authors: []
+    authors: [],
+    loading: false
   };
 
   validateProperty = input => {
@@ -70,7 +72,7 @@ class AddBook extends Component {
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
-
+    this.setState({ loading: true });
     let file = null;
 
     if (this.state.book.selectedFile) {
@@ -99,6 +101,7 @@ class AddBook extends Component {
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     })
       .then(res => {
+        this.setState({ loading: false });
         this.props.history.push("/");
         window.location.reload(false);
       })
@@ -170,6 +173,16 @@ class AddBook extends Component {
                 onChange={this.fileSelectHandler}
               />
             </label>
+          </div>
+          <div
+            className="sweet-loading"
+            style={{ display: "flex", justifyContent: "center", margin: 10 }}
+          >
+            <ClipLoader
+              size={50}
+              color={"#123abc"}
+              loading={this.state.loading}
+            />
           </div>
           <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
             Submit book

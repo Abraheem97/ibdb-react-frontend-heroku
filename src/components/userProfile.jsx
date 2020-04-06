@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import UserAvatar from "react-user-avatar";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class UserProfile extends Component {
   state = {
@@ -21,7 +22,8 @@ class UserProfile extends Component {
     avatar: "",
     alerts: "",
     deleteAvatar: false,
-    accountVerified: false
+    accountVerified: false,
+    loading: false
   };
   handleAlertTimeout = () => {
     this.setState({ alerts: "" });
@@ -62,7 +64,8 @@ class UserProfile extends Component {
       account,
       alerts,
       avatar: resp.data.image_url,
-      deleteAvatar: false
+      deleteAvatar: false,
+      loading: false
     });
     Cookies.set("avatar_url", resp.data.image_url);
     this.refs.btn.removeAttribute("disabled");
@@ -143,6 +146,8 @@ class UserProfile extends Component {
     this.setState({ errors: errors || {} });
 
     if (errors) return;
+
+    this.setState({ loading: true });
     await axios({
       method: "post",
       url: `${process.env.REACT_APP_API_URL}/v1/verifyAccount`,
@@ -155,7 +160,9 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status == 200) this.setState({ accountVerified: true });
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        this.setState({ loading: false });
+      });
 
     if (this.state.accountVerified == true) {
       if (
@@ -211,6 +218,7 @@ class UserProfile extends Component {
           } else this.handleSuccessfulSubmit(res);
         })
         .catch(error => {
+          this.setState({ loading: false });
           // if (error.response) {
           //   if (error.response.status === 401) {
           //     // console.log(error.response); // returns whole error object passed from the api call
@@ -459,6 +467,16 @@ class UserProfile extends Component {
                 {this.state.errors.avatar}
               </div>
             )}
+          </div>
+          <div
+            className="sweet-loading"
+            style={{ display: "flex", justifyContent: "center", margin: 10 }}
+          >
+            <ClipLoader
+              size={50}
+              color={"#123abc"}
+              loading={this.state.loading}
+            />
           </div>
           <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
             Submit

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import { css } from "@emotion/core";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class SignUp extends Component {
   state = {
@@ -12,7 +14,8 @@ class SignUp extends Component {
       password_confirmation: "",
       selectedFile: null
     },
-    errors: {}
+    errors: {},
+    loading: false
   };
 
   componentDidMount() {
@@ -96,6 +99,7 @@ class SignUp extends Component {
     this.setState({ errors: errors || {} });
 
     if (errors) return;
+    this.setState({ loading: true });
 
     this.refs.btn.setAttribute("disabled", "disabled");
 
@@ -128,6 +132,7 @@ class SignUp extends Component {
     })
       .then(res => {
         this.props.handleSignUp(res.data);
+        this.setState({ loading: false });
       })
       .catch(error => {
         // console.log(error.response); // returns whole error object passed from the api call
@@ -156,6 +161,7 @@ class SignUp extends Component {
     return (
       <div>
         <h1>Sign Up</h1>
+
         <br />
         <form onSubmit={this.handleSubmit}>
           <div className="row">
@@ -276,6 +282,16 @@ class SignUp extends Component {
                 {this.state.errors.avatar}
               </div>
             )}
+          </div>
+          <div
+            className="sweet-loading"
+            style={{ display: "flex", justifyContent: "center", margin: 10 }}
+          >
+            <ClipLoader
+              size={50}
+              color={"#123abc"}
+              loading={this.state.loading}
+            />
           </div>
           <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
             Sign Up

@@ -256,7 +256,7 @@ class UserProfile extends Component {
               <div className="form-group">
                 <label htmlFor="email">First Name</label>
                 <input
-                  maxlength="30"
+                  maxLength="30"
                   autoComplete="off"
                   value={account.firstName}
                   onChange={this.handleInput}
@@ -277,7 +277,7 @@ class UserProfile extends Component {
               <div className="form-group">
                 <label htmlFor="email">Last Name</label>
                 <input
-                  maxlength="30"
+                  maxLength="30"
                   autoComplete="off"
                   value={account.lastName}
                   onChange={this.handleInput}
@@ -311,7 +311,7 @@ class UserProfile extends Component {
               </p>
             )}
             <input
-              maxlength="40"
+              maxLength="40"
               autoComplete="off"
               value={account.email}
               onChange={this.handleInput}

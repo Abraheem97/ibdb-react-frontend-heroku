@@ -66,23 +66,27 @@ class AddBook extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
+    this.refs.btn.setAttribute("disabled", "disabled");
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
 
-    const data = new FormData();
-    data.append("file", this.state.book.selectedFile);
-    data.append("upload_preset", "st2nr1uo");
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
-      {
-        method: "POST",
-        body: data
-      }
-    );
+    let file = null;
 
-    const file = await res.json();
+    if (this.state.book.selectedFile) {
+      const data = new FormData();
+      data.append("file", this.state.book.selectedFile);
+      data.append("upload_preset", "st2nr1uo");
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+        {
+          method: "POST",
+          body: data
+        }
+      );
 
+      file = await res.json();
+    }
     axios({
       method: "post",
       url: `${process.env.REACT_APP_API_URL}/books`,
@@ -90,7 +94,7 @@ class AddBook extends Component {
         title: this.state.book.title,
         author_name: this.state.book.author_name,
         user_id: Cookies.get("user_id"),
-        image_url: file.url
+        image_url: file ? file.url : ""
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") }
     })
@@ -142,11 +146,9 @@ class AddBook extends Component {
                 textShadow: "0 0 0 #000"
               }}
             >
-              <option Key=""></option>
+              <option></option>
               {this.state.authors.map(obj => (
-                <option key={obj} Key={obj}>
-                  {obj}
-                </option>
+                <option key={obj}>{obj}</option>
               ))}
               ;
             </select>

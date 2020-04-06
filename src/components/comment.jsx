@@ -44,7 +44,6 @@ class Comment extends Component {
         avatar: resp.image_url,
         email: resp.email.substring(0, resp.email.indexOf("@"))
       });
-      console.log(this.state.user);
     });
   }
   handleResponse = res => {
@@ -114,11 +113,8 @@ class Comment extends Component {
               style={{ display: "inline-block" }}
             />
           )}
-          {"  "}
-          <h1 style={{ fontSize: 25 }}>
-            {" "}
-            {this.state.email} {action}{" "}
-          </h1>
+          <br />
+          {"  "} {this.state.email} {action}{" "}
         </h1>
         <div style={{ textAlign: "center" }}>
           {comment.image_url && (
@@ -277,7 +273,7 @@ function MyModal(params) {
               ></textarea>
             </Form.Group>
             <Form.Group>
-              <button class="btn sm" type="submit">
+              <button className="btn sm" type="submit">
                 Reply
               </button>
             </Form.Group>
@@ -356,7 +352,7 @@ function EditModal(params) {
               ></textarea>
             </Form.Group>
             <Form.Group>
-              <button class="btn sm" type="submit">
+              <button className="btn sm" type="submit">
                 Comment
               </button>
             </Form.Group>

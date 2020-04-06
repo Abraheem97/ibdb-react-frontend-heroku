@@ -186,7 +186,7 @@ class Book extends Component {
                 </p>
               )}
             </div>
-            <div class="commentPane">
+            <div className="commentPane">
               {parentComments.map((comment, index) => (
                 <div
                   key={comment.id}

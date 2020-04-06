@@ -106,8 +106,8 @@ class CommentForm extends Component {
           )}
           <div className="form-group" style={{ padding: 0, margin: 0 }}>
             <label htmlFor="file-input">
-              <i class="fas fa-images" />
-              <div class="image-upload">
+              <i className="fas fa-images" />
+              <div className="image-upload">
                 {this.state.selectedFile && (
                   <p style={{ paddingBottom: 0 }}>File selected</p>
                 )}

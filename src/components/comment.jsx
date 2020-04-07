@@ -13,50 +13,63 @@ class Comment extends Component {
     replyBody: "",
     user: { firstName: "A", lastName: "A" },
     avatar: "",
-    email: ""
+    email: "",
+    replies: [],
   };
 
   commentImageStyles = {
     width: 120,
-    height: 150
+    height: 150,
   };
 
   buttonStyles = {
     cursor: "pointer",
-    marginLeft: 7
+    marginLeft: 7,
   };
   handleDelete = () => {
     axios({
       method: "delete",
       url: `${process.env.REACT_APP_API_URL}/books/${this.props.comment.book_id}/comments/${this.props.comment.id}`,
       data: {
-        user_id: Cookies.get("user_id")
+        user_id: Cookies.get("user_id"),
       },
 
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
-    }).then(res => this.props.handleCommentDelete(res.data));
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
+    }).then((res) => this.props.handleCommentDelete(res.data));
   };
 
   componentDidMount() {
-    get_username(this.props.comment.user_id).then(resp => {
+    get_username(this.props.comment.user_id).then((resp) => {
       this.setState({
         user: resp,
         avatar: resp.image_url,
-        email: resp.email.substring(0, resp.email.indexOf("@"))
+        email: resp.email.substring(0, resp.email.indexOf("@")),
       });
     });
+
+    fetch(`${process.env.REACT_APP_API_URL}/replies/${this.props.comment.id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({ replies: response });
+      });
   }
-  handleResponse = res => {
-    this.props.handleResponse(res.data);
-  };
-  handleEditResponse = res => {
-    this.props.handleEditResponse(res.data);
+
+  handleReplySubmit = (reply) => {
+    const replies = [reply, ...this.state.replies];
+    this.setState({ replies });
   };
 
-  handleCommentDelete = res => {
-    this.props.handleCommentDelete(res.data);
+  handleEditResponse = (reply) => {
+    let replies = this.state.replies.filter((m) => m.id != reply.id);
+    replies = [reply, ...replies];
+    this.setState({ replies });
   };
 
+  handleReplyDelete = (reply) => {
+    const replies = this.state.replies.filter((m) => m.id !== reply.id);
+
+    this.setState({ replies: replies });
+  };
   canDeleteComment() {
     let canDelete = false;
     if (
@@ -68,6 +81,18 @@ class Comment extends Component {
 
     return canDelete;
   }
+
+  getReplies = (id) => {
+    let replies = [];
+    fetch(`${process.env.REACT_APP_API_URL}/replies/${id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        replies = response;
+      });
+
+    return replies;
+  };
 
   canEditComment() {
     let canDelete = false;
@@ -142,13 +167,13 @@ class Comment extends Component {
               parent_id={comment.id}
               parent_body={comment.body}
               book_id={this.props.book_id}
-              handleResponse={this.handleResponse}
+              handleReplySubmit={this.handleReplySubmit}
             />
           )}
           {this.canEditComment() && (
             <EditModal
               comment={comment}
-              handleResponse={this.handleEditResponse}
+              handleResponse={this.props.handleEditResponse}
               book_id={this.props.book_id}
             />
           )}
@@ -167,39 +192,37 @@ class Comment extends Component {
         </p>
 
         {this.props.parentIndex < 12 &&
-          this.props.replies.map((comment, index) => (
+          this.state.replies.map((comment, index) => (
             <div
               className="dont-break-out"
               key={comment.id}
               style={{ paddingLeft: 40, paddingTop: 20 }}
             >
               <Comment
+                handleEditResponse={this.handleEditResponse}
                 parentIndex={this.props.parentIndex + 1}
-                handleEditResponse={this.props.handleEditResponse}
-                handleResponse={this.props.handleResponse}
-                handleCommentDelete={this.props.handleCommentDelete}
+                handleReplySubmit={this.props.handleReplySubmit}
+                handleCommentDelete={this.handleReplyDelete}
                 book_id={this.props.book_id}
                 comments={this.props.comments}
                 comment={comment}
-                replies={this.props.comments.filter(
-                  reply => reply.parent_id === comment.id
-                )}
+                replies={this.getReplies(comment.id)}
               />
             </div>
           ))}
         {this.props.parentIndex >= 12 &&
-          this.props.replies.map((comment, index) => (
+          this.state.replies.map((comment, index) => (
             <div key={comment.id} style={{ paddingTop: 20 }}>
               <Comment
+                handleEditResponse={this.handleEditResponse}
                 parentIndex={this.props.parentIndex + 1}
-                handleEditResponse={this.props.handleEditResponse}
-                handleResponse={this.props.handleResponse}
-                handleCommentDelete={this.props.handleCommentDelete}
+                handleReplySubmit={this.props.handleReplySubmit}
+                handleCommentDelete={this.handleReplyDelete}
                 book_id={this.props.book_id}
                 comments={this.props.comments}
                 comment={comment}
                 replies={this.props.comments.filter(
-                  reply => reply.parent_id === comment.id
+                  (reply) => reply.parent_id === comment.id
                 )}
               />
             </div>
@@ -218,7 +241,7 @@ function MyModal(params) {
   };
   const handleShow = () => setModalIsOpen(true);
   const buttonStyles = {
-    cursor: "pointer"
+    cursor: "pointer",
   };
 
   // const comment_username = () => {
@@ -228,7 +251,7 @@ function MyModal(params) {
   //   });
   // };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleClose();
 
@@ -240,13 +263,13 @@ function MyModal(params) {
         comment: {
           parent_id: params.parent_id,
           user_id: Cookies.get("user_id"),
-          body: e.target.Reply.value
-        }
+          body: e.target.Reply.value,
+        },
       },
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
-      .then(res => params.handleResponse(res))
-      .catch(errors => {
+      .then((res) => params.handleReplySubmit(res.data))
+      .catch((errors) => {
         if (errors) {
           console.log(errors);
         }
@@ -300,7 +323,7 @@ function EditModal(params) {
   const buttonStyles = {
     cursor: "pointer",
     padding: 10,
-    marginLeft: 7
+    marginLeft: 7,
   };
   const handleClose = () => {
     setModalIsOpen(false);
@@ -314,7 +337,7 @@ function EditModal(params) {
   //   });
   // };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleClose();
 
@@ -325,13 +348,13 @@ function EditModal(params) {
       data: {
         comment: {
           user_id: Cookies.get("user_id"),
-          body: e.target.Reply.value
-        }
+          body: e.target.Reply.value,
+        },
       },
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
-      .then(res => params.handleResponse(res))
-      .catch(errors => {
+      .then((res) => params.handleResponse(res.data))
+      .catch((errors) => {
         if (errors) {
         }
       });

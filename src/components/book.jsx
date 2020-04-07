@@ -12,6 +12,8 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Cookies from "js-cookie";
 import StarRatings from "react-star-ratings";
+import ClipLoader from "react-spinners/ClipLoader";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { hasReviewedBook } from "../Services/userService";
 
 class Book extends Component {
@@ -21,7 +23,10 @@ class Book extends Component {
     comments: [],
     reviews: [],
     currentUserHasReviewedBook: {},
-    imageUrl: "https://picsum.photos/250/300"
+    imageUrl: "https://picsum.photos/250/300",
+    currentIndex: 0,
+    numOfComments: 2,
+    loading: true,
   };
 
   imageStyles = {
@@ -30,83 +35,114 @@ class Book extends Component {
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    margin: 5
+    margin: 5,
   };
 
   textCenter = {
-    textAlign: "center"
+    textAlign: "center",
   };
 
-  handleEditReview = review => {
-    let reviews = this.state.reviews.filter(m => m.id !== review.data.id);
+  fetchMoreData = () => {
+    this.setState({
+      currentIndex: this.state.currentIndex + this.state.numOfComments,
+    });
+    fetch(
+      `${process.env.REACT_APP_API_URL}/comments/${this.props.match.params.id}/${this.state.currentIndex}/${this.state.numOfComments}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length == 0) {
+          this.setState({ loading: false });
+        }
+        setTimeout(() => {
+          this.setState({ comments: this.state.comments.concat(data) });
+        }, 700);
+      });
+  };
+
+  handleEditReview = (review) => {
+    let reviews = this.state.reviews.filter((m) => m.id !== review.data.id);
     reviews = [review.data, ...reviews];
     this.setState({ reviews });
   };
 
-  handleCommentSubmit = comment => {
+  handleCommentSubmit = (comment) => {
     const comments = [comment, ...this.state.comments];
     this.setState({ comments });
   };
 
-  handleReplySubmit = reply => {
+  handleReplySubmit = (reply) => {
     const comments = [reply, ...this.state.comments];
     this.setState({ comments });
   };
 
-  handleCommentDelete = comment => {
-    const comments = this.state.comments.filter(m => m.id !== comment.id);
+  handleCommentDelete = (comment) => {
+    const comments = this.state.comments.filter((m) => m.id !== comment.id);
 
     this.setState({ comments: comments });
   };
 
-  handleEditCommentResponse = comment => {
-    let comments = this.state.comments.filter(m => m.id !== comment.id);
+  handleEditCommentResponse = (comment) => {
+    let comments = this.state.comments.filter((m) => m.id !== comment.id);
     comments = [comment, ...comments];
     this.setState({ comments });
   };
-  handleReviewSubmit = review => {
+  handleReviewSubmit = (review) => {
     const reviews = [review, ...this.state.reviews];
     this.setState({ reviews, currentUserHasReviewedBook: true });
   };
-  handleReviewDelete = review => {
-    const reviews = this.state.reviews.filter(m => m.id !== review.id);
+  handleReviewDelete = (review) => {
+    const reviews = this.state.reviews.filter((m) => m.id !== review.id);
     this.setState({ reviews: reviews, currentUserHasReviewedBook: false });
   };
   componentDidMount() {
     Boolean(Cookies.get("isLoggedIn")) &&
       hasReviewedBook(Cookies.get("user_id"), this.props.match.params.id).then(
-        res => {
+        (res) => {
           this.setState({ currentUserHasReviewedBook: res.data.hasReviewed });
         }
       );
 
+    fetch(
+      `${process.env.REACT_APP_API_URL}/comments/${this.props.match.params.id}/${this.state.currentIndex}/${this.state.numOfComments}`
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        this.setState({ comments: response });
+      });
+
     this.setState({ id: this.props.match.params.id });
-    getBook(parseInt(this.props.match.params.id)).then(resp => {
+    getBook(parseInt(this.props.match.params.id)).then((resp) => {
       this.setState({ book: resp });
     });
 
-    getComments(parseInt(this.props.match.params.id)).then(resp => {
-      this.setState({ comments: resp });
-    });
-
-    getReviews(parseInt(this.props.match.params.id)).then(resp => {
+    getReviews(parseInt(this.props.match.params.id)).then((resp) => {
       this.setState({ reviews: resp });
     });
   }
+
+  getReplies = async (id) => {
+    let replies = [];
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/replies/${id}`, {
+      method: "GET",
+    });
+    replies = await res.json();
+    return replies;
+  };
 
   handleBookDelete = () => {
     axios({
       method: "delete",
       url: `${process.env.REACT_APP_API_URL}/books/${this.state.id}`,
 
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     }).then(this.props.history.push("/not-found"));
   };
-  openBook = () => {};
-  openBook = () => {};
+
   render() {
     let parentComments = this.state.comments.filter(
-      comment => comment.parent_id === null
+      (comment) => comment.parent_id === null
     );
 
     return (
@@ -154,7 +190,7 @@ class Book extends Component {
             {this.state.reviews.length === 0 && (
               <h4 style={{ margin: 20 }}>No reviews? Add one!</h4>
             )}
-            {this.state.reviews.slice(0, 2).map(review => (
+            {this.state.reviews.slice(0, 2).map((review) => (
               <Review
                 handleEditResponse={this.handleEditReview}
                 key={review.id}
@@ -186,31 +222,51 @@ class Book extends Component {
                 </p>
               )}
             </div>
-            <div className="commentPane">
-              {parentComments.map((comment, index) => (
+            <InfiniteScroll
+              style={{ overflow: "none" }}
+              dataLength={this.state.comments.length}
+              next={this.fetchMoreData}
+              hasMore={this.state.loading}
+              loader={
                 <div
-                  key={comment.id}
-                  className="box"
+                  className="sweet-loading"
                   style={{
-                    borderRadius: 30,
-                    border: "solid 1px"
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: 10,
                   }}
                 >
-                  <Comment
-                    handleEditResponse={this.handleEditCommentResponse}
-                    handleResponse={this.handleReplySubmit}
-                    handleCommentDelete={this.handleCommentDelete}
-                    book_id={this.state.id}
-                    comments={this.state.comments}
-                    comment={comment}
-                    replies={this.state.comments.filter(
-                      reply => reply.parent_id === comment.id
-                    )}
-                    parentIndex={index}
+                  <ClipLoader
+                    size={50}
+                    color={"#123abc"}
+                    loading={this.state.loading}
                   />
                 </div>
-              ))}
-            </div>
+              }
+            >
+              <div className="commentPane">
+                {parentComments.map((comment, index) => (
+                  <div
+                    key={comment.id}
+                    className="box"
+                    style={{
+                      borderRadius: 30,
+                      border: "solid 1px",
+                    }}
+                  >
+                    <Comment
+                      handleEditResponse={this.handleEditCommentResponse}
+                      handleResponse={this.handleReplySubmit}
+                      handleCommentDelete={this.handleCommentDelete}
+                      book_id={this.state.id}
+                      comments={this.state.comments}
+                      comment={comment}
+                      parentIndex={0}
+                    />
+                  </div>
+                ))}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       </React.Fragment>
@@ -229,12 +285,12 @@ function ReviewModal(params) {
     setModalIsOpen(false);
   };
 
-  const changeRating = newRating => {
+  const changeRating = (newRating) => {
     setRating(newRating);
   };
   const handleShow = () => setModalIsOpen(true);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleClose();
 
@@ -246,13 +302,13 @@ function ReviewModal(params) {
         review: {
           user_id: Cookies.get("user_id"),
           comment: e.target.Reply.value,
-          rating: Rating
-        }
+          rating: Rating,
+        },
       },
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
-      .then(res => params.handleResponse(res.data))
-      .catch(errors => {
+      .then((res) => params.handleResponse(res.data))
+      .catch((errors) => {
         if (errors) {
         }
       });
@@ -294,7 +350,7 @@ function ReviewModal(params) {
                 style={{
                   background: "none",
                   resize: "none",
-                  overflow: "hidden"
+                  overflow: "hidden",
                 }}
               ></textarea>
             </Form.Group>

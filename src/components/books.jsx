@@ -2,12 +2,17 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import SearchBox from "./searchBox";
+import InfiniteScroll from "react-infinite-scroll-component";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class Books extends Component {
   state = {
     books: [],
     searchQuery: "",
-    suggesstions: []
+    suggesstions: [],
+    currentIndex: 0,
+    numOfBooks: 6,
+    loading: true,
   };
 
   imageStyles = {
@@ -15,28 +20,48 @@ class Books extends Component {
     height: 300,
     alignItems: "center",
     justifyContent: "center",
-    cursor: "pointer"
+    cursor: "pointer",
   };
   textCenter = {
-    textAlign: "center"
+    textAlign: "center",
   };
 
   componentDidMount() {
-    fetch(`${process.env.REACT_APP_API_URL}/books.json`)
-      .then(res => res.json())
-      .then(data => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/books/${this.state.currentIndex}/${this.state.numOfBooks}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
         this.setState({ books: data });
       });
   }
+  fetchMoreData = () => {
+    this.setState({
+      currentIndex: this.state.currentIndex + this.state.numOfBooks,
+      loading: true,
+    });
+    fetch(
+      `${process.env.REACT_APP_API_URL}/books/${this.state.currentIndex}/${this.state.numOfBooks}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length == 0) {
+          this.setState({ loading: false });
+        }
+        setTimeout(() => {
+          this.setState({ books: this.state.books.concat(data) });
+        }, 850);
+      });
+  };
 
-  handleSearch = query => {
+  handleSearch = (query) => {
     this.setState({ searchQuery: query });
   };
 
   getSearch = () => {
     const { books, searchQuery } = this.state;
 
-    let filteredBooks = books.filter(book => {
+    let filteredBooks = books.filter((book) => {
       return book.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
     });
 
@@ -51,7 +76,7 @@ class Books extends Component {
             className="box container"
             style={{
               paddingBottom: 20,
-              boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)"
+              boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)",
             }}
           >
             <h1> Your Favourite Books Reviewed!</h1>
@@ -79,41 +104,59 @@ class Books extends Component {
           onChange={this.handleSearch}
           books={this.getSearch()}
         />
-
-        <div className="row align-items-start">
-          {this.getSearch().map(book => (
+        <InfiniteScroll
+          style={{ overflow: "none" }}
+          dataLength={this.state.books.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.loading}
+          loader={
             <div
-              key={book.id}
-              className="col-sm-6 col-md-4"
-              style={{ paddingBottom: 20 }}
+              className="sweet-loading"
+              style={{ display: "flex", justifyContent: "center", margin: 10 }}
             >
-              <div style={this.textCenter}>
-                <p>
-                  <Link
-                    to={`/books/${book.id}`}
-                    style={{ color: "black", textDecoration: "none" }}
-                  >
-                    {book.title}
-                  </Link>
-                </p>
-                <div className="caption">
-                  <Link to={`/books/${book.id}`}>
-                    <img
-                      onClick={this.openBook}
-                      className="mimg"
-                      style={this.imageStyles}
-                      src={book.image_url}
-                      // src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
-                      alt="bookcover.jpg"
-                    />
-                  </Link>
-                  <br style={this.textCenter}></br>
-                  By {book.author_name}
+              <ClipLoader
+                size={50}
+                color={"#123abc"}
+                loading={this.state.loading}
+              />
+            </div>
+          }
+        >
+          <div className="row align-items-start">
+            {this.getSearch().map((book) => (
+              <div
+                key={book.id}
+                className="col-sm-6 col-md-4"
+                style={{ paddingBottom: 20 }}
+              >
+                <div style={this.textCenter}>
+                  <p>
+                    <Link
+                      to={`/books/${book.id}`}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      {book.title}
+                    </Link>
+                  </p>
+                  <div className="caption">
+                    <Link to={`/books/${book.id}`}>
+                      <img
+                        onClick={this.openBook}
+                        className="mimg"
+                        style={this.imageStyles}
+                        src={book.image_url}
+                        // src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}
+                        alt="bookcover.jpg"
+                      />
+                    </Link>
+                    <br style={this.textCenter}></br>
+                    By {book.author_name}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </InfiniteScroll>
       </React.Fragment>
     );
   }

@@ -21,6 +21,9 @@ class Books extends Component {
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
+
+    border: "2px solid rgb(1, 1, 1)",
+    borderRadius: 5,
   };
   textCenter = {
     textAlign: "center",
@@ -73,10 +76,11 @@ class Books extends Component {
       <React.Fragment>
         {!this.props.isLoggedIn && (
           <div
-            className="box container"
+            className="box"
             style={{
               paddingBottom: 20,
               boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)",
+              border: "solid 1px #000",
             }}
           >
             <h1> Your Favourite Books Reviewed!</h1>
@@ -142,7 +146,6 @@ class Books extends Component {
                     <Link to={`/books/${book.id}`}>
                       <img
                         onClick={this.openBook}
-                        className="mimg"
                         style={this.imageStyles}
                         src={book.image_url}
                         // src={`${process.env.REACT_APP_API_URL}/assets/${book.image_file_name}`}

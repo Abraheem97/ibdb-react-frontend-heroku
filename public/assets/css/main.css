@@ -260,11 +260,11 @@ html {
 body {
   background-image: linear-gradient(
     to bottom,
-    #ffffff,
-    #e9e9e9,
-    #d4d3d4,
-    #c0bdbe,
-    #aca8a8
+    #f8f8f8,
+    #e4e4e5,
+    #d2d0d1,
+    #c0bcbd,
+    #aea9a9
   );
 }
 

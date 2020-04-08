@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import TimeAgo from "react-timeago";
 import Modal from "react-bootstrap/Modal";
 import { get_username } from "../Services/userService";
-import Button from "react-bootstrap/Button";
+
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -18,8 +18,13 @@ class Comment extends Component {
   };
 
   commentImageStyles = {
-    width: 120,
-    height: 150,
+    width: 250,
+    height: 300,
+    margin: 30,
+    opacity: 0.9,
+    borderRadius: 10,
+    border: "solid 2px #000",
+    padding: 0,
   };
 
   buttonStyles = {
@@ -144,19 +149,18 @@ class Comment extends Component {
           <br />
           {"  "} {this.state.user.firstName} {action}{" "}
         </h1>
-        <div style={{ textAlign: "center" }}>
-          {comment.image_url && (
-            <img
-              src={comment.image_url}
-              style={this.commentImageStyles}
-              alt="image"
-            />
-          )}
-        </div>
 
         <p style={{ margin: 0, padding: 0, fontFamily: "sans-serif" }}>
           {comment.body}
         </p>
+        {comment.image_url && (
+          <img
+            src={comment.image_url}
+            style={this.commentImageStyles}
+            alt="image"
+            class="box"
+          />
+        )}
         <p>
           <TimeAgo
             date={comment.created_at}
@@ -236,6 +240,8 @@ export default Comment;
 
 function MyModal(params) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [inputText, setInputText] = useState("");
+  const [selectedFile, setSelectedFile] = useState({});
   const handleClose = () => {
     setModalIsOpen(false);
   };
@@ -250,10 +256,29 @@ function MyModal(params) {
   //     return username;
   //   });
   // };
-
-  const handleSubmit = (e) => {
+  const handleSuccessfulSubmit = () => {
+    setSelectedFile({});
+    setInputText("");
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleClose();
+
+    console.log(selectedFile);
+
+    const data = new FormData();
+    let file = null;
+    if (selectedFile) {
+      data.append("file", selectedFile);
+      data.append("upload_preset", "st2nr1uo");
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      file = await res.json();
+    }
 
     axios({
       method: "post",
@@ -263,12 +288,17 @@ function MyModal(params) {
         comment: {
           parent_id: params.parent_id,
           user_id: Cookies.get("user_id"),
-          body: e.target.Reply.value,
+          body: inputText,
+          image_url: file ? file.url : "",
         },
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
-      .then((res) => params.handleReplySubmit(res.data))
+      .then((res) => {
+        handleClose();
+        handleSuccessfulSubmit();
+        params.handleReplySubmit(res.data);
+      })
       .catch((errors) => {
         if (errors) {
           console.log(errors);
@@ -298,6 +328,9 @@ function MyModal(params) {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="body">
               <textarea
+                onChange={(e) => {
+                  setInputText(e.target.value);
+                }}
                 autoFocus
                 required
                 className="form-control rounded-0"
@@ -305,6 +338,22 @@ function MyModal(params) {
                 rows="5"
                 style={{ background: "none", resize: "none" }}
               ></textarea>
+            </Form.Group>
+            <Form.Group controlId="image">
+              {!selectedFile && (
+                <p style={{ paddingBottom: 0 }}>File selected</p>
+              )}
+              <input
+                id="file-input"
+                type="file"
+                name="image"
+                onChange={(e) => {
+                  setSelectedFile(e.currentTarget.files[0]);
+                  console.log(selectedFile);
+                }}
+                style={{ background: "none" }}
+                accept="image/*"
+              />
             </Form.Group>
             <Form.Group>
               <button className="btn sm" type="submit">
@@ -320,6 +369,7 @@ function MyModal(params) {
 
 function EditModal(params) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const buttonStyles = {
     cursor: "pointer",
     padding: 10,

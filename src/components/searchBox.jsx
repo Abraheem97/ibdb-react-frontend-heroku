@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchBox = ({ value, onChange, books }) => {
+const SearchBox = ({ value, onChange }) => {
   return (
     <React.Fragment>
       <input
@@ -8,9 +8,9 @@ const SearchBox = ({ value, onChange, books }) => {
         type="text"
         name="query"
         className="form-control my-3"
-        placeholder="Search Books..."
+        placeholder="Search Books By Title or Author Name..."
         value={value}
-        onChange={e => onChange(e.currentTarget.value)}
+        onChange={(e) => onChange(e.currentTarget.value)}
         style={{ background: "none" }}
         id="selector"
       />

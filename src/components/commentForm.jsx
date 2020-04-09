@@ -5,13 +5,13 @@ import Cookies from "js-cookie";
 class CommentForm extends Component {
   state = { body: "", errors: {}, selectedFile: null };
 
-  handleInput = e => {
+  handleInput = (e) => {
     let body = { ...this.state.body };
     body = e.currentTarget.value;
     this.setState({ body });
   };
 
-  fileSelectHandler = e => {
+  fileSelectHandler = (e) => {
     let selectedFile = { ...this.state.selectedFile };
     selectedFile = e.target.files[0];
     this.setState({ selectedFile });
@@ -31,7 +31,7 @@ class CommentForm extends Component {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const errors = this.validate();
     this.setState({ errors: errors || {} });
@@ -48,7 +48,7 @@ class CommentForm extends Component {
         `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
         {
           method: "POST",
-          body: data
+          body: data,
         }
       );
       file = await res.json();
@@ -62,17 +62,17 @@ class CommentForm extends Component {
         comment: {
           user_id: Cookies.get("user_id"),
           body: this.state.body,
-          image_url: file ? file.url : ""
-        }
+          image_url: file ? file.url : "",
+        },
       },
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
-      .then(res => {
+      .then((res) => {
         this.refs.btn.removeAttribute("disabled");
         this.props.handleSubmit(res.data);
         this.setState({ body: "", errors: {}, selectedFile: null });
       })
-      .catch(errors => {
+      .catch((errors) => {
         if (errors) {
           let Myerrors = { ...this.state.errors };
 

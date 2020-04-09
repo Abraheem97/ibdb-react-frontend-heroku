@@ -56,7 +56,7 @@ class Book extends Component {
         }
         setTimeout(() => {
           this.setState({ comments: this.state.comments.concat(data) });
-        }, 700);
+        }, 900);
       });
   };
 

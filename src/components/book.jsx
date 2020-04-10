@@ -160,7 +160,7 @@ class Book extends Component {
                     alt="bookcover.jpg"
                   />
                 </div>
-                <Link to={`/books/${this.state.book.id}/author`}>
+                <Link to={`/author/${this.state.book.author_id}`}>
                   By {this.state.book.author_name}
                 </Link>
                 {!this.state.currentUserHasReviewedBook &&
@@ -171,7 +171,7 @@ class Book extends Component {
                     />
                   )}
               </div>
-              {Cookies.get("user_role") == 1 && (
+              {Cookies.get("S61hskksddsai") == 1 && (
                 <Button
                   variant="outline-danger"
                   onClick={this.handleBookDelete}

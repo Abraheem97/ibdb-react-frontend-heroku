@@ -2,24 +2,24 @@ import React, { Component } from "react";
 
 import axios from "axios";
 import Cookies from "js-cookie";
-import { getAuthorNames } from "../Services/authorService";
+
 import ClipLoader from "react-spinners/ClipLoader";
 
-class AddBook extends Component {
+class AddAuthor extends Component {
   state = {
-    book: {
-      title: "",
-      author_name: "",
+    author: {
+      name: "",
+      description: "",
       selectedFile: null,
-      authorImageSelectedFile: null,
     },
     errors: {},
-    authors: [],
+
     loading: false,
+    newAuthor: false,
   };
 
   validateProperty = (input) => {
-    if (input.name === "title") {
+    if (input.name === "name") {
       if (input.value.trim() === "") return "Title is required.";
     }
   };
@@ -34,40 +34,39 @@ class AddBook extends Component {
     if (errorMessage) errors[e.currentTarget.name] = errorMessage;
     else delete errors[e.currentTarget.name];
 
-    const book = { ...this.state.book };
-    book[e.currentTarget.name] = e.currentTarget.value;
-    this.setState({ book, errors });
+    const author = { ...this.state.author };
+    author[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ author, errors });
   };
 
   handleAuthorInput = (e) => {
     const errors = { ...this.state.errors };
-    const book = { ...this.state.book };
+    const author = { ...this.state.author };
     if (e.currentTarget.value === "") {
-      errors.author_name = "Author name is required";
-      book.author_name = "";
-      this.setState({ book, errors });
+      errors.description = "Author name is required";
+      author.description = "";
+      this.setState({ author, errors });
     } else {
-      delete errors.author_name;
-      book.author_name = e.currentTarget.value;
-      this.setState({ book, errors });
+      delete errors.description;
+      author.description = e.currentTarget.value;
+      this.setState({ author, errors });
     }
   };
 
   validate = () => {
     const errors = {};
 
-    if (this.state.book.title.trim() === "")
-      errors.title = "Title is required.";
-    if (this.state.book.author_name.trim() === "")
-      errors.author_name = "Author name is required.";
+    if (this.state.author.name.trim() === "") errors.name = "Name is required.";
+    if (this.state.author.description.trim() === "")
+      errors.description = "Description is required.";
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
   fileSelectHandler = (e) => {
-    const book = { ...this.state.book };
-    book.selectedFile = e.target.files[0];
-    this.setState({ book });
+    const author = { ...this.state.author };
+    author.selectedFile = e.target.files[0];
+    this.setState({ author });
   };
 
   handleSubmit = async (e) => {
@@ -80,9 +79,9 @@ class AddBook extends Component {
     this.setState({ loading: true });
     let file = null;
 
-    if (this.state.book.selectedFile) {
+    if (this.state.author.selectedFile) {
       const data = new FormData();
-      data.append("file", this.state.book.selectedFile);
+      data.append("file", this.state.author.selectedFile);
       data.append("upload_preset", "st2nr1uo");
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
@@ -96,29 +95,26 @@ class AddBook extends Component {
     }
     axios({
       method: "post",
-      url: `${process.env.REACT_APP_API_URL}/books`,
+      url: `${process.env.REACT_APP_API_URL}/v1/authors`,
       data: {
-        title: this.state.book.title,
-        author_name: this.state.book.author_name,
+        name: this.state.author.name,
+        description: this.state.author.description,
         user_id: Cookies.get("user_id"),
         image_url: file ? file.url : "",
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
       .then((res) => {
+        console.log(res);
         this.setState({ loading: false });
-        this.props.history.push("/");
+        this.props.history.push(`author/${res.data.id}`);
         window.location.reload(false);
       })
       .catch((errors) => {});
   };
 
-  componentDidMount() {
-    getAuthorNames().then((res) => this.setState({ authors: res }));
-  }
-
   render() {
-    const { title } = this.state.book;
+    const { name, description } = this.state.author;
 
     return (
       <div>
@@ -126,53 +122,49 @@ class AddBook extends Component {
         <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label htmlFor="title">Title</label>
+            <label htmlFor="name">Name</label>
             <input
               autoComplete="off"
               autoFocus
-              value={title}
+              value={name}
               onChange={this.handleInput}
-              name="title"
-              id="title"
+              name="name"
+              id="name"
               type="text"
               className="form-control"
               style={{ background: "none" }}
             />
-            {this.state.errors.title && (
-              <div className="alert alert-danger">
-                {this.state.errors.title}
-              </div>
+            {this.state.errors.name && (
+              <div className="alert alert-danger">{this.state.errors.name}</div>
             )}
           </div>
           <div className="form-group">
-            <label htmlFor="author">Author name</label> <br></br>
-            <select
-              name="author"
-              onChange={this.handleAuthorInput}
-              style={{
-                color: "rgba(0,0,0,0)",
-                textShadow: "0 0 0 #000",
-              }}
-            >
-              <option></option>
-              {this.state.authors.map((obj) => (
-                <option key={obj}>{obj}</option>
-              ))}
-              ;
-            </select>
-            {this.state.errors.author_name && (
+            <label htmlFor="author">Author description</label> <br></br>
+            <textarea
+              maxLength="150"
+              rows="5"
+              autoComplete="off"
+              value={description}
+              onChange={this.handleInput}
+              name="description"
+              id="name"
+              type="text"
+              className="form-control"
+              style={{ background: "none", resize: "none", border: "double" }}
+            />
+            {this.state.errors.description && (
               <div className="alert alert-danger">
-                {this.state.errors.author_name}
+                {this.state.errors.description}
               </div>
             )}
           </div>
 
           <div className="form-group">
             <label htmlFor="image">
-              Add book cover <br></br>
+              Add author cover <br></br>
               <input
                 style={{ background: "none" }}
-                id="book_cover"
+                id="author_cover"
                 type="file"
                 name="image"
                 onChange={this.fileSelectHandler}
@@ -190,7 +182,7 @@ class AddBook extends Component {
             />
           </div>
           <button ref="btn" style={{ display: "block", margin: "0 auto" }}>
-            Submit book
+            Submit author
           </button>
         </form>
       </div>
@@ -198,4 +190,4 @@ class AddBook extends Component {
   }
 }
 
-export default AddBook;
+export default AddAuthor;

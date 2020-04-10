@@ -10,7 +10,9 @@ const SearchBox = ({ value, onChange }) => {
         className="form-control my-3"
         placeholder="Search Books By Title or Author Name..."
         value={value}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        onChangeCapture={(e) => {
+          onChange(e.currentTarget.value);
+        }}
         style={{ background: "none" }}
         id="selector"
       />

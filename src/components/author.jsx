@@ -3,6 +3,7 @@ import { getAuthor } from "../Services/bookService";
 import { Link } from "react-router-dom";
 
 import { getAuthorBooks } from "../Services/authorService";
+import Cookies from "js-cookie";
 
 class Author extends Component {
   state = { author: {}, books: [] };
@@ -11,7 +12,7 @@ class Author extends Component {
     height: 340,
     alignItems: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
   };
 
   booksImageStyles = {
@@ -19,17 +20,19 @@ class Author extends Component {
     height: 300,
     alignItems: "center",
     justifyContent: "center",
-    cursor: "pointer"
+    cursor: "pointer",
   };
 
   textCenter = {
-    textAlign: "center"
+    textAlign: "center",
   };
 
   componentDidMount() {
-    getAuthor(parseInt(this.props.match.params.id)).then(resp => {
-      getAuthorBooks(resp.id).then(res => this.setState({ books: res }));
-      this.setState({ author: resp });
+    getAuthor(parseInt(this.props.match.params.id)).then((resp) => {
+      if (resp) {
+        getAuthorBooks(resp.id).then((res) => this.setState({ books: res }));
+        this.setState({ author: resp });
+      } else this.props.history.push("/not-found");
     });
   }
 
@@ -53,16 +56,34 @@ class Author extends Component {
           </div>
           <div style={{ padding: 40 }} className="col-md-7 col-md-offset-1">
             <h2 style={this.textCenter}>Description </h2>
-            <div className="box">{author.description}</div>
+            <div
+              className="box"
+              style={{ border: "1px solid rgb(98, 98, 98)" }}
+            >
+              {author.description}
+            </div>
           </div>
         </div>
 
         <h4 style={{ textAlign: "center", padding: 50 }}>
           All Books from this author
         </h4>
-
+        <div style={{ textAlign: "center" }}>
+          {this.state.books.length == 0 && Cookies.get("S61hskksddsai") != 4 && (
+            <Link to="/add_book">
+              {" "}
+              <button>Add Books</button>{" "}
+            </Link>
+          )}
+        </div>
+        <hr
+          style={{
+            color: "black",
+            height: 5,
+          }}
+        />
         <div className="row align-items-start">
-          {this.state.books.map(book => (
+          {this.state.books.map((book) => (
             <div
               key={book.id}
               style={{ marginBottom: 40 }}

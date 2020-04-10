@@ -20,11 +20,11 @@ class NavBar extends Component {
     textTransform: "uppercase",
 
     backgroundImage:
-      "linear-gradient(to bottom, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e)"
+      "linear-gradient(to bottom, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e)",
   };
 
   invertColour = {
-    color: "invert"
+    color: "invert",
   };
 
   render() {
@@ -44,26 +44,43 @@ class NavBar extends Component {
               style={{
                 backgroundImage:
                   "linear-gradient(to bottom, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e)",
-                opacity: "80%"
+                opacity: "80%",
               }}
               id="basic-navbar-nav"
             >
               <Nav className="mr-auto">
                 {this.props.signed_in &&
-                  Cookies.get("user_role") != 4 &&
-                  Cookies.get("user_role") && (
+                  Cookies.get("S61hskksddsai") != 4 &&
+                  Cookies.get("S61hskksddsai") && (
                     <NavLink
                       style={{
                         color: "aliceblue",
 
                         outline: "none",
 
-                        textAlign: "center"
+                        textAlign: "center",
                       }}
                       className="nav-item nav-link"
                       to="/add_book"
                     >
-                      Add a book
+                      Add Book
+                    </NavLink>
+                  )}
+                {this.props.signed_in &&
+                  Cookies.get("S61hskksddsai") != 4 &&
+                  Cookies.get("S61hskksddsai") && (
+                    <NavLink
+                      style={{
+                        color: "aliceblue",
+
+                        outline: "none",
+
+                        textAlign: "center",
+                      }}
+                      className="nav-item nav-link"
+                      to="/add_author"
+                    >
+                      Add Author
                     </NavLink>
                   )}
               </Nav>
@@ -75,7 +92,7 @@ class NavBar extends Component {
 
                       outline: "none",
 
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                     className="nav-item nav-link"
                     to="/login"
@@ -91,7 +108,7 @@ class NavBar extends Component {
 
                       outline: "none",
 
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                     className="nav-item nav-link"
                     to="/signup"
@@ -99,39 +116,39 @@ class NavBar extends Component {
                     Sign up
                   </NavLink>
                 )}
-                {Cookies.get("user_role") == 1 && (
+                {Cookies.get("S61hskksddsai") == 1 && (
                   <Navbar
                     style={{
                       color: "black",
 
                       display: "flex",
-                      justifyContent: "center"
+                      justifyContent: "center",
                     }}
                     className="nav-link disabled"
                   >
                     SUPER ADMIN
                   </Navbar>
                 )}
-                {Cookies.get("user_role") == 2 && (
+                {Cookies.get("S61hskksddsai") == 2 && (
                   <Navbar
                     style={{
                       color: "black",
 
                       display: "flex",
-                      justifyContent: "center"
+                      justifyContent: "center",
                     }}
                     className="nav-link disabled"
                   >
                     ADMIN
                   </Navbar>
                 )}
-                {Cookies.get("user_role") == 3 && (
+                {Cookies.get("S61hskksddsai") == 3 && (
                   <Navbar
                     style={{
                       color: "black",
 
                       display: "flex",
-                      justifyContent: "center"
+                      justifyContent: "center",
                     }}
                     className="nav-link disabled"
                   >
@@ -145,7 +162,7 @@ class NavBar extends Component {
                       color: "indianred",
 
                       outline: "none",
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                     className="nav-item nav-link"
                     to="/"
@@ -157,7 +174,7 @@ class NavBar extends Component {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "center"
+                    justifyContent: "center",
                   }}
                 >
                   {this.props.signed_in && (
@@ -167,7 +184,7 @@ class NavBar extends Component {
                         color: "aliceblue",
                         fontSize: 20,
                         textDecoration: "none",
-                        outline: "none"
+                        outline: "none",
                       }}
                     >
                       {Cookies.get("avatar_url") && (
@@ -198,7 +215,7 @@ class NavBar extends Component {
                     alt=""
                   />
                 </span>
-                <span className="title">IBDB</span> | The place for books
+                <span className="title">IBDB | The place for books</span>
               </NavLink>
               {/* <nav
                 class="navbar navbar-expand-md"
@@ -228,17 +245,17 @@ class NavBar extends Component {
                 >
                   <ul className="navbar-nav">
                     <li>
-                      {Cookies.get("user_role") == 1 && (
+                      {Cookies.get("S61hskksddsai") == 1 && (
                         <NavbarBrand className="nav-link disabled">
                           SUPER ADMIN
                         </NavbarBrand>
                       )}
-                      {Cookies.get("user_role") == 2 && (
+                      {Cookies.get("S61hskksddsai") == 2 && (
                         <NavbarBrand className="nav-link disabled">
                           ADMIN
                         </NavbarBrand>
                       )}
-                      {Cookies.get("user_role") == 3 && (
+                      {Cookies.get("S61hskksddsai") == 3 && (
                         <NavbarBrand className="nav-link disabled">
                           MODERATOR
                         </NavbarBrand>
@@ -246,8 +263,8 @@ class NavBar extends Component {
                     </li>
                     <li>
                       {this.props.signed_in &&
-                        Cookies.get("user_role") != 4 &&
-                        Cookies.get("user_role") && (
+                        Cookies.get("S61hskksddsai") != 4 &&
+                        Cookies.get("S61hskksddsai") && (
                           <NavLink className="nav-item nav-link" to="/add_book">
                             Add a book
                           </NavLink>
@@ -298,8 +315,8 @@ class NavBar extends Component {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
                 {this.props.signed_in &&
-                  Cookies.get("user_role") != 4 &&
-                  Cookies.get("user_role") && (
+                  Cookies.get("S61hskksddsai") != 4 &&
+                  Cookies.get("S61hskksddsai") && (
                     <NavLink className="nav-item nav-link" to="/add_book">
                       Add a book
                     </NavLink>
@@ -317,13 +334,13 @@ class NavBar extends Component {
                     Sign up
                   </NavLink>
                 )}
-                {Cookies.get("user_role") == 1 && (
+                {Cookies.get("S61hskksddsai") == 1 && (
                   <Navbar className="nav-link disabled">SUPER ADMIN</Navbar>
                 )}
-                {Cookies.get("user_role") == 2 && (
+                {Cookies.get("S61hskksddsai") == 2 && (
                   <Navbar className="nav-link disabled">ADMIN</Navbar>
                 )}
-                {Cookies.get("user_role") == 3 && (
+                {Cookies.get("S61hskksddsai") == 3 && (
                   <Navbar className="nav-link disabled">MODERATOR</Navbar>
                 )}
                 {this.props.signed_in && (

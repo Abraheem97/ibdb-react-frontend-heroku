@@ -16,10 +16,10 @@ class Review extends Component {
     marginRight: 2,
     position: "absolute",
     right: 20,
-    paddingLeft: 0
+    paddingLeft: 0,
   };
   componentDidMount() {
-    get_username(this.props.review.user_id).then(resp => {
+    get_username(this.props.review.user_id).then((resp) => {
       this.setState({ user: resp.email.substring(0, resp.email.indexOf("@")) });
     });
   }
@@ -27,7 +27,7 @@ class Review extends Component {
     let canDelete = false;
     if (
       Cookies.get("user_id") == this.props.review.user_id ||
-      (Cookies.get("user_role") && Cookies.get("user_role") !== "4")
+      (Cookies.get("S61hskksddsai") && Cookies.get("S61hskksddsai") !== "4")
     )
       canDelete = true;
     else canDelete = false;
@@ -46,11 +46,11 @@ class Review extends Component {
       method: "delete",
       url: `${process.env.REACT_APP_API_URL}/books/${this.props.review.book_id}/reviews/${this.props.review.id}`,
       data: {
-        user_id: Cookies.get("user_id")
+        user_id: Cookies.get("user_id"),
       },
 
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
-    }).then(res => this.props.handleReviewDelete(res.data));
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
+    }).then((res) => this.props.handleReviewDelete(res.data));
   };
 
   render() {
@@ -61,7 +61,7 @@ class Review extends Component {
           borderRadius: 6,
           padding: 2,
           marginBottom: 20,
-          boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)"
+          boxShadow: "0px 3px 0px 0px rgba(0, 0, 0, 0.05)",
         }}
       >
         {this.canDeleteReview() && (
@@ -113,7 +113,7 @@ function EditModal(params) {
 
   const [Rating, setRating] = useState(1);
 
-  const changeRating = newRating => {
+  const changeRating = (newRating) => {
     setRating(newRating);
   };
   const handleClose = () => {
@@ -134,9 +134,9 @@ function EditModal(params) {
     marginRight: 25,
     position: "absolute",
     right: 20,
-    paddingLeft: 0
+    paddingLeft: 0,
   };
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleClose();
 
@@ -148,13 +148,13 @@ function EditModal(params) {
         review: {
           user_id: Cookies.get("user_id"),
           comment: e.target.Reply.value,
-          rating: Rating
-        }
+          rating: Rating,
+        },
       },
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") }
+      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
-      .then(res => params.handleResponse(res))
-      .catch(errors => {
+      .then((res) => params.handleResponse(res))
+      .catch((errors) => {
         if (errors) {
         }
       });
@@ -199,7 +199,7 @@ function EditModal(params) {
                 style={{
                   background: "none",
                   resize: "none",
-                  overflow: "hidden"
+                  overflow: "hidden",
                 }}
                 defaultValue={params.review.comment}
               ></textarea>

@@ -15,6 +15,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Reviews from "./components/reviews";
 import AddBook from "./components/addBook";
+import AddAuthor from "./components/addAuthor";
 import UserProfile from "./components/userProfile";
 
 // USER ROLES
@@ -27,12 +28,12 @@ import UserProfile from "./components/userProfile";
 class App extends Component {
   state = { isLoggedIn: false, user: {}, alerts: {}, users: [] };
 
-  handleSignIn = user => {
+  handleSignIn = (user) => {
     if (!user.superadmin && !user.admin_role && !user.moderator_role)
-      Cookies.set("user_role", "4");
-    if (user.moderator_role) Cookies.set("user_role", "3");
-    if (user.admin_role) Cookies.set("user_role", "2");
-    if (user.superadmin) Cookies.set("user_role", "1");
+      Cookies.set("S61hskksddsai", "4");
+    if (user.moderator_role) Cookies.set("S61hskksddsai", "3");
+    if (user.admin_role) Cookies.set("S61hskksddsai", "2");
+    if (user.superadmin) Cookies.set("S61hskksddsai", "1");
 
     this.setState({ user, isLoggedIn: true, alerts: {} });
     Cookies.set("isLoggedIn", true);
@@ -60,17 +61,17 @@ class App extends Component {
       method: "delete",
       url: `${process.env.REACT_APP_API_URL}/v1/sessions/${this.state.user.id}`,
       data: {
-        id: this.state.user.id
-      }
+        id: this.state.user.id,
+      },
     })
-      .then(res => {
+      .then((res) => {
         let alerts = { ...this.state.alerts };
         alerts.sign_out = "You are successfully signed out!";
 
         this.setState({ user: {}, isLoggedIn: false, alerts: alerts });
         setInterval(this.handleAlertTimeout, 5000);
       })
-      .catch(errors => {});
+      .catch((errors) => {});
     // $.ajax({
     //   method: "POST",
     //   url: "http://localhost:3001/v1/sessions",
@@ -82,7 +83,7 @@ class App extends Component {
     //   }
     // }).done(function(data) {});
 
-    Object.keys(Cookies.get()).forEach(function(cookieName) {
+    Object.keys(Cookies.get()).forEach(function (cookieName) {
       var neededAttributes = {};
       Cookies.remove(cookieName, neededAttributes);
     });
@@ -118,7 +119,7 @@ class App extends Component {
             )}
 
             <Switch>
-              <Route path="/books/:id/author" component={Author} />
+              <Route path="/author/:id" component={Author} />
               <Route path="/books/:id/reviews" component={Reviews} />
               <Route path="/books/:id" component={Book} />
               <Route
@@ -141,6 +142,7 @@ class App extends Component {
               />
               <Route path="/signed_up" component={ConfirmEmail} />
               <Route path="/add_book" component={AddBook} />
+              <Route path="/add_author" component={AddAuthor} />
               <Route
                 path="/books"
                 render={() => <Books isLoggedIn={this.state.isLoggedIn} />}

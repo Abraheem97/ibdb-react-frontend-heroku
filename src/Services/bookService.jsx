@@ -2,20 +2,20 @@ import axios from "axios";
 
 export function getBook(id) {
   return fetch(`${process.env.REACT_APP_API_URL}/books.json`)
-    .then(response => response.json())
-    .then(result => result.find(obj => obj.id === id));
+    .then((response) => response.json())
+    .then((result) => result.find((obj) => obj.id === id));
 }
 
 export function getComments(id) {
   return fetch(`${process.env.REACT_APP_API_URL}/books/${id}/comments.json`)
-    .then(response => response.json())
-    .then(response => response);
+    .then((response) => response.json())
+    .then((response) => response);
 }
 
 export function getReviews(id) {
   return fetch(`${process.env.REACT_APP_API_URL}/books/${id}/reviews.json`)
-    .then(response => response.json())
-    .then(response => response);
+    .then((response) => response.json())
+    .then((response) => response);
 }
 
 // export function getAuthor(id) {
@@ -26,6 +26,6 @@ export function getReviews(id) {
 
 export function getAuthor(id) {
   return axios
-    .get(`${process.env.REACT_APP_API_URL}/books/${id}/author.json`)
-    .then(res => res.data);
+    .get(`${process.env.REACT_APP_API_URL}/v1/author/${id}.json`)
+    .then((res) => res.data);
 }

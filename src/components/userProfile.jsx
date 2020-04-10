@@ -16,14 +16,14 @@ class UserProfile extends Component {
       password: "",
       password_confirmation: "",
       selectedFile: null,
-      unconfirmed_email: ""
+      unconfirmed_email: "",
     },
     errors: {},
     avatar: "",
     alerts: "",
     deleteAvatar: false,
     accountVerified: false,
-    loading: false
+    loading: false,
   };
   handleAlertTimeout = () => {
     this.setState({ alerts: "" });
@@ -35,7 +35,7 @@ class UserProfile extends Component {
     get_userDetails(
       Cookies.get("user_id"),
       Cookies.get("user_authentication_token")
-    ).then(resp => {
+    ).then((resp) => {
       let account = { ...this.state.account };
       account.email = resp.data.email;
       account.firstName = resp.data.firstName;
@@ -48,7 +48,7 @@ class UserProfile extends Component {
   handleAvatarDelete = () => {
     this.setState({ deleteAvatar: !this.state.deleteAvatar });
   };
-  handleSuccessfulSubmit = resp => {
+  handleSuccessfulSubmit = (resp) => {
     let alerts = { ...this.state.alerts };
     alerts = "Profile has been successfully updated";
     let account = { ...this.state.account };
@@ -65,7 +65,7 @@ class UserProfile extends Component {
       alerts,
       avatar: resp.data.image_url,
       deleteAvatar: false,
-      loading: false
+      loading: false,
     });
     Cookies.set("firstName", resp.data.firstName);
 
@@ -75,13 +75,13 @@ class UserProfile extends Component {
 
     setInterval(this.handleAlertTimeout, 5000);
   };
-  validateProperty = input => {
+  validateProperty = (input) => {
     if (input.name === "email") {
       if (input.value.trim() === "") return "Email is required.";
     }
   };
 
-  handleInput = e => {
+  handleInput = (e) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(e.currentTarget);
     if (errorMessage) errors[e.currentTarget.name] = errorMessage;
@@ -92,7 +92,7 @@ class UserProfile extends Component {
     this.setState({ account, errors });
   };
 
-  fileSelectHandler = e => {
+  fileSelectHandler = (e) => {
     const account = { ...this.state.account };
     account.selectedFile = e.target.files[0];
     this.setState({ account });
@@ -141,7 +141,7 @@ class UserProfile extends Component {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = this.validate();
@@ -156,14 +156,14 @@ class UserProfile extends Component {
       url: `${process.env.REACT_APP_API_URL}/v1/verifyAccount`,
       data: {
         password: this.state.account.current_password,
-        id: Cookies.get("user_id")
+        id: Cookies.get("user_id"),
       },
-      headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }
+      headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status == 200) this.setState({ accountVerified: true });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ loading: false });
       });
 
@@ -186,7 +186,7 @@ class UserProfile extends Component {
           `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
           {
             method: "POST",
-            body: data
+            body: data,
           }
         );
 
@@ -213,18 +213,18 @@ class UserProfile extends Component {
             image_url: this.state.deleteAvatar
               ? ""
               : file
-              ? file.url
-              : this.state.avatar
-          }
+              ? file.secure_url
+              : this.state.avatar,
+          },
         },
-        headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") }
+        headers: { ["X-User-Token"]: Cookies.get("user_authentication_token") },
       })
-        .then(res => {
+        .then((res) => {
           if (this.state.account.password) {
             this.props.handleSignOut();
           } else this.handleSuccessfulSubmit(res);
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ loading: false });
           // if (error.response) {
           //   if (error.response.status === 401) {
@@ -320,7 +320,7 @@ class UserProfile extends Component {
                   display: "inline",
                   fontSize: "small",
                   color: "indianred",
-                  paddingLeft: 10
+                  paddingLeft: 10,
                 }}
               >
                 Waiting for confirmation from{" "}
@@ -351,7 +351,7 @@ class UserProfile extends Component {
                 display: "inline",
                 fontSize: "small",
                 color: "indianred",
-                paddingLeft: 10
+                paddingLeft: 10,
               }}
             >
               required
@@ -378,7 +378,7 @@ class UserProfile extends Component {
                 display: "inline",
                 fontSize: "small",
                 color: "indianred",
-                paddingLeft: 10
+                paddingLeft: 10,
               }}
             >
               leave blank if you don't want to change password
@@ -405,7 +405,7 @@ class UserProfile extends Component {
                 display: "inline",
                 fontSize: "small",
                 color: "indianred",
-                paddingLeft: 10
+                paddingLeft: 10,
               }}
             >
               leave blank if you don't want to change password
@@ -431,7 +431,7 @@ class UserProfile extends Component {
                 style={{
                   margin: 0,
                   paddingLeft: 10,
-                  display: "inline-block"
+                  display: "inline-block",
                 }}
                 src={this.state.avatar}
                 size="60"
@@ -446,7 +446,7 @@ class UserProfile extends Component {
                 <p
                   style={{
                     paddingLeft: 10,
-                    display: "inline-block"
+                    display: "inline-block",
                   }}
                 >
                   Avatar will be deleted on submit

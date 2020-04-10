@@ -289,7 +289,7 @@ function MyModal(params) {
           parent_id: params.parent_id,
           user_id: Cookies.get("user_id"),
           body: inputText,
-          image_url: file ? file.url : "",
+          image_url: file ? file.secure_url : "",
         },
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") },

@@ -12,17 +12,17 @@ class SignUp extends Component {
       email: "",
       password: "",
       password_confirmation: "",
-      selectedFile: null
+      selectedFile: null,
     },
     errors: {},
-    loading: false
+    loading: false,
   };
 
   componentDidMount() {
     if (this.props.signed_in) this.props.history.push("/");
   }
 
-  validateProperty = input => {
+  validateProperty = (input) => {
     if (input.name === "email") {
       if (input.value.trim() === "") return "Email is required.";
     }
@@ -35,7 +35,7 @@ class SignUp extends Component {
     }
   };
 
-  handleInput = e => {
+  handleInput = (e) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(e.currentTarget);
     if (errorMessage) errors[e.currentTarget.name] = errorMessage;
@@ -46,7 +46,7 @@ class SignUp extends Component {
     this.setState({ account, errors });
   };
 
-  fileSelectHandler = e => {
+  fileSelectHandler = (e) => {
     const account = { ...this.state.account };
     account.selectedFile = e.target.files[0];
     this.setState({ account });
@@ -91,7 +91,7 @@ class SignUp extends Component {
         "Unknown image format, please pick gif, jpeg or png images";
     return Object.keys(errors).length === 0 ? null : errors;
   };
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = this.validate();
@@ -110,7 +110,7 @@ class SignUp extends Component {
       `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
       {
         method: "POST",
-        body: data
+        body: data,
       }
     );
 
@@ -126,15 +126,15 @@ class SignUp extends Component {
           email: this.state.account.email,
           password: this.state.account.password,
           password_confirmation: this.state.account.password_confirmation,
-          image_url: file.url
-        }
-      }
+          image_url: file.secure_url,
+        },
+      },
     })
-      .then(res => {
+      .then((res) => {
         this.props.handleSignUp(res.data);
         this.setState({ loading: false });
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log(error.response); // returns whole error object passed from the api call
         // console.log(error.response.data.errors.email[0]); // returns the error message
         if (error.response.status === 422) {

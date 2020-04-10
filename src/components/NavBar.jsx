@@ -119,7 +119,7 @@ class NavBar extends Component {
                 {Cookies.get("S61hskksddsai") == 1 && (
                   <Navbar
                     style={{
-                      color: "black",
+                      color: "#147891",
 
                       display: "flex",
                       justifyContent: "center",
@@ -132,7 +132,7 @@ class NavBar extends Component {
                 {Cookies.get("S61hskksddsai") == 2 && (
                   <Navbar
                     style={{
-                      color: "black",
+                      color: "#147891",
 
                       display: "flex",
                       justifyContent: "center",
@@ -145,7 +145,7 @@ class NavBar extends Component {
                 {Cookies.get("S61hskksddsai") == 3 && (
                   <Navbar
                     style={{
-                      color: "black",
+                      color: "#147891",
 
                       display: "flex",
                       justifyContent: "center",

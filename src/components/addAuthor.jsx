@@ -72,7 +72,6 @@ class AddAuthor extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
 
-    this.refs.btn.setAttribute("disabled", "disabled");
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
@@ -80,6 +79,7 @@ class AddAuthor extends Component {
     let file = null;
 
     if (this.state.author.selectedFile) {
+      this.refs.btn.setAttribute("disabled", "disabled");
       const data = new FormData();
       data.append("file", this.state.author.selectedFile);
       data.append("upload_preset", "st2nr1uo");
@@ -100,7 +100,7 @@ class AddAuthor extends Component {
         name: this.state.author.name,
         description: this.state.author.description,
         user_id: Cookies.get("user_id"),
-        image_url: file ? file.url : "",
+        image_url: file ? file.secure_url : "",
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
@@ -110,7 +110,9 @@ class AddAuthor extends Component {
         this.props.history.push(`author/${res.data.id}`);
         window.location.reload(false);
       })
-      .catch((errors) => {});
+      .catch((errors) => {
+        this.refs.btn.removeAttribute("disabled");
+      });
   };
 
   render() {
@@ -118,7 +120,7 @@ class AddAuthor extends Component {
 
     return (
       <div>
-        <h1>Add Book</h1>
+        <h1>Add Author</h1>
         <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -163,6 +165,7 @@ class AddAuthor extends Component {
             <label htmlFor="image">
               Add author cover <br></br>
               <input
+                required
                 style={{ background: "none" }}
                 id="author_cover"
                 type="file"

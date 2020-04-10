@@ -62,7 +62,7 @@ class CommentForm extends Component {
         comment: {
           user_id: Cookies.get("user_id"),
           body: this.state.body,
-          image_url: file ? file.url : "",
+          image_url: file ? file.secure_url : "",
         },
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") },

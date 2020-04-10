@@ -81,6 +81,7 @@ class AddBook extends Component {
     let file = null;
 
     if (this.state.book.selectedFile) {
+      this.refs.btn.setAttribute("disabled", "disabled");
       const data = new FormData();
       data.append("file", this.state.book.selectedFile);
       data.append("upload_preset", "st2nr1uo");
@@ -101,7 +102,7 @@ class AddBook extends Component {
         title: this.state.book.title,
         author_name: this.state.book.author_name,
         user_id: Cookies.get("user_id"),
-        image_url: file ? file.url : "",
+        image_url: file ? file.secure_url : "",
       },
       headers: { "X-User-Token": Cookies.get("user_authentication_token") },
     })
@@ -110,7 +111,9 @@ class AddBook extends Component {
         this.props.history.push("/");
         window.location.reload(false);
       })
-      .catch((errors) => {});
+      .catch((errors) => {
+        this.refs.btn.removeAttribute("disabled");
+      });
   };
 
   componentDidMount() {
@@ -171,6 +174,7 @@ class AddBook extends Component {
             <label htmlFor="image">
               Add book cover <br></br>
               <input
+                required
                 style={{ background: "none" }}
                 id="book_cover"
                 type="file"

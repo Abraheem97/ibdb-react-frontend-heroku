@@ -55,11 +55,23 @@ class AddBook extends Component {
 
   validate = () => {
     const errors = {};
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
 
     if (this.state.book.title.trim() === "")
       errors.title = "Title is required.";
     if (this.state.book.author_name.trim() === "")
       errors.author_name = "Author name is required.";
+    if (
+      this.state.book.selectedFile &&
+      this.state.book.selectedFile.size > 5079591
+    )
+      errors.avatar = "Image size should be less then 5MBs";
+    if (
+      this.state.book.selectedFile &&
+      !validImageTypes.includes(this.state.book.selectedFile.type)
+    )
+      errors.avatar =
+        "Unknown image format, please pick gif, jpeg or png images";
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
@@ -73,47 +85,49 @@ class AddBook extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
 
-    this.refs.btn.setAttribute("disabled", "disabled");
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
-    this.setState({ loading: true });
-    let file = null;
+    else {
+      this.setState({ loading: true });
+      let file = null;
 
-    if (this.state.book.selectedFile) {
-      this.refs.btn.setAttribute("disabled", "disabled");
-      const data = new FormData();
-      data.append("file", this.state.book.selectedFile);
-      data.append("upload_preset", "st2nr1uo");
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
-        {
-          method: "POST",
-          body: data,
-        }
-      );
+      if (this.state.book.selectedFile) {
+        this.refs.btn.setAttribute("disabled", "disabled");
+        const data = new FormData();
+        data.append("file", this.state.book.selectedFile);
+        data.append("upload_preset", "st2nr1uo");
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_KEY}/image/upload`,
+          {
+            method: "POST",
+            body: data,
+          }
+        );
 
-      file = await res.json();
-    }
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_URL}/books`,
-      data: {
-        title: this.state.book.title,
-        author_name: this.state.book.author_name,
-        user_id: Cookies.get("user_id"),
-        image_url: file ? file.secure_url : "",
-      },
-      headers: { "X-User-Token": Cookies.get("user_authentication_token") },
-    })
-      .then((res) => {
-        this.setState({ loading: false });
-        this.props.history.push("/");
-        window.location.reload(false);
+        file = await res.json();
+      }
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_API_URL}/books`,
+        data: {
+          title: this.state.book.title,
+          author_name: this.state.book.author_name,
+          user_id: Cookies.get("user_id"),
+          image_url: file ? file.secure_url : "",
+        },
+        headers: { "X-User-Token": Cookies.get("user_authentication_token") },
       })
-      .catch((errors) => {
-        this.refs.btn.removeAttribute("disabled");
-      });
+        .then((res) => {
+          this.setState({ loading: false });
+          this.props.history.push("/");
+          window.location.reload(false);
+          this.refs.btn.removeAttribute("disabled");
+        })
+        .catch((errors) => {
+          this.refs.btn.removeAttribute("disabled");
+        });
+    }
   };
 
   componentDidMount() {
@@ -180,8 +194,14 @@ class AddBook extends Component {
                 type="file"
                 name="image"
                 onChange={this.fileSelectHandler}
+                accept="image/*"
               />
             </label>
+            {this.state.errors.avatar && (
+              <div className="alert alert-danger">
+                {this.state.errors.avatar}
+              </div>
+            )}
           </div>
           <div
             className="sweet-loading"

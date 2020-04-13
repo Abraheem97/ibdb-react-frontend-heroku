@@ -13,7 +13,6 @@ class AddAuthor extends Component {
       selectedFile: null,
     },
     errors: {},
-
     loading: false,
     newAuthor: false,
   };
@@ -56,9 +55,21 @@ class AddAuthor extends Component {
   validate = () => {
     const errors = {};
 
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
     if (this.state.author.name.trim() === "") errors.name = "Name is required.";
     if (this.state.author.description.trim() === "")
       errors.description = "Description is required.";
+    if (
+      this.state.author.selectedFile &&
+      this.state.author.selectedFile.size > 5079591
+    )
+      errors.avatar = "Image size should be less then 5MBs";
+    if (
+      this.state.author.selectedFile &&
+      !validImageTypes.includes(this.state.author.selectedFile.type)
+    )
+      errors.avatar =
+        "Unknown image format, please pick gif, jpeg or png images";
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
@@ -173,6 +184,11 @@ class AddAuthor extends Component {
                 onChange={this.fileSelectHandler}
               />
             </label>
+            {this.state.errors.avatar && (
+              <div className="alert alert-danger">
+                {this.state.errors.avatar}
+              </div>
+            )}
           </div>
           <div
             className="sweet-loading"

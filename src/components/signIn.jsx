@@ -4,7 +4,7 @@ import axios from "axios";
 class SignIn extends Component {
   state = { account: { username: "", password: "" }, errors: {} };
 
-  validateProperty = input => {
+  validateProperty = (input) => {
     if (input.name === "username") {
       if (input.value.trim() === "") return "Username is required.";
     }
@@ -17,7 +17,7 @@ class SignIn extends Component {
     this.props.handleSignOut();
   }
 
-  handleInput = e => {
+  handleInput = (e) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(e.currentTarget);
     if (errorMessage) errors[e.currentTarget.name] = errorMessage;
@@ -38,7 +38,7 @@ class SignIn extends Component {
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
     this.setState({ errors: errors || {} });
@@ -49,14 +49,14 @@ class SignIn extends Component {
       url: `${process.env.REACT_APP_API_URL}/v1/sessions`,
       data: {
         email: this.state.account.username,
-        password: this.state.account.password
-      }
+        password: this.state.account.password,
+      },
     })
-      .then(res => {
+      .then((res) => {
         this.refs.btn.setAttribute("disabled", "disabled");
         this.props.handleSignIn(res.data);
       })
-      .catch(errors => {
+      .catch((errors) => {
         if (errors) {
           let Myerrors = { ...this.state.errors };
           if (errors.message === "Request failed with status code 403")
@@ -86,7 +86,7 @@ class SignIn extends Component {
         {this.state.errors.wrong && (
           <div className="alert alert-danger">{this.state.errors.wrong}</div>
         )}
-        <h1>Login</h1>
+        <h2>Login</h2>
         <br />
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">

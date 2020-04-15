@@ -209,6 +209,9 @@ class Book extends Component {
           <div className="col">
             <div style={this.textCenter}>
               <h1 style={{ marginBottom: 0 }}> Comments</h1>
+
+              <hr />
+
               <br></br>
               {Boolean(Cookies.get("isLoggedIn")) && (
                 <CommentForm

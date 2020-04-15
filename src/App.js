@@ -17,6 +17,9 @@ import Reviews from "./components/reviews";
 import AddBook from "./components/addBook";
 import AddAuthor from "./components/addAuthor";
 import UserProfile from "./components/userProfile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 // USER ROLES
 
@@ -44,6 +47,9 @@ class App extends Component {
     Cookies.set("firstName", user.firstName);
     Cookies.set("lastName", user.lastName);
     this.props.history.push("/");
+    toast.success(
+      "Welcome back " + user.firstName + "!\nYou are successfully signed in"
+    );
   };
 
   handleSignUp = () => {
@@ -65,6 +71,7 @@ class App extends Component {
       },
     })
       .then((res) => {
+        toast.error("You are successfully signed out!");
         let alerts = { ...this.state.alerts };
         alerts.sign_out = "You are successfully signed out!";
 
@@ -112,12 +119,6 @@ class App extends Component {
           <br></br>
 
           <div className="container">
-            {this.state.alerts.sign_out && (
-              <div className="alert alert-dark">
-                {this.state.alerts.sign_out}
-              </div>
-            )}
-
             <Switch>
               <Route path="/author/:id" component={Author} />
               <Route path="/books/:id/reviews" component={Reviews} />
@@ -164,6 +165,12 @@ class App extends Component {
               />
               <Redirect to="/not-found" />
             </Switch>
+            <ToastContainer
+              autoClose={5000}
+              hideProgressBar
+              closeButton={false}
+              style={{ color: "initial" }}
+            />
           </div>
         </div>
       </div>

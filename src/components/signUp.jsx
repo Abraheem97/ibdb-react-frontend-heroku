@@ -160,8 +160,7 @@ class SignUp extends Component {
     const { account } = this.state;
     return (
       <div>
-        <h1>Sign Up</h1>
-
+        <h2>Sign Up</h2>
         <br />
         <form onSubmit={this.handleSubmit}>
           <div className="row">

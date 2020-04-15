@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Nav, Navbar } from "react-bootstrap";
 import Cookies from "js-cookie";
 import UserAvatar from "react-user-avatar";
-
+import Button from "@material-ui/core/Button";
 class NavBar extends Component {
   states = {};
 
@@ -21,10 +21,6 @@ class NavBar extends Component {
 
     backgroundImage:
       "linear-gradient(to bottom, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e, #2b2c2e)",
-  };
-
-  invertColour = {
-    color: "invert",
   };
 
   render() {
